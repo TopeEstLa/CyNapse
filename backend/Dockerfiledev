@@ -1,0 +1,22 @@
+FROM eclipse-temurin:25-jdk AS build
+
+WORKDIR /app
+
+COPY gradlew /app/gradlew
+COPY gradle /app/gradle
+COPY build.gradle settings.gradle /app/
+RUN chmod +x /app/gradlew
+
+COPY src /app/src
+RUN /app/gradlew bootJar --no-daemon
+
+FROM eclipse-temurin:25-jre
+
+RUN mkdir /app && mkdir /app/config
+
+WORKDIR /app
+COPY --from=build /app/build/libs/CyNapse-*.jar /app/CyNapse.jar
+ENV TZ="Europe/Paris"
+
+EXPOSE 8080
+ENTRYPOINT [ "java", "-jar", "/app/CyNapse.jar" ]

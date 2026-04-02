@@ -1,0 +1,35 @@
+volumes:
+  mariadb_data:
+
+services:
+  mariadb:
+    image: mariadb:latest
+    container_name: cynapse_mariadb
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    environment:
+      MARIADB_ROOT_PASSWORD: mariadbcynapserootp@ssword
+      MARIADB_USER: cynapse
+      MARIADB_PASSWORD: cynapsemypassmariadb
+      MARIADB_DATABASE: cynapse
+    healthcheck:
+      test: [ "CMD", "mariadb", "-u", "cynapse", "-pcynapsemypassmariadb", "-e", "SELECT 1;" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  cynapse-backend:
+    build:
+      context: .
+      dockerfile: Dockerfiledev
+    container_name: cynapse_backend_dev
+    ports:
+      - "8080:8080"
+    environment:
+      DATABASE_URL: "jdbc:mariadb://mariadb:3306/cynapse"
+
+      DATABASE_USERNAME: "cynapse"
+      DATABASE_PASSWORD: "cynapsemypassmariadb"
+    depends_on:
+      mariadb:
+        condition: service_healthy

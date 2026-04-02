@@ -8,6 +8,7 @@ class CynapseApplicationTests {
 
 	@Test
 	void contextLoads() {
+		System.out.println("Hello, Cynapse!");
 	}
 
 }
