@@ -1,5 +1,6 @@
 package io.squid.cynapse.configs;
 
+import io.squid.cynapse.services.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,11 +20,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableMethodSecurity
 public class SecurityConfig {
 
-    private static final String[] PUBLIC_ENDPOINTS = {
-            "/api/auth/sign-in",
-            "/api/auth/sign-out",
-            "/api/auth/sign-up"
-    };
+    @Autowired
+    private AuthService authService;
 
     @Autowired
     private JwtSecurityFilter jwtSecurityFilter;
@@ -36,7 +34,7 @@ public class SecurityConfig {
                     session.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
                 })
                 .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers(PUBLIC_ENDPOINTS).permitAll();
+                    auth.requestMatchers(this.authService.getPublicEndpoints()).permitAll();
                     auth.anyRequest().authenticated();
                 })
                 .addFilterBefore(jwtSecurityFilter, UsernamePasswordAuthenticationFilter.class);
@@ -45,7 +43,4 @@ public class SecurityConfig {
         return httpSecurity.build();
     }
 
-    public static String[] getPublicEndpoints() {
-        return PUBLIC_ENDPOINTS;
-    }
 }

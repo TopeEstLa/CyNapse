@@ -5,7 +5,17 @@ package io.squid.cynapse.enums;
  */
 public enum Role {
 
-    USER,
-    ADMIN;
+    USER(1),
+    ADMIN(10);
+
+    private int weight;
+
+    Role(int weight) {
+        this.weight = weight;
+    }
+
+    public int getWeight() {
+        return weight;
+    }
 
 }

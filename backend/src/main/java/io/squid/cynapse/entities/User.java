@@ -1,5 +1,6 @@
 package io.squid.cynapse.entities;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import io.squid.cynapse.enums.MemberType;
 import io.squid.cynapse.enums.Role;
 import jakarta.persistence.*;
@@ -29,6 +30,7 @@ public class User {
 
     private String password;
 
+    @Enumerated(EnumType.ORDINAL)
     private Role role;
 
     private double exp;
@@ -40,10 +42,26 @@ public class User {
 
     private String image;
 
+    @Enumerated(EnumType.ORDINAL)
     private MemberType memberType;
 
 
     public User() {
+    }
+
+    public User(String username, String email, String password, String lastName, String firstName, LocalDate birthDate, String gender, MemberType memberType) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.lastName = lastName;
+        this.firstName = firstName;
+        this.birthDate = birthDate;
+        this.gender = gender;
+        this.memberType = memberType;
+
+        this.role = Role.USER;
+        this.exp = 0;
+        this.image = "";
     }
 
     public User(String username, String email, String lastName, String firstName, String password, Role role, double exp, String gender, LocalDate birthDate, String image, MemberType memberType) {

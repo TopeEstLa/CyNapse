@@ -5,6 +5,6 @@ package io.squid.cynapse.enums;
  */
 public enum MemberType {
 
-
+    FRIEND,
 
 }

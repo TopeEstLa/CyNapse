@@ -3,6 +3,7 @@ package io.squid.cynapse.configs;
 import io.squid.cynapse.entities.User;
 import io.squid.cynapse.enums.Cookies;
 import io.squid.cynapse.repositories.UserRepository;
+import io.squid.cynapse.services.AuthService;
 import io.squid.cynapse.services.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -32,12 +33,15 @@ public class JwtSecurityFilter extends OncePerRequestFilter {
     private UserRepository userRepository;
 
     @Autowired
+    private AuthService authService;
+
+    @Autowired
     private JwtService jwtService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String path = request.getRequestURI();
-        if (Arrays.asList(SecurityConfig.getPublicEndpoints()).contains(path)) {
+        if (Arrays.stream(this.authService.getPublicEndpoints()).anyMatch(path::startsWith)) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -70,6 +74,7 @@ public class JwtSecurityFilter extends OncePerRequestFilter {
 
         Authentication auth = new UsernamePasswordAuthenticationToken(user, null, List.of(new SimpleGrantedAuthority(user.getRole().toString())));
         SecurityContextHolder.getContext().setAuthentication(auth); //tadam
+        filterChain.doFilter(request, response);
     }
 
     public String findAccessToken(Cookie[] cookies) {
