@@ -71,6 +71,10 @@ public class JwtSecurityFilter extends OncePerRequestFilter {
 
         User user = userOpt.get();
 
+        if (!user.isEnable()) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return;
+        }
 
         Authentication auth = new UsernamePasswordAuthenticationToken(user, null, List.of(new SimpleGrantedAuthority(user.getRole().toString())));
         SecurityContextHolder.getContext().setAuthentication(auth); //tadam

@@ -30,6 +30,8 @@ public class User {
 
     private String password;
 
+    private boolean enable;
+
     @Enumerated(EnumType.ORDINAL)
     private Role role;
 
@@ -59,17 +61,19 @@ public class User {
         this.gender = gender;
         this.memberType = memberType;
 
+        this.enable = false;
         this.role = Role.USER;
         this.exp = 0;
         this.image = "";
     }
 
-    public User(String username, String email, String lastName, String firstName, String password, Role role, double exp, String gender, LocalDate birthDate, String image, MemberType memberType) {
+    public User(String username, String email, String lastName, String firstName, String password, boolean enable, Role role, double exp, String gender, LocalDate birthDate, String image, MemberType memberType) {
         this.username = username;
         this.email = email;
         this.lastName = lastName;
         this.firstName = firstName;
         this.password = password;
+        this.enable = enable;
         this.role = role;
         this.exp = exp;
         this.gender = gender;
@@ -100,6 +104,10 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public void setEnable(boolean enable) {
+        this.enable = enable;
     }
 
     public void setRole(Role role) {
@@ -148,6 +156,10 @@ public class User {
 
     public String getPassword() {
         return password;
+    }
+
+    public boolean isEnable() {
+        return enable;
     }
 
     public Role getRole() {
