@@ -23,6 +23,7 @@ public class AuthService {
             "/api/auth/sign-in",
             "/api/auth/sign-out",
             "/api/auth/sign-up",
+            "/api/auth/enable",
             //swagger
             "/v3/api-docs",
             "/swagger-ui",
@@ -53,7 +54,7 @@ public class AuthService {
 
         UserValidationToken validToken = new UserValidationToken(token.toString(), user);
         this.userValidationTokenRepository.save(validToken);
-        //send Mail
+        //todo send Mail
     }
 
 
