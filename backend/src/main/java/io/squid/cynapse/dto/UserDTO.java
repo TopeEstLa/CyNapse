@@ -12,7 +12,6 @@ public class UserDTO {
     public static class UserProfile {
 
         private String username;
-        private int age;
         private MemberType memberType;
         private LocalDate birthDate;
         private String image;
@@ -20,9 +19,8 @@ public class UserDTO {
         public UserProfile() {
         }
 
-        public UserProfile(String username, int age, MemberType memberType, LocalDate birthDate, String image) {
+        public UserProfile(String username, MemberType memberType, LocalDate birthDate, String image) {
             this.username = username;
-            this.age = age;
             this.memberType = memberType;
             this.birthDate = birthDate;
             this.image = image;
@@ -30,10 +28,6 @@ public class UserDTO {
 
         public String getUsername() {
             return username;
-        }
-
-        public int getAge() {
-            return age;
         }
 
         public MemberType getMemberType() {
