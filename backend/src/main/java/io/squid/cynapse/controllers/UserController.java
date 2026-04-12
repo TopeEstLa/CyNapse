@@ -5,6 +5,7 @@ import io.squid.cynapse.entities.User;
 import io.squid.cynapse.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,6 +35,7 @@ public class UserController {
 
         for (User user : this.userRepository.findAll()) {
             userProfiles.add(new UserDTO.UserProfile(
+                    user.getId(),
                     user.getUsername(),
                     user.getMemberType(),
                     user.getBirthDate(),
@@ -46,17 +48,20 @@ public class UserController {
 
     @GetMapping("/get")
     public ResponseEntity<?> getUserProfile(@RequestParam("id") long userId) {
-        Optional<User> user = this.userRepository.findById(userId);
+        Optional<User> userOpt = this.userRepository.findById(userId);
 
-        if (user.isEmpty()) {
+        if (userOpt.isEmpty()) {
             return ResponseEntity.badRequest().body("User not found");
         }
 
+        User user = userOpt.get();
+
         return ResponseEntity.ok(new UserDTO.UserProfile(
-                user.get().getUsername(),
-                user.get().getMemberType(),
-                user.get().getBirthDate(),
-                user.get().getImage()
+                user.getId(),
+                user.getUsername(),
+                user.getMemberType(),
+                user.getBirthDate(),
+                user.getImage()
         ));
     }
 
