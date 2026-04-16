@@ -1,4 +1,5 @@
 import React from "react";
+import { useState } from "react";
 import { Register, Login } from "./Form.jsx";
 //import Login from './Form.jsx';
 
@@ -94,16 +95,56 @@ function ShowThermostat(){
   );
 }*/
 
+
+class Menu extends React.Component{
+  constructor(props) {
+  super(props);
+  this.state = {value: "default"};
+
+  this.handleClick = this.handleClick.bind(this);
+  }
+  
+  handleClick(event){
+    
+    this.setState({value: event});
+    //alert(event);
+  }
+
+  render(){
+    let x;
+    switch (this.state.value) {
+          case "main":
+            x=<h1>main</h1>;
+            break;
+          case "login":
+            x=<Login/>;
+            break;
+          case "register":
+            x=<Register/>;
+            break;
+          default:
+            x=<h1>default</h1>;
+            break;
+        }
+    return (
+    <div>
+      <button onClick={()=>{this.handleClick("main")}}>Main</button>
+      <button onClick={()=>{this.handleClick("login")}}>Login</button>
+        <button onClick={()=>{this.handleClick("register")}}>Register</button>
+      {x}
+    </div>
+
+    );
+  }
+}
+
+
 function App() {
   const [page, setPage] = React.useState("login");
 
   return (
     <div>
-      <h1>Register</h1>
-      <Register/>
-      <h1>Login </h1>
-      <Login/>
-      
+      <Menu/>
     </div>
   );
 }
