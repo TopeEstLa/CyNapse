@@ -42,6 +42,7 @@ class Register extends React.Component{
   }
   render(){
     return(
+      <fieldset>
         <form onSubmit={this.handleSubmit}>
           <table>
             <tbody>
@@ -76,12 +77,29 @@ class Register extends React.Component{
                 <td> <label> Mot de passe : </label> </td>
                 <td> <input type="password" placeholder="MotDePasse" name="password" onChange={this.handleChange} value={this.state.password}/> </td>
               </tr>
-              <tr> 
+              <tr>   <form onSubmit={this.handleSubmit}>
+            <table>
+              <tbody>
+                <tr> 
+                  <td> <label> Pseudonyme : </label></td>
+                  <td> <input type="text" placeholder="Entrez votre pseudonyme" name="pseudonyme" onChange={this.handleChange} value={this.state.pseudonyme }/> </td> 
+                </tr>
+                <tr> 
+                  <td> <label> Mot de passe : </label> </td>
+                  <td> <input type="password" placeholder="MotDePasse" name="password" onChange={this.handleChange} value={this.state.password}/> </td>
+                </tr>
+                <tr> 
+                  <td colSpan={3}> <input type="submit" value="Envoyer" /> </td> 
+                </tr>
+              </tbody>
+            </table>
+          </form>
                 <td colSpan={3}> <input type="submit" value="Envoyer" /> </td> 
               </tr>
             </tbody>
           </table>
         </form>
+      </fieldset>
     );
   }
 }
@@ -106,7 +124,8 @@ class Login extends React.Component{
   }
   render(){
     return(
-      <form onSubmit={this.handleSubmit}>
+      <fieldset>
+        <form onSubmit={this.handleSubmit}>
           <table>
             <tbody>
               <tr> 
@@ -123,6 +142,7 @@ class Login extends React.Component{
             </tbody>
           </table>
         </form>
+      </fieldset>
     );
   }
 }
