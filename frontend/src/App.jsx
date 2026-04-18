@@ -128,9 +128,13 @@ class Menu extends React.Component{
         }
     return (
     <div>
-      <button onClick={()=>{this.handleClick("main")}}>Main</button>
-      <button onClick={()=>{this.handleClick("login")}}>Login</button>
-        <button onClick={()=>{this.handleClick("register")}}>Register</button>
+      <nav>
+        <ul>
+          <li> <button onClick={()=>{this.handleClick("main")}}>Main</button> </li>
+          <li> <button onClick={()=>{this.handleClick("login")}}>Login</button> </li>
+          <li> <button onClick={()=>{this.handleClick("register")}}>Register</button> </li>
+        </ul>
+      </nav>
       {x}
     </div>
 
