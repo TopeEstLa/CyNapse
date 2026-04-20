@@ -4,10 +4,10 @@ import io.squid.cynapse.dto.AuthDTO;
 import io.squid.cynapse.entities.User;
 import io.squid.cynapse.entities.UserValidationToken;
 import io.squid.cynapse.enums.Cookies;
-import io.squid.cynapse.repositories.UserRepository;
 import io.squid.cynapse.repositories.UserValidationTokenRepository;
 import io.squid.cynapse.services.AuthService;
 import io.squid.cynapse.services.JwtService;
+import io.squid.cynapse.services.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,25 +25,18 @@ import java.util.Optional;
 public class AuthController {
 
     @Autowired
+    private UserService userService;
+
+    @Autowired
     private AuthService authService;
 
     @Autowired
     private JwtService jwtService;
 
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private UserValidationTokenRepository userValidationTokenRepository;
-
     @PostMapping("/sign-up")
     public ResponseEntity<?> signup(@RequestBody  AuthDTO.SignupDTO signupDTO) {
-        if (userRepository.findByUsername(signupDTO.getUsername()).isPresent()) {
-            return ResponseEntity.badRequest().body("Username already exists");
-        }
-
-        if (userRepository.findByEmail(signupDTO.getEmail()).isPresent()) {
-            return ResponseEntity.badRequest().body("Email already exists");
+        if (this.userService.userExists(signupDTO.getUsername(), signupDTO.getEmail())) {
+            return ResponseEntity.badRequest().body("username or email already exists");
         }
 
         User user = new User(signupDTO.getUsername(),
@@ -55,22 +48,18 @@ public class AuthController {
                 signupDTO.getGender(),
                 signupDTO.getMemberType());
 
-        User savedUser = userRepository.save(user);
+        this.userService.save(user);
 
-        return ResponseEntity.ok(savedUser);
+        return ResponseEntity.ok("User registered successfully. Please wait an administrator to authorize your sign-up");
     }
 
     @PostMapping("/sign-in")
     public ResponseEntity<?> signin(@RequestBody AuthDTO.SigninDTO signinDTO, HttpServletRequest req, HttpServletResponse resp) {
-        Optional<User> userOpt = userRepository.findByUsername(signinDTO.getUsername());
-        if (userOpt.isEmpty()) {
-            userOpt = userRepository.findByEmail(signinDTO.getUsername());
-            if (userOpt.isEmpty()) {
-                return ResponseEntity.status(401).body("Invalid username or email");
-            }
+        User user = this.userService.findByUsernameOrEmail(signinDTO.getUsername());
+        if (user == null) {
+            return ResponseEntity.status(401).body("Invalid username or email");
         }
 
-        User user = userOpt.get();
         if (!user.isEnable()) {
             return ResponseEntity.status(403).body("Account not enabled. Please check your email for the validation link.");
         }
@@ -84,31 +73,47 @@ public class AuthController {
         return ResponseEntity.ok(user);
     }
 
-    @PostMapping("/validate")
+    @PostMapping("/updatePassword")
+    public ResponseEntity<?> updatePassword(@RequestBody AuthDTO.UpdatePasswordDTO updatePasswordDTO) {
+        User user = this.userService.getCurrentUser();
+        if (user == null) {
+            return ResponseEntity.status(401).body("Unauthorized");
+        }
+
+        if (!this.authService.getPasswordEncoder().matches(updatePasswordDTO.getCurrentPassword(), user.getPassword())) {
+            return ResponseEntity.status(401).body("Invalid current password");
+        }
+
+        user.setPassword(this.authService.getPasswordEncoder().encode(updatePasswordDTO.getNewPassword()));
+        this.userService.save(user);
+
+        return ResponseEntity.ok("Password updated successfully");
+    }
+
+    @PostMapping("/authorize")
     @PreAuthorize("@authService.hasRequiredRole('ADMIN')")
-    public ResponseEntity<?> validateUser(@RequestParam("user_id") long userId) {
-        User user = this.userRepository.findById(userId).orElse(null);
+    public ResponseEntity<?> authorizeUser(@RequestParam("user_id") long userId) {
+        User user = this.userService.findById(userId);
         if (user == null) {
             return ResponseEntity.badRequest().body("User not found");
         }
 
-        this.authService.validateUser(user);
+        if (!this.authService.authorizeUser(user)) {
+            return ResponseEntity.status(500).body("Failed to send validation email");
+        }
 
         return ResponseEntity.ok("Validation email sent");
     }
 
     @GetMapping("/enable")
     public ResponseEntity<?> enableUser(@RequestParam("token") String token) {
-        Optional<UserValidationToken> tokenOpt = this.userValidationTokenRepository.findById(token);
-        if (tokenOpt.isEmpty()) {
-            return ResponseEntity.badRequest().body("Invalid token");
+        if (!this.authService.validationTokenExist(token)) {
+            return ResponseEntity.badRequest().body("Invalid or expired validation token");
         }
 
-        UserValidationToken validToken = tokenOpt.get();
-        User user = validToken.getUser();
-        user.setEnable(true);
-        this.userRepository.save(user);
-        this.userValidationTokenRepository.delete(validToken);
+        if (!this.authService.enableUser(token)) {
+            return ResponseEntity.status(500).body("Failed to enable account");
+        }
 
         return ResponseEntity.ok("Account enabled successfully");
     }

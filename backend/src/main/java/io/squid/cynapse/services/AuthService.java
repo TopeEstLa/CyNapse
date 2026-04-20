@@ -37,26 +37,54 @@ public class AuthService {
     @Autowired
     private UserValidationTokenRepository userValidationTokenRepository;
 
+    @Autowired
+    private MailService mailService;
+
+    @Autowired
+    private UserService userService;
+
     public boolean hasRequiredRole(String requiredRole) {
         Role role = Role.valueOf(requiredRole);
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication == null || !authentication.isAuthenticated()) {
-            return false;
-        }
+        User user = userService.getCurrentUser();
 
-        User user = (User) authentication.getPrincipal();
+        if (user == null) return false;
+
         return user.getRole().getWeight() >= role.getWeight();
     }
 
-    public void validateUser(User user) {
+    public boolean authorizeUser(User user) {
         UUID token = UUID.randomUUID();
 
         UserValidationToken validToken = new UserValidationToken(token.toString(), user);
+        String validationLink = "http://localhost:8080/api/auth/enable?token=" + token.toString();
+
+        try {
+            this.mailService.sendPlainText(user.getEmail(), "Cynapse Account Validation", "Please click the following link to validate your account: " + validationLink);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+
         this.userValidationTokenRepository.save(validToken);
-        //todo send Mail
+        return true;
     }
 
+    public boolean enableUser(String validationToken) {
+        UserValidationToken userValidationToken = this.userValidationTokenRepository.findById(validationToken).orElse(null);
+        if (userValidationToken == null) return false;
+
+
+        User user = userValidationToken.getUser();
+        user.setEnable(true);
+        this.userService.save(user);
+        this.userValidationTokenRepository.delete(userValidationToken);
+        return true;
+    }
+
+    public boolean validationTokenExist(String token) {
+        return this.userValidationTokenRepository.existsById(token);
+    }
 
     public String[] getPublicEndpoints() {
         return publicEndpoints;

@@ -2,9 +2,9 @@ package io.squid.cynapse.configs;
 
 import io.squid.cynapse.entities.User;
 import io.squid.cynapse.enums.Cookies;
-import io.squid.cynapse.repositories.UserRepository;
 import io.squid.cynapse.services.AuthService;
 import io.squid.cynapse.services.JwtService;
+import io.squid.cynapse.services.UserService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
@@ -30,7 +30,7 @@ import java.util.Optional;
 public class JwtSecurityFilter extends OncePerRequestFilter {
 
     @Autowired
-    private UserRepository userRepository;
+    private UserService userService;
 
     @Autowired
     private AuthService authService;
@@ -63,13 +63,11 @@ public class JwtSecurityFilter extends OncePerRequestFilter {
             return;
         }
 
-        Optional<User> userOpt = this.userRepository.findByUsername(username);
-        if (userOpt.isEmpty()) {
+        User user = this.userService.findByUsername(username);
+        if (user == null) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
-
-        User user = userOpt.get();
 
         if (!user.isEnable()) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);

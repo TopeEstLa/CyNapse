@@ -2,18 +2,11 @@ package io.squid.cynapse.controllers;
 
 import io.squid.cynapse.dto.UserDTO;
 import io.squid.cynapse.entities.User;
-import io.squid.cynapse.repositories.UserRepository;
+import io.squid.cynapse.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,63 +19,53 @@ public class UserController {
 
 
     @Autowired
-    private UserRepository userRepository;
+    private UserService userService;
 
 
     @GetMapping("/list")
     public ResponseEntity<List<UserDTO.UserProfile>> getUsersProfile() {
-        List<UserDTO.UserProfile> userProfiles = new ArrayList<>();
-
-        for (User user : this.userRepository.findAll()) {
-            userProfiles.add(new UserDTO.UserProfile(
-                    user.getId(),
-                    user.getUsername(),
-                    user.getMemberType(),
-                    user.getBirthDate(),
-                    user.getImage()
-            ));
-        }
-
-        return ResponseEntity.ok(userProfiles);
+        return ResponseEntity.ok(this.userService.getUsersProfile());
     }
 
     @GetMapping("/get")
     public ResponseEntity<?> getUserProfile(@RequestParam("id") long userId) {
-        Optional<User> userOpt = this.userRepository.findById(userId);
-
-        if (userOpt.isEmpty()) {
+        UserDTO.UserProfile userProfile = this.userService.getUserProfile(userId);
+        if (userProfile == null) {
             return ResponseEntity.badRequest().body("User not found");
         }
 
-        User user = userOpt.get();
-
-        return ResponseEntity.ok(new UserDTO.UserProfile(
-                user.getId(),
-                user.getUsername(),
-                user.getMemberType(),
-                user.getBirthDate(),
-                user.getImage()
-        ));
+        return ResponseEntity.ok(userProfile);
     }
 
     @GetMapping("/me")
-    public ResponseEntity<?> getMyProfile() {
-        Authentication  authentication = SecurityContextHolder.getContext().getAuthentication();
-        User currentUser = (User) authentication.getPrincipal();
-        if (currentUser == null) {
+    public ResponseEntity<?> getUser() {
+        User user = this.userService.getCurrentUser();
+        if (user == null) {
             return ResponseEntity.badRequest().body("User not found");
         }
 
-        Optional<User> user = this.userRepository.findById(currentUser.getId());
-        if (user.isEmpty()) {
+        user.setPassword("");
+        return ResponseEntity.ok(user);
+    }
+
+    @PostMapping("/updateProfile")
+    public ResponseEntity<?> updateProfile(@RequestBody UserDTO.UserUpdate updateProfileDTO) {
+        User user = this.userService.getCurrentUser();
+        if (user == null) {
             return ResponseEntity.badRequest().body("User not found");
         }
 
+        user.setFirstName(updateProfileDTO.getFirstName());
+        user.setLastName(updateProfileDTO.getLastName());
 
-        User userProfile = user.get();
-        userProfile.setPassword("");
+        user.setGender(updateProfileDTO.getGender());
+        user.setBirthDate(updateProfileDTO.getBirthDate());
+        user.setImage(updateProfileDTO.getImage());
+        user.setMemberType(updateProfileDTO.getMemberType());
 
-        return ResponseEntity.ok(userProfile);
+        this.userService.save(user);
+
+        return ResponseEntity.ok("Profile updated successfully");
     }
 
 }

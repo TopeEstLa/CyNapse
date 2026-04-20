@@ -49,4 +49,42 @@ public class UserDTO {
         }
     }
 
+    public static class UserUpdate {
+
+        private String firstName;
+        private String lastName;
+
+        private String gender;
+        private LocalDate birthDate;
+        private String image;
+        private MemberType memberType;
+
+        public UserUpdate() {
+        }
+
+        public String getFirstName() {
+            return firstName;
+        }
+
+        public String getLastName() {
+            return lastName;
+        }
+
+        public String getGender() {
+            return gender;
+        }
+
+        public LocalDate getBirthDate() {
+            return birthDate;
+        }
+
+        public String getImage() {
+            return image;
+        }
+
+        public MemberType getMemberType() {
+            return memberType;
+        }
+    }
+
 }

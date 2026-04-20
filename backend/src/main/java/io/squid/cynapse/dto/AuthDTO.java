@@ -128,5 +128,33 @@ public class AuthDTO {
         }
     }
 
+    public static class UpdatePasswordDTO {
+        private String currentPassword;
+        private String newPassword;
+
+        public UpdatePasswordDTO() {
+        }
+
+        public UpdatePasswordDTO(String currentPassword, String newPassword) {
+            this.currentPassword = currentPassword;
+            this.newPassword = newPassword;
+        }
+
+        public String getCurrentPassword() {
+            return currentPassword;
+        }
+
+        public void setCurrentPassword(String currentPassword) {
+            this.currentPassword = currentPassword;
+        }
+
+        public String getNewPassword() {
+            return newPassword;
+        }
+
+        public void setNewPassword(String newPassword) {
+            this.newPassword = newPassword;
+        }
+    }
 
 }
