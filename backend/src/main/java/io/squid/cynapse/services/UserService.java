@@ -21,7 +21,15 @@ public class UserService {
     private UserRepository userRepository;
 
     public boolean userExists(String username, String email) {
-        return this.userRepository.findByUsername(username).isPresent() || this.userRepository.findByEmail(email).isPresent();
+        return this.userExistByUsername(username) || this.userExistByUsername(email);
+    }
+
+    public boolean userExistByUsername(String username) {
+        return this.userRepository.findByUsername(username).isPresent();
+    }
+
+    public boolean userExistByEmail(String email) {
+        return this.userRepository.findByEmail(email).isPresent();
     }
 
     public User findById(long userId) {
@@ -53,6 +61,16 @@ public class UserService {
         }
 
         return userProfiles;
+    }
+
+    public List<User> getUsers() {
+        List<User> users = new ArrayList<>();
+
+        for (User user : this.userRepository.findAll()) {
+            users.add(user);
+        } //no brain atm to transform iterable to list with some satanic things
+
+        return users;
     }
 
     public UserDTO.UserProfile getUserProfile(long userId) {

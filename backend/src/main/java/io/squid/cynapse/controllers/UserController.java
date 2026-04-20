@@ -44,7 +44,6 @@ public class UserController {
             return ResponseEntity.badRequest().body("User not found");
         }
 
-        user.setPassword("");
         return ResponseEntity.ok(user);
     }
 
@@ -63,9 +62,7 @@ public class UserController {
         user.setImage(updateProfileDTO.getImage());
         user.setMemberType(updateProfileDTO.getMemberType());
 
-        this.userService.save(user);
-
-        return ResponseEntity.ok("Profile updated successfully");
+        return ResponseEntity.ok(this.userService.save(user));
     }
 
 }
