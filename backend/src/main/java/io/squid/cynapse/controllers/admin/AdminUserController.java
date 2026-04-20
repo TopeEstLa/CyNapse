@@ -45,16 +45,21 @@ public class AdminUserController {
 
     @PostMapping("/update")
     public ResponseEntity<?> updateUser(User user) {
+        System.out.println(user);
         User currentUser = this.userService.findById(user.getId());
         if (currentUser == null) return ResponseEntity.badRequest().body("User not found");
 
-        if (!(currentUser.getUsername().equals(user.getUsername())) && !this.userService.userExistByUsername(user.getUsername())) {
+        if (!currentUser.getUsername().equals(user.getUsername())) {
+            if (this.userService.userExistByUsername(user.getUsername())) {
+                return ResponseEntity.badRequest().body("Username already taken");
+            }
             currentUser.setUsername(user.getUsername());
-        } else {
-            return ResponseEntity.badRequest().body("Username already taken");
         }
 
-        if (!(currentUser.getEmail().equals(user.getEmail())) && !this.userService.userExistByEmail(user.getEmail())) {
+        if (!currentUser.getEmail().equals(user.getEmail())) {
+            if (this.userService.userExistByEmail(user.getEmail())) {
+                return ResponseEntity.badRequest().body("Email already taken");
+            }
             currentUser.setEmail(user.getEmail());
         } else {
             return ResponseEntity.badRequest().body("Email already taken");
