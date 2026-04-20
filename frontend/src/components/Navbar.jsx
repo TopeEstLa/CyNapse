@@ -69,8 +69,12 @@ const Navbar = () => {
                             className="flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-gray-700 bg-gray-50 border border-gray-200 rounded-full hover:bg-gray-100 transition-all"
                         >
                             <div
-                                className="w-6 h-6 rounded-full bg-accent text-white flex items-center justify-center">
-                                <User className="w-4 h-4"/>
+                                className="w-7 h-7 rounded-full bg-accent text-white flex items-center justify-center overflow-hidden border border-gray-200">
+                                {user.image ? (
+                                    <img src={user.image} alt="" className="w-full h-full object-cover" />
+                                ) : (
+                                    <User className="w-4 h-4"/>
+                                )}
                             </div>
                             <span className="max-w-[100px] truncate">{user.username}</span>
                             <ChevronDown

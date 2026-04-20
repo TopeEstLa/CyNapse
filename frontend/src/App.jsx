@@ -9,6 +9,7 @@ import Profile from './pages/Profile';
 import Users from './pages/Users';
 import UserProfileView from './pages/UserProfileView';
 import AdminPanel from './pages/AdminPanel';
+import AdminUserEdit from './pages/AdminUserEdit';
 import './index.css';
 
 const ProtectedRoute = ({ children }) => {
@@ -75,6 +76,14 @@ function AppContent() {
             element={
               <AdminRoute>
                 <AdminPanel />
+              </AdminRoute>
+            } 
+          />
+          <Route 
+            path="/admin/user/:id" 
+            element={
+              <AdminRoute>
+                <AdminUserEdit />
               </AdminRoute>
             } 
           />

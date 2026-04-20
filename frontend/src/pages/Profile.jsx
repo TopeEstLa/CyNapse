@@ -16,7 +16,9 @@ const Profile = () => {
     lastName: user?.lastName || '',
     gender: user?.gender || '',
     birthDate: user?.birthDate || '',
-    memberType: user?.memberType || 'FRIEND'
+    memberType: user?.memberType || 'FRIEND',
+    image: user?.image || '',
+    exp: user?.exp || 0
   });
 
   const [passwordData, setPasswordData] = useState({
@@ -85,8 +87,12 @@ const Profile = () => {
 
       <div className="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
         <div className="h-32 bg-accent/10 flex items-center px-8 justify-between">
-          <div className="w-20 h-20 rounded-2xl bg-white shadow-sm flex items-center justify-center border-4 border-white translate-y-6">
-            <User className="w-10 h-10 text-accent" />
+          <div className="w-20 h-20 rounded-2xl bg-white shadow-sm flex items-center justify-center border-4 border-white translate-y-6 overflow-hidden">
+            {user.image ? (
+                <img src={user.image} alt="" className="w-full h-full object-cover" />
+            ) : (
+                <User className="w-10 h-10 text-accent" />
+            )}
           </div>
           <div className="flex gap-2">
             {!isEditing && !isChangingPassword && (
@@ -154,6 +160,27 @@ const Profile = () => {
                     onChange={(e) => setFormData({ ...formData, birthDate: e.target.value })}
                     className="w-full px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-accent/20 focus:border-accent outline-none"
                     required
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-gray-700">Experience (Exp)</label>
+                  <input
+                    type="number"
+                    step="0.1"
+                    value={formData.exp}
+                    onChange={(e) => setFormData({ ...formData, exp: parseFloat(e.target.value) })}
+                    className="w-full px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-accent/20 focus:border-accent outline-none"
+                    required
+                  />
+                </div>
+                <div className="space-y-2 md:col-span-2">
+                  <label className="text-sm font-medium text-gray-700">Profile Image URL</label>
+                  <input
+                    type="text"
+                    value={formData.image}
+                    onChange={(e) => setFormData({ ...formData, image: e.target.value })}
+                    className="w-full px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-accent/20 focus:border-accent outline-none"
+                    placeholder="https://example.com/image.jpg"
                   />
                 </div>
               </div>
@@ -250,8 +277,8 @@ const Profile = () => {
                 <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-2xl">
                   <Tag className="w-5 h-5 text-gray-400" />
                   <div>
-                    <p className="text-xs text-gray-500 font-semibold uppercase tracking-wider">Member Type</p>
-                    <p className="text-gray-900 font-medium">{user.memberType}</p>
+                    <p className="text-xs text-gray-500 font-semibold uppercase tracking-wider">Experience</p>
+                    <p className="text-gray-900 font-medium">{user.exp || 0}</p>
                   </div>
                 </div>
 
