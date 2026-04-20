@@ -57,8 +57,6 @@ public class AdminUserController {
                 return ResponseEntity.badRequest().body("Email already taken");
             }
             currentUser.setEmail(user.getEmail());
-        } else {
-            return ResponseEntity.badRequest().body("Email already taken");
         }
 
         currentUser.setFirstName(user.getFirstName());
