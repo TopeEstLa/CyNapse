@@ -1,7 +1,47 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { User, Calendar, Mail, Tag, Shield, Edit2, Lock, Save, AlertCircle } from 'lucide-react';
+import { User, Calendar, Mail, Tag, Shield, Edit2, Lock, Save, AlertCircle, TrendingUp } from 'lucide-react';
 import { api } from '../lib/api';
+
+const ExpProgressBar = ({ exp }) => {
+  const levels = [100, 200, 300];
+  let currentLevel = 0;
+  let nextLevelExp = levels[0];
+  let prevLevelExp = 0;
+
+  for (let i = 0; i < levels.length; i++) {
+    if (exp >= levels[i]) {
+      currentLevel = i + 1;
+      prevLevelExp = levels[i];
+      nextLevelExp = levels[i + 1] || levels[i] + 100;
+    } else {
+      nextLevelExp = levels[i];
+      break;
+    }
+  }
+
+  const progress = Math.min(100, Math.max(0, ((exp - prevLevelExp) / (nextLevelExp - prevLevelExp)) * 100));
+  const roleRewards = ['USER', 'SUPERUSER', 'SUPERVISOR', 'ADMIN'];
+  const currentRole = roleRewards[Math.min(currentLevel, roleRewards.length - 1)];
+
+  return (
+    <div className="space-y-2 w-full">
+      <div className="flex justify-between items-end">
+        <div>
+          <span className="text-xs font-bold text-accent uppercase tracking-wider">Level {currentLevel}</span>
+          <h4 className="text-sm font-bold text-gray-900">{currentRole}</h4>
+        </div>
+        <span className="text-xs text-gray-500 font-medium">{Math.floor(exp)} / {nextLevelExp} XP</span>
+      </div>
+      <div className="h-2 w-full bg-gray-100 rounded-full overflow-hidden">
+        <div 
+          className="h-full bg-accent transition-all duration-500 ease-out"
+          style={{ width: `${progress}%` }}
+        />
+      </div>
+    </div>
+  );
+};
 
 const Profile = () => {
   const { user, setUser } = useAuth();
@@ -17,8 +57,7 @@ const Profile = () => {
     gender: user?.gender || '',
     birthDate: user?.birthDate || '',
     memberType: user?.memberType || 'FRIEND',
-    image: user?.image || '',
-    exp: user?.exp || 0
+    image: user?.image || ''
   });
 
   const [passwordData, setPasswordData] = useState({
@@ -162,17 +201,6 @@ const Profile = () => {
                     required
                   />
                 </div>
-                <div className="space-y-2">
-                  <label className="text-sm font-medium text-gray-700">Experience (Exp)</label>
-                  <input
-                    type="number"
-                    step="0.1"
-                    value={formData.exp}
-                    onChange={(e) => setFormData({ ...formData, exp: parseFloat(e.target.value) })}
-                    className="w-full px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-accent/20 focus:border-accent outline-none"
-                    required
-                  />
-                </div>
                 <div className="space-y-2 md:col-span-2">
                   <label className="text-sm font-medium text-gray-700">Profile Image URL</label>
                   <input
@@ -184,6 +212,12 @@ const Profile = () => {
                   />
                 </div>
               </div>
+
+              <div className="p-4 bg-accent/5 border border-accent/10 rounded-2xl flex items-center gap-4">
+                 <TrendingUp className="w-6 h-6 text-accent" />
+                 <ExpProgressBar exp={user.exp || 0} />
+              </div>
+
               <div className="flex justify-end gap-3">
                 <button
                   type="button"
@@ -254,8 +288,15 @@ const Profile = () => {
             </form>
           ) : (
             <>
-              <h1 className="text-2xl font-bold text-gray-900">{user.firstName} {user.lastName}</h1>
-              <p className="text-gray-500">@{user.username}</p>
+              <div className="flex justify-between items-start">
+                <div>
+                  <h1 className="text-2xl font-bold text-gray-900">{user.firstName} {user.lastName}</h1>
+                  <p className="text-gray-500">@{user.username}</p>
+                </div>
+                <div className="w-64">
+                   <ExpProgressBar exp={user.exp || 0} />
+                </div>
+              </div>
 
               <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-2xl">
@@ -277,8 +318,8 @@ const Profile = () => {
                 <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-2xl">
                   <Tag className="w-5 h-5 text-gray-400" />
                   <div>
-                    <p className="text-xs text-gray-500 font-semibold uppercase tracking-wider">Experience</p>
-                    <p className="text-gray-900 font-medium">{user.exp || 0}</p>
+                    <p className="text-xs text-gray-500 font-semibold uppercase tracking-wider">Member Type</p>
+                    <p className="text-gray-900 font-medium">{user.memberType}</p>
                   </div>
                 </div>
 

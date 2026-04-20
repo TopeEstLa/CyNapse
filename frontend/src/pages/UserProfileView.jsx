@@ -1,8 +1,48 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { api } from '../lib/api';
-import { User, Calendar, Tag, Shield, Loader2, ArrowLeft } from 'lucide-react';
+import { User, Calendar, Tag, Shield, Loader2, ArrowLeft, TrendingUp } from 'lucide-react';
 import { Link } from 'react-router-dom';
+
+const ExpProgressBar = ({ exp }) => {
+  const levels = [100, 200, 300];
+  let currentLevel = 0;
+  let nextLevelExp = levels[0];
+  let prevLevelExp = 0;
+
+  for (let i = 0; i < levels.length; i++) {
+    if (exp >= levels[i]) {
+      currentLevel = i + 1;
+      prevLevelExp = levels[i];
+      nextLevelExp = levels[i + 1] || levels[i] + 100;
+    } else {
+      nextLevelExp = levels[i];
+      break;
+    }
+  }
+
+  const progress = Math.min(100, Math.max(0, ((exp - prevLevelExp) / (nextLevelExp - prevLevelExp)) * 100));
+  const roleRewards = ['USER', 'SUPERUSER', 'SUPERVISOR', 'ADMIN'];
+  const currentRole = roleRewards[Math.min(currentLevel, roleRewards.length - 1)];
+
+  return (
+    <div className="space-y-2 w-full">
+      <div className="flex justify-between items-end">
+        <div>
+          <span className="text-xs font-bold text-accent uppercase tracking-wider">Level {currentLevel}</span>
+          <h4 className="text-sm font-bold text-gray-900">{currentRole}</h4>
+        </div>
+        <span className="text-xs text-gray-500 font-medium">{Math.floor(exp)} / {nextLevelExp} XP</span>
+      </div>
+      <div className="h-2 w-full bg-gray-100 rounded-full overflow-hidden">
+        <div 
+          className="h-full bg-accent transition-all duration-500 ease-out"
+          style={{ width: `${progress}%` }}
+        />
+      </div>
+    </div>
+  );
+};
 
 const UserProfileView = () => {
   const { id } = useParams();
@@ -56,8 +96,15 @@ const UserProfileView = () => {
         </div>
         
         <div className="pt-12 px-8 pb-8">
-          <h1 className="text-2xl font-bold text-gray-900">{userProfile.username}</h1>
-          <p className="text-gray-500">@{userProfile.username}</p>
+          <div className="flex justify-between items-start">
+            <div>
+              <h1 className="text-2xl font-bold text-gray-900">{userProfile.username}</h1>
+              <p className="text-gray-500">@{userProfile.username}</p>
+            </div>
+            <div className="w-64">
+               <ExpProgressBar exp={userProfile.exp || 0} />
+            </div>
+          </div>
 
           <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-2xl">

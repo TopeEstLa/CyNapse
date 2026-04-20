@@ -8,7 +8,10 @@ import Register from './pages/Register';
 import Profile from './pages/Profile';
 import Users from './pages/Users';
 import UserProfileView from './pages/UserProfileView';
-import AdminPanel from './pages/AdminPanel';
+import AdminLayout from './components/AdminLayout';
+import AdminDashboard from './pages/AdminDashboard';
+import AdminUsers from './pages/AdminUsers';
+import AdminPendingUsers from './pages/AdminPendingUsers';
 import AdminUserEdit from './pages/AdminUserEdit';
 import './index.css';
 
@@ -40,18 +43,18 @@ const AdminRoute = ({ children }) => {
 
 function AppContent() {
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-slate-50 flex flex-col">
       <Navbar />
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="flex-1">
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
+          <Route path="/" element={<main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8"><Home /></main>} />
+          <Route path="/login" element={<main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8"><Login /></main>} />
+          <Route path="/register" element={<main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8"><Register /></main>} />
           <Route 
             path="/profile" 
             element={
               <ProtectedRoute>
-                <Profile />
+                <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8"><Profile /></main>
               </ProtectedRoute>
             } 
           />
@@ -59,7 +62,7 @@ function AppContent() {
             path="/users" 
             element={
               <ProtectedRoute>
-                <Users />
+                <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8"><Users /></main>
               </ProtectedRoute>
             } 
           />
@@ -67,28 +70,28 @@ function AppContent() {
             path="/user/:id" 
             element={
               <ProtectedRoute>
-                <UserProfileView />
+                <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8"><UserProfileView /></main>
               </ProtectedRoute>
             } 
           />
+          
+          {/* Admin Routes with Sidebar Layout */}
           <Route 
             path="/admin" 
             element={
               <AdminRoute>
-                <AdminPanel />
+                <AdminLayout />
               </AdminRoute>
-            } 
-          />
-          <Route 
-            path="/admin/user/:id" 
-            element={
-              <AdminRoute>
-                <AdminUserEdit />
-              </AdminRoute>
-            } 
-          />
+            }
+          >
+            <Route index element={<AdminDashboard />} />
+            <Route path="users" element={<AdminUsers />} />
+            <Route path="pending" element={<AdminPendingUsers />} />
+            <Route path="user/:id" element={<AdminUserEdit />} />
+            <Route path="settings" element={<div className="p-8 text-center text-gray-500">Paramètres système à venir.</div>} />
+          </Route>
         </Routes>
-      </main>
+      </div>
     </div>
   );
 }
