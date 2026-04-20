@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {Link, useLocation, useNavigate} from 'react-router-dom';
-import {Building2, ChevronDown, LayoutDashboard, LogIn, LogOut, Menu, User, UserPlus, X} from 'lucide-react';
+import {Building2, ChevronDown, LayoutDashboard, LogIn, LogOut, Menu, User, UserPlus, X, Users as UsersIcon, Shield} from 'lucide-react';
 import {cn} from '../lib/utils';
 import {useAuth} from '../context/AuthContext';
 
@@ -18,11 +18,20 @@ const Navbar = () => {
         setMobileMenuOpen(false);
     };
 
-    const guestItems = [{label: 'Home', path: '/', icon: LayoutDashboard}, {
-        label: 'Login', path: '/login', icon: LogIn
-    }, {label: 'Register', path: '/register', icon: UserPlus},];
+    const guestItems = [
+        {label: 'Home', path: '/', icon: LayoutDashboard}, 
+        {label: 'Login', path: '/login', icon: LogIn}, 
+        {label: 'Register', path: '/register', icon: UserPlus},
+    ];
 
-    const authItems = [{label: 'Dashboard', path: '/', icon: LayoutDashboard},];
+    const authItems = [
+        {label: 'Dashboard', path: '/', icon: LayoutDashboard},
+        {label: 'Users', path: '/users', icon: UsersIcon},
+    ];
+
+    if (user?.role === 'ADMIN') {
+        authItems.push({label: 'Admin', path: '/admin', icon: Shield});
+    }
 
     const navItems = user ? authItems : guestItems;
 

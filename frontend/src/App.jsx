@@ -6,6 +6,9 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Profile from './pages/Profile';
+import Users from './pages/Users';
+import UserProfileView from './pages/UserProfileView';
+import AdminPanel from './pages/AdminPanel';
 import './index.css';
 
 const ProtectedRoute = ({ children }) => {
@@ -18,6 +21,19 @@ const ProtectedRoute = ({ children }) => {
   );
   
   if (!user) return <Navigate to="/login" />;
+  return children;
+};
+
+const AdminRoute = ({ children }) => {
+  const { user, loading } = useAuth();
+  
+  if (loading) return (
+    <div className="min-h-screen flex items-center justify-center bg-slate-50">
+      <div className="animate-spin rounded-full h-12 w-12 border-4 border-accent/20 border-t-accent"></div>
+    </div>
+  );
+  
+  if (!user || user.role !== 'ADMIN') return <Navigate to="/" />;
   return children;
 };
 
@@ -36,6 +52,30 @@ function AppContent() {
               <ProtectedRoute>
                 <Profile />
               </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/users" 
+            element={
+              <ProtectedRoute>
+                <Users />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/user/:id" 
+            element={
+              <ProtectedRoute>
+                <UserProfileView />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/admin" 
+            element={
+              <AdminRoute>
+                <AdminPanel />
+              </AdminRoute>
             } 
           />
         </Routes>
