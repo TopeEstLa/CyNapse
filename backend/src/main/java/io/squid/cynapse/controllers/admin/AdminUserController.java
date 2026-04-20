@@ -45,7 +45,6 @@ public class AdminUserController {
 
     @PostMapping("/update")
     public ResponseEntity<?> updateUser(User user) {
-        System.out.println(user);
         User currentUser = this.userService.findById(user.getId());
         if (currentUser == null) return ResponseEntity.badRequest().body("User not found");
 
