@@ -130,7 +130,7 @@ class Menu extends React.Component{
     <div>
       <nav>
         <ul>
-          <li> <button onClick={()=>{this.handleClick("main")}}>Main</button> </li>
+          <li> <button onClick={()=>{this.handleClick("main")}} className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded" >Main</button> </li>
           <li> <button onClick={()=>{this.handleClick("login")}}>Login</button> </li>
           <li> <button onClick={()=>{this.handleClick("register")}}>Register</button> </li>
         </ul>
@@ -148,6 +148,7 @@ function App() {
 
   return (
     <div>
+      <h1 className="text-red-500">TEST</h1>
       <Menu/>
     </div>
   );
