@@ -6,10 +6,7 @@ import io.squid.cynapse.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -44,7 +41,8 @@ public class AdminUserController {
     }
 
     @PostMapping("/update")
-    public ResponseEntity<?> updateUser(User user) {
+    public ResponseEntity<?> updateUser(@RequestBody User user) {
+        System.out.println(user);
         User currentUser = this.userService.findById(user.getId());
         if (currentUser == null) return ResponseEntity.badRequest().body("User not found");
 

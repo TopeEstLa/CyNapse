@@ -186,4 +186,21 @@ public class User {
         return memberType;
     }
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", email='" + email + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", enable=" + enable +
+                ", role=" + role +
+                ", exp=" + exp +
+                ", gender=" + gender +
+                ", birthDate=" + birthDate +
+                ", image='" + image + '\'' +
+                ", memberType=" + memberType +
+                '}';
+    }
 }
