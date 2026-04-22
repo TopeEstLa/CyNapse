@@ -30,7 +30,7 @@ const AdminPendingUsers = () => {
       fetchPendingUsers();
     } catch (err) {
       console.error(err);
-      alert('Erreur lors de l\'autorisation');
+      alert('Error during authorization');
     } finally {
       setActionLoading(null);
     }
@@ -51,14 +51,14 @@ const AdminPendingUsers = () => {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">En attente</h1>
-          <p className="text-sm text-gray-500">Nouveaux utilisateurs à valider.</p>
+          <h1 className="text-2xl font-bold text-gray-900">Pending</h1>
+          <p className="text-sm text-gray-500">New users to validate.</p>
         </div>
         <div className="relative w-full sm:w-64">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" />
           <input
             type="text"
-            placeholder="Rechercher..."
+            placeholder="Search..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="pl-10 pr-4 py-2 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-accent/20 focus:border-accent outline-none w-full text-sm font-medium"
@@ -69,7 +69,7 @@ const AdminPendingUsers = () => {
       {users.length === 0 ? (
         <div className="bg-white rounded-[2rem] border-2 border-dashed border-gray-100 py-20 text-center">
            <User className="w-12 h-12 text-gray-200 mx-auto mb-4" />
-           <p className="text-gray-400 font-bold uppercase tracking-widest text-xs">Aucune demande en attente</p>
+           <p className="text-gray-400 font-bold uppercase tracking-widest text-xs">No pending requests</p>
         </div>
       ) : (
         <div className="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
@@ -77,8 +77,8 @@ const AdminPendingUsers = () => {
             <table className="w-full text-left border-collapse min-w-[700px]">
               <thead>
                 <tr className="bg-gray-50/50 border-b border-gray-100">
-                  <th className="px-6 py-4 text-[10px] font-black text-gray-400 uppercase tracking-widest">Utilisateur</th>
-                  <th className="px-6 py-4 text-[10px] font-black text-gray-400 uppercase tracking-widest">Date d'inscription</th>
+                  <th className="px-6 py-4 text-[10px] font-black text-gray-400 uppercase tracking-widest">User</th>
+                  <th className="px-6 py-4 text-[10px] font-black text-gray-400 uppercase tracking-widest">Registration date</th>
                   <th className="px-6 py-4 text-[10px] font-black text-gray-400 uppercase tracking-widest text-right">Actions</th>
                 </tr>
               </thead>
@@ -99,7 +99,7 @@ const AdminPendingUsers = () => {
                       </div>
                     </td>
                     <td className="px-6 py-4 text-xs font-medium text-gray-500 uppercase tracking-tighter">
-                      Récemment
+                      Recently
                     </td>
                     <td className="px-6 py-4 text-right">
                       <button
@@ -108,7 +108,7 @@ const AdminPendingUsers = () => {
                         className="inline-flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-xl hover:bg-green-700 transition-colors text-[10px] font-black uppercase tracking-widest disabled:opacity-50 shadow-md shadow-green-100"
                       >
                         {actionLoading === u.id ? <Loader2 className="w-3 h-3 animate-spin" /> : <Check className="w-3 h-3" />}
-                        Valider
+                        Validate
                       </button>
                     </td>
                   </tr>

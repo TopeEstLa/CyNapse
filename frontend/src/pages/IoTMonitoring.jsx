@@ -70,8 +70,8 @@ const IoTMonitoring = () => {
     <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 space-y-8">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-2xl md:text-3xl font-black text-gray-900 tracking-tight">Monitoring Bâtiment</h1>
-          <p className="hidden sm:block text-gray-500 italic text-sm">Vue globale par étage et par salle.</p>
+          <h1 className="text-2xl md:text-3xl font-black text-gray-900 tracking-tight">Building Monitoring</h1>
+          <p className="hidden sm:block text-gray-500 italic text-sm">Global view by floor and room.</p>
         </div>
         <button onClick={fetchData} className="p-2.5 bg-white border border-gray-100 rounded-xl hover:bg-gray-50 transition-colors shadow-sm">
           <RefreshCcw className="w-5 h-5 text-gray-400" />
@@ -81,23 +81,23 @@ const IoTMonitoring = () => {
       {overview && (
         <div className="grid grid-cols-2 lg:grid-cols-5 gap-3 md:gap-4">
           <div className="bg-white p-4 rounded-2xl border border-gray-100 shadow-sm">
-            <p className="text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-1">Total Salles</p>
+            <p className="text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-1">Total Rooms</p>
             <p className="text-xl font-black text-gray-900">{overview.roomsTotal}</p>
           </div>
           <div className="bg-white p-4 rounded-2xl border border-gray-100 shadow-sm border-l-4 border-l-blue-500">
-            <p className="text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-1">Occupées</p>
+            <p className="text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-1">Occupied</p>
             <p className="text-xl font-black text-blue-600">{overview.roomsOccupied}</p>
           </div>
           <div className="bg-white p-4 rounded-2xl border border-gray-100 shadow-sm border-l-4 border-l-red-500">
-            <p className="text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-1">En Alerte</p>
+            <p className="text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-1">In Alert</p>
             <p className="text-xl font-black text-red-600">{overview.roomsInAlert}</p>
           </div>
           <div className="bg-white p-4 rounded-2xl border border-gray-100 shadow-sm">
-            <p className="text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-1">Alertes Actives</p>
+            <p className="text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-1">Active Alerts</p>
             <p className="text-xl font-black text-amber-600">{overview.activeAlerts}</p>
           </div>
           <div className="bg-white p-4 rounded-2xl border border-gray-100 shadow-sm border-l-4 border-l-accent hidden lg:block">
-            <p className="text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-1">Temp. Moy</p>
+            <p className="text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-1">Avg. Temp</p>
             <p className="text-xl font-black text-accent">{overview.avgTemperature?.toFixed(1) || '0.0'}°C</p>
           </div>
         </div>
@@ -111,7 +111,7 @@ const IoTMonitoring = () => {
                 <div className="p-2 bg-slate-800 rounded-lg text-white">
                   <Layers className="w-4 h-4" />
                 </div>
-                <h2 className="text-lg font-black text-gray-800 uppercase tracking-tight">Étage {floor}</h2>
+                <h2 className="text-lg font-black text-gray-800 uppercase tracking-tight">Floor {floor}</h2>
                 <div className="h-px flex-1 bg-gray-200"></div>
               </div>
               
@@ -150,7 +150,7 @@ const IoTMonitoring = () => {
                       <div className="flex items-center gap-3 text-[10px] font-bold text-white/90">
                          <div className="flex items-center gap-1">
                            <Users className="w-3 h-3" />
-                           <span>{room.capacity} pers.</span>
+                           <span>{room.capacity} ppl.</span>
                          </div>
                          <div className="px-2 py-0.5 bg-white/20 rounded-md backdrop-blur-md uppercase tracking-tighter">
                            {room.status}
@@ -169,7 +169,7 @@ const IoTMonitoring = () => {
             <div className="flex items-center justify-between">
               <h2 className="text-lg font-black flex items-center gap-3 uppercase tracking-tight">
                 <AlertTriangle className="w-5 h-5 text-red-500" />
-                Alertes
+                Alerts
               </h2>
               <span className="bg-red-500 text-white px-2 py-0.5 rounded-lg text-[10px] font-black">
                 {alerts.length}
@@ -180,7 +180,7 @@ const IoTMonitoring = () => {
               {alerts.length === 0 ? (
                 <div className="py-8 text-center text-white/40">
                   <ShieldCheck className="w-8 h-8 mx-auto mb-3 opacity-20" />
-                  <p className="text-[10px] font-black uppercase tracking-widest">Système Nominal</p>
+                  <p className="text-[10px] font-black uppercase tracking-widest">System Nominal</p>
                 </div>
               ) : (
                 alerts.map(alert => (
@@ -194,7 +194,7 @@ const IoTMonitoring = () => {
                       <span className="text-[8px] font-bold text-white/30">{new Date(alert.createdAt).toLocaleTimeString()}</span>
                     </div>
                     <p className="text-[11px] font-bold text-white/80 leading-relaxed">
-                       Alerte dans room <span className="text-white underline">{alert.roomName || 'Inconnue'}</span> capteur <span className="text-white underline">{alert.deviceName || 'N/A'}</span> : {alert.message}
+                       Alert in room <span className="text-white underline">{alert.roomName || 'Unknown'}</span> sensor <span className="text-white underline">{alert.deviceName || 'N/A'}</span> : {alert.message}
                     </p>
                   </div>
                 ))

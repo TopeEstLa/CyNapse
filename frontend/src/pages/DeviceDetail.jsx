@@ -77,7 +77,7 @@ const DeviceDetail = () => {
       case 'THERMOMETER': return '°C';
       case 'HUMIDITY_SENSOR': return '%';
       case 'CO2_SENSOR': return 'ppm';
-      case 'PEOPLE_COUNTER': return 'pers.';
+      case 'PEOPLE_COUNTER': return 'ppl.';
       case 'SMART_LIGHT': return '';
       default: return '';
     }
@@ -85,22 +85,22 @@ const DeviceDetail = () => {
 
   const formatValue = (val, type) => {
     if (val === null || val === undefined) return '--';
-    if (type === 'SMART_LIGHT') return val === 1 ? 'Allumé' : 'Éteint';
+    if (type === 'SMART_LIGHT') return val === 1 ? 'On' : 'Off';
     return typeof val === 'number' ? val.toFixed(1) : val;
   };
 
   if (loading && !device) return (
     <div className="min-h-[60vh] flex flex-col items-center justify-center space-y-4 text-center">
       <Loader2 className="w-10 h-10 animate-spin text-accent" />
-      <p className="text-gray-500 font-bold uppercase tracking-widest text-[10px]">Analyse des données...</p>
+      <p className="text-gray-500 font-bold uppercase tracking-widest text-[10px]">Analyzing data...</p>
     </div>
   );
 
   if (!device) return (
     <div className="max-w-4xl mx-auto px-4 py-20 text-center text-xs uppercase font-black">
-      <h2 className="text-2xl mb-4">Capteur introuvable</h2>
+      <h2 className="text-2xl mb-4">Sensor not found</h2>
       <button onClick={() => navigate(`/monitoring/room/${roomId}`)} className="text-accent">
-        <ArrowLeft className="w-4 h-4 inline mr-2" /> Retour
+        <ArrowLeft className="w-4 h-4 inline mr-2" /> Back
       </button>
     </div>
   );
@@ -116,7 +116,7 @@ const DeviceDetail = () => {
             className="inline-flex items-center gap-2 text-xs font-black text-gray-400 hover:text-gray-900 transition-colors uppercase tracking-widest mx-auto md:mx-0"
           >
             <ArrowLeft className="w-3 h-3" />
-            Retour à la salle
+            Back to room
           </button>
           <div className="flex flex-col md:flex-row items-center gap-4">
             <h1 className="text-3xl md:text-4xl font-black text-gray-900 tracking-tight uppercase leading-tight">{device.name}</h1>
@@ -136,7 +136,7 @@ const DeviceDetail = () => {
           className="flex items-center justify-center gap-2 px-6 py-3 bg-white border border-gray-100 rounded-2xl shadow-sm text-xs font-black text-gray-600 hover:bg-gray-50 transition-colors disabled:opacity-50 uppercase tracking-widest"
         >
           <RefreshCcw className={`w-4 h-4 ${refreshing ? 'animate-spin' : ''}`} />
-          Synchroniser
+          Sync
         </button>
       </div>
 
@@ -154,7 +154,7 @@ const DeviceDetail = () => {
                   </div>
                </div>
                <div>
-                  <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Valeur Temps Réel</p>
+                  <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Real-time Value</p>
                   <p className="text-5xl md:text-6xl font-black text-gray-900">
                     {formatValue(device.lastValue, device.type)}
                     <span className="text-xl ml-2 text-gray-400 font-bold uppercase">
@@ -166,25 +166,25 @@ const DeviceDetail = () => {
 
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-8 border-t border-gray-50 text-center md:text-left text-xs uppercase tracking-tighter">
                <div>
-                  <p className="text-[9px] font-black text-gray-400 mb-1">Statut</p>
+                  <p className="text-[9px] font-black text-gray-400 mb-1">Status</p>
                   <p className="font-bold text-gray-900">{device.status}</p>
                </div>
                <div>
-                  <p className="text-[9px] font-black text-gray-400 mb-1">Activité</p>
+                  <p className="text-[9px] font-black text-gray-400 mb-1">Activity</p>
                   <p className="font-bold text-gray-900">
                      {device.lastSeenAt ? new Date(device.lastSeenAt).toLocaleTimeString() : 'N/A'}
                   </p>
                </div>
                <div>
-                  <p className="text-[9px] font-black text-gray-400 mb-1">Dernière MaJ</p>
+                  <p className="text-[9px] font-black text-gray-400 mb-1">Last Update</p>
                   <p className="font-bold text-gray-900">
                      {device.lastSeenAt ? new Date(device.lastSeenAt).toLocaleDateString() : 'N/A'}
                   </p>
                </div>
                <div>
-                  <p className="text-[9px] font-black text-gray-400 mb-1">Alertes</p>
+                  <p className="text-[9px] font-black text-gray-400 mb-1">Alerts</p>
                   <p className={`font-bold ${alerts.length > 0 ? 'text-red-500' : 'text-green-600'}`}>
-                    {alerts.length} active(s)
+                    {alerts.length} active
                   </p>
                </div>
             </div>
@@ -194,7 +194,7 @@ const DeviceDetail = () => {
             <div className="flex items-center justify-between mb-8">
               <h3 className="text-xl font-black text-gray-900 flex items-center gap-3 uppercase tracking-tight">
                 <HistoryIcon className="w-5 h-5 text-accent" />
-                Historique des Mesures
+                Measurement History
               </h3>
               <Activity className="w-4 h-4 text-gray-200" />
             </div>
@@ -202,7 +202,7 @@ const DeviceDetail = () => {
             <div className="space-y-3">
               {history.length === 0 ? (
                 <div className="py-20 text-center text-gray-300 font-bold uppercase text-[10px] tracking-widest">
-                  Aucun journal disponible
+                  No logs available
                 </div>
               ) : (
                 history.slice(0, 30).map((h, i) => (
@@ -231,7 +231,7 @@ const DeviceDetail = () => {
            <div className="bg-slate-900 p-6 md:p-8 rounded-3xl shadow-2xl text-white space-y-6">
               <h3 className="text-xl font-black flex items-center gap-3 uppercase tracking-tight">
                 <AlertTriangle className="w-5 h-5 text-red-500" />
-                État d'Alerte
+                Alert State
               </h3>
               
               <div className="space-y-3">
@@ -251,7 +251,7 @@ const DeviceDetail = () => {
                           </span>
                           <span className="text-[8px] font-bold text-white/30">{new Date(alert.createdAt).toLocaleTimeString()}</span>
                        </div>
-                       <p className="text-[11px] font-bold text-white/80 leading-relaxed italic underline decoration-white/20">Capteur {device.name} : {alert.message}</p>
+                       <p className="text-[11px] font-bold text-white/80 leading-relaxed italic underline decoration-white/20">Sensor {device.name} : {alert.message}</p>
                     </div>
                   ))
                 )}
@@ -260,8 +260,8 @@ const DeviceDetail = () => {
 
            <div className="bg-accent p-6 md:p-8 rounded-3xl text-white space-y-4 shadow-xl shadow-accent/20">
               <ShieldCheck className="w-8 h-8 opacity-40" />
-              <h4 className="text-lg font-black leading-tight uppercase tracking-tight">Vérifié</h4>
-              <p className="text-xs font-bold opacity-80 leading-relaxed italic">Structure de données conforme.</p>
+              <h4 className="text-lg font-black leading-tight uppercase tracking-tight">Verified</h4>
+              <p className="text-xs font-bold opacity-80 leading-relaxed italic">Compliant data structure.</p>
            </div>
         </div>
       </div>

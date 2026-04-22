@@ -22,10 +22,10 @@ const AdminLayout = () => {
 
   const menuItems = [
     { label: 'Dashboard', path: '/admin', icon: LayoutDashboard },
-    { label: 'Utilisateurs', path: '/admin/users', icon: Users },
-    { label: 'En attente', path: '/admin/pending', icon: UserCheck },
-    { label: 'Salles', path: '/admin/rooms', icon: HomeIcon },
-    { label: 'Paramètres', path: '/admin/settings', icon: Settings },
+    { label: 'Users', path: '/admin/users', icon: Users },
+    { label: 'Pending', path: '/admin/pending', icon: UserCheck },
+    { label: 'Rooms', path: '/admin/rooms', icon: HomeIcon },
+    { label: 'Settings', path: '/admin/settings', icon: Settings },
   ];
 
   const SidebarContent = () => (

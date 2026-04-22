@@ -61,7 +61,7 @@ const RoomSensors = () => {
     if (device.lastValue === null || device.lastValue === undefined) return '--';
     
     if (device.type === 'SMART_LIGHT') {
-      return device.lastValue === 1 ? 'Allumé' : 'Éteint';
+      return device.lastValue === 1 ? 'On' : 'Off';
     }
 
     const val = typeof device.lastValue === 'number' ? device.lastValue.toFixed(1) : device.lastValue;
@@ -70,7 +70,7 @@ const RoomSensors = () => {
       case 'THERMOMETER': return `${val}°C`;
       case 'HUMIDITY_SENSOR': return `${val}%`;
       case 'CO2_SENSOR': return `${val} ppm`;
-      case 'PEOPLE_COUNTER': return `${val} pers.`;
+      case 'PEOPLE_COUNTER': return `${val} ppl.`;
       default: return val;
     }
   };
@@ -87,7 +87,7 @@ const RoomSensors = () => {
   if (loading && !room) return (
     <div className="min-h-[60vh] flex flex-col items-center justify-center space-y-4 text-center px-4">
       <Loader2 className="w-10 h-10 animate-spin text-accent" />
-      <p className="text-gray-500 font-bold uppercase tracking-widest text-[10px]">Chargement de la salle...</p>
+      <p className="text-gray-500 font-bold uppercase tracking-widest text-[10px]">Loading room...</p>
     </div>
   );
 
@@ -101,7 +101,7 @@ const RoomSensors = () => {
           className="inline-flex items-center gap-2 text-xs font-black text-gray-400 hover:text-gray-900 transition-colors uppercase tracking-widest"
         >
           <ArrowLeft className="w-3 h-3" />
-          Retour
+          Back
         </Link>
         <button 
           onClick={fetchData} 
@@ -121,15 +121,15 @@ const RoomSensors = () => {
             <div className="space-y-6 text-center lg:text-left">
                <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-accent/20 text-accent rounded-full text-[10px] font-black uppercase tracking-[0.2em]">
                   <Layers className="w-3 h-3" />
-                  Étage {room?.floorNumber}
+                  Floor {room?.floorNumber}
                </div>
                <h1 className="text-5xl md:text-7xl font-black tracking-tight uppercase leading-none">{room?.name}</h1>
                <div className="flex items-center justify-center lg:justify-start gap-4 pt-4">
                   <div className="p-4 bg-white/5 rounded-3xl border border-white/10 flex items-center gap-4">
                      <Users className="w-8 h-8 text-accent" />
                      <div>
-                        <p className="text-[10px] font-bold uppercase opacity-40">Capacité Maximale</p>
-                        <p className="text-2xl font-black">{room?.capacity} <span className="text-sm font-medium opacity-50 uppercase">pers.</span></p>
+                        <p className="text-[10px] font-bold uppercase opacity-40">Maximum Capacity</p>
+                        <p className="text-2xl font-black">{room?.capacity} <span className="text-sm font-medium opacity-50 uppercase">ppl.</span></p>
                      </div>
                   </div>
                </div>
@@ -142,7 +142,7 @@ const RoomSensors = () => {
                     <div className="flex items-center justify-between">
                        <h2 className="flex items-center gap-3 text-sm font-black uppercase tracking-widest">
                           <ShieldAlert className="w-6 h-6" />
-                          Alertes de Salle
+                          Room Alerts
                        </h2>
                        <span className="px-3 py-1 bg-white text-red-600 rounded-full text-xs font-black">{allRoomAlerts.length}</span>
                     </div>
@@ -160,7 +160,7 @@ const RoomSensors = () => {
                     <div className="w-16 h-16 bg-green-500/10 rounded-full flex items-center justify-center mx-auto border border-green-500/20">
                        <CheckCircle className="w-8 h-8 text-green-500" />
                     </div>
-                    <p className="text-xs font-black uppercase tracking-[0.3em] text-green-500">Tout va bien</p>
+                    <p className="text-xs font-black uppercase tracking-[0.3em] text-green-500">All good</p>
                  </div>
                )}
             </div>
@@ -171,7 +171,7 @@ const RoomSensors = () => {
       <div className="space-y-8">
         <h2 className="text-2xl font-black flex items-center gap-4 uppercase tracking-tighter">
           <Cpu className="w-7 h-7 text-accent" />
-          État des Capteurs
+          Sensor Status
         </h2>
         
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
@@ -202,7 +202,7 @@ const RoomSensors = () => {
                   </div>
 
                   <div className="bg-gray-50 rounded-[2rem] p-6 flex flex-col space-y-1 border border-transparent group-hover:border-accent/10 transition-colors">
-                     <span className="text-[10px] font-black text-gray-400 uppercase tracking-[0.1em]">Dernière Valeur</span>
+                     <span className="text-[10px] font-black text-gray-400 uppercase tracking-[0.1em]">Last Value</span>
                      <span className="text-3xl font-black text-gray-900">
                        {formatValue(device)}
                      </span>
@@ -214,7 +214,7 @@ const RoomSensors = () => {
                          <div key={alert.id} className="flex gap-2">
                             <AlertTriangle className="w-4 h-4 text-red-500 shrink-0 mt-0.5" />
                             <p className="text-[11px] font-bold text-red-800 leading-snug">
-                               Capteur {device.name} : {alert.message}
+                               Sensor {device.name} : {alert.message}
                             </p>
                          </div>
                        ))}
@@ -222,7 +222,7 @@ const RoomSensors = () => {
                   ) : (
                     <div className="flex items-center gap-2 text-green-600 px-2">
                        <CheckCircle className="w-3 h-3" />
-                       <span className="text-[10px] font-black uppercase tracking-widest">Aucun souci</span>
+                       <span className="text-[10px] font-black uppercase tracking-widest">No issues</span>
                     </div>
                   )}
 

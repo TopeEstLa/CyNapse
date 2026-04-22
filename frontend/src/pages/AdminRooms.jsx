@@ -58,7 +58,7 @@ const AdminRooms = () => {
   };
 
   const handleDelete = async (id) => {
-    if (window.confirm('Supprimer cette salle ?')) {
+    if (window.confirm('Delete this room?')) {
       try {
         await api.delete(`/api/admin/room/delete?id=${id}`);
         fetchRooms();
@@ -78,18 +78,18 @@ const AdminRooms = () => {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Salles</h1>
-          <p className="text-sm text-gray-500">Gestion du bâtiment.</p>
+          <h1 className="text-2xl font-bold text-gray-900">Rooms</h1>
+          <p className="text-sm text-gray-500">Building management.</p>
         </div>
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" />
             <input
               type="text"
-              placeholder="Rechercher..."
+              placeholder="Search..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10 pr-4 py-2 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-accent/20 focus:border-accent outline-none w-full sm:w-48 lg:w-64"
+              className="pl-10 pr-4 py-2 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-accent/20 focus:border-accent outline-none w-full text-sm font-medium"
             />
           </div>
           <button
@@ -97,7 +97,7 @@ const AdminRooms = () => {
             className="flex items-center justify-center gap-2 px-4 py-2 bg-accent text-white rounded-xl hover:bg-accent/90 transition-colors font-medium"
           >
             <Plus className="w-4 h-4" />
-            Ajouter
+            Add
           </button>
         </div>
       </div>
@@ -107,9 +107,9 @@ const AdminRooms = () => {
           <table className="w-full text-left border-collapse min-w-[600px]">
             <thead>
               <tr className="bg-gray-50/50 border-b border-gray-100">
-                <th className="px-6 py-4 text-[10px] font-black text-gray-400 uppercase tracking-widest">Salle</th>
-                <th className="px-6 py-4 text-[10px] font-black text-gray-400 uppercase tracking-widest">Étage</th>
-                <th className="px-6 py-4 text-[10px] font-black text-gray-400 uppercase tracking-widest">Capacité</th>
+                <th className="px-6 py-4 text-[10px] font-black text-gray-400 uppercase tracking-widest">Room</th>
+                <th className="px-6 py-4 text-[10px] font-black text-gray-400 uppercase tracking-widest">Floor</th>
+                <th className="px-6 py-4 text-[10px] font-black text-gray-400 uppercase tracking-widest">Capacity</th>
                 <th className="px-6 py-4 text-[10px] font-black text-gray-400 uppercase tracking-widest text-right">Actions</th>
               </tr>
             </thead>
@@ -125,7 +125,7 @@ const AdminRooms = () => {
                     </div>
                   </td>
                   <td className="px-6 py-4 text-sm text-gray-600 font-medium">{r.floorNumber}</td>
-                  <td className="px-6 py-4 text-sm text-gray-600 font-medium">{r.capacity} pers.</td>
+                  <td className="px-6 py-4 text-sm text-gray-600 font-medium">{r.capacity} ppl.</td>
                   <td className="px-6 py-4 text-right">
                     <div className="flex items-center justify-end gap-1">
                       <Link
@@ -153,14 +153,14 @@ const AdminRooms = () => {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
           <div className="bg-white rounded-3xl w-full max-w-md shadow-2xl overflow-hidden">
             <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
-              <h2 className="text-lg font-bold text-gray-900">{currentRoom ? 'Modifier la salle' : 'Nouvelle salle'}</h2>
+              <h2 className="text-lg font-bold text-gray-900">{currentRoom ? 'Edit room' : 'New room'}</h2>
               <button onClick={handleCloseModal} className="p-2 hover:bg-gray-100 rounded-xl transition-colors text-gray-400">
                 <X className="w-5 h-5" />
               </button>
             </div>
             <form onSubmit={handleSubmit} className="p-6 space-y-4">
               <div>
-                <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1.5 ml-1">Nom</label>
+                <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1.5 ml-1">Name</label>
                 <input
                   type="text"
                   required
@@ -171,7 +171,7 @@ const AdminRooms = () => {
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1.5 ml-1">Étage</label>
+                  <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1.5 ml-1">Floor</label>
                   <input
                     type="number"
                     required
@@ -181,7 +181,7 @@ const AdminRooms = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1.5 ml-1">Capacité</label>
+                  <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1.5 ml-1">Capacity</label>
                   <input
                     type="number"
                     required
@@ -197,13 +197,13 @@ const AdminRooms = () => {
                   onClick={handleCloseModal}
                   className="flex-1 px-4 py-2.5 bg-gray-100 text-gray-600 rounded-xl hover:bg-gray-200 transition-colors font-bold text-xs uppercase tracking-widest"
                 >
-                  Annuler
+                  Cancel
                 </button>
                 <button
                   type="submit"
                   className="flex-1 px-4 py-2.5 bg-accent text-white rounded-xl hover:bg-accent/90 transition-colors font-bold text-xs uppercase tracking-widest shadow-lg shadow-accent/20"
                 >
-                  {currentRoom ? 'Enregistrer' : 'Créer'}
+                  {currentRoom ? 'Save' : 'Create'}
                 </button>
               </div>
             </form>

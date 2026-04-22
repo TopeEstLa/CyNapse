@@ -56,7 +56,7 @@ const AdminRoomEdit = () => {
     setSavingRoom(true);
     try {
       await api.post('/api/admin/room/update', { ...roomData, id: parseInt(id) });
-      alert('Salle mise à jour');
+      alert('Room updated');
     } catch (err) {
       console.error(err);
     } finally {
@@ -91,7 +91,7 @@ const AdminRoomEdit = () => {
   };
 
   const handleDeviceDelete = async (deviceId) => {
-    if (window.confirm('Supprimer ce capteur ?')) {
+    if (window.confirm('Delete this sensor?')) {
       try {
         await api.delete(`/api/admin/device/delete?id=${deviceId}`);
         fetchData();
@@ -118,9 +118,9 @@ const AdminRoomEdit = () => {
     <div className="space-y-6 max-w-6xl mx-auto pb-10">
       <div className="flex flex-col gap-2">
         <Link to="/admin/rooms" className="text-[10px] font-black text-gray-400 hover:text-accent flex items-center gap-1 uppercase tracking-widest transition-colors w-fit">
-          <ArrowLeft className="w-3 h-3" /> Retour
+          <ArrowLeft className="w-3 h-3" /> Back
         </Link>
-        <h1 className="text-2xl font-black text-gray-900 tracking-tight leading-tight uppercase">Configuration : {roomData.name}</h1>
+        <h1 className="text-2xl font-black text-gray-900 tracking-tight leading-tight uppercase">Configuration: {roomData.name}</h1>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
@@ -130,12 +130,12 @@ const AdminRoomEdit = () => {
                  <div className="p-2 bg-accent/10 rounded-xl text-accent">
                     <Settings className="w-5 h-5" />
                  </div>
-                 <h2 className="text-lg font-black text-gray-900 uppercase">Propriétés</h2>
+                 <h2 className="text-lg font-black text-gray-900 uppercase">Properties</h2>
               </div>
 
               <form onSubmit={handleRoomSubmit} className="space-y-4">
                 <div className="space-y-1.5">
-                  <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Nom</label>
+                  <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Name</label>
                   <input
                     type="text"
                     required
@@ -146,7 +146,7 @@ const AdminRoomEdit = () => {
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-1.5">
-                    <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Étage</label>
+                    <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Floor</label>
                     <input
                       type="number"
                       required
@@ -156,7 +156,7 @@ const AdminRoomEdit = () => {
                     />
                   </div>
                   <div className="space-y-1.5">
-                    <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Capacité</label>
+                    <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Capacity</label>
                     <input
                       type="number"
                       required
@@ -172,7 +172,7 @@ const AdminRoomEdit = () => {
                   className="w-full flex items-center justify-center gap-2 px-6 py-4 bg-gray-900 text-white rounded-2xl hover:bg-black transition-all font-black uppercase text-xs tracking-widest shadow-lg shadow-gray-200 disabled:opacity-50"
                 >
                   {savingRoom ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
-                  Enregistrer
+                  Save
                 </button>
               </form>
            </div>
@@ -185,14 +185,14 @@ const AdminRoomEdit = () => {
                     <div className="p-2 bg-accent/10 rounded-xl text-accent">
                        <Cpu className="w-5 h-5" />
                     </div>
-                    <h2 className="text-lg font-black text-gray-900 uppercase">Capteurs IoT</h2>
+                    <h2 className="text-lg font-black text-gray-900 uppercase">IoT Sensors</h2>
                  </div>
                  <button
                     onClick={() => handleDeviceOpenModal()}
                     className="flex items-center justify-center gap-2 px-4 py-2.5 bg-accent text-white rounded-xl hover:bg-accent/90 transition-all font-bold text-[10px] uppercase tracking-widest shadow-md shadow-accent/20"
                  >
                     <Plus className="w-4 h-4" />
-                    Ajouter
+                    Add
                  </button>
               </div>
 
@@ -239,7 +239,7 @@ const AdminRoomEdit = () => {
                  {devices.length === 0 && (
                    <div className="col-span-full py-16 text-center space-y-4">
                       <Activity className="w-10 h-10 text-gray-100 mx-auto" />
-                      <p className="text-gray-300 font-bold uppercase tracking-widest text-[10px]">Aucun capteur</p>
+                      <p className="text-gray-300 font-bold uppercase tracking-widest text-[10px]">No sensor</p>
                    </div>
                  )}
               </div>
@@ -251,14 +251,14 @@ const AdminRoomEdit = () => {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
           <div className="bg-white rounded-[2.5rem] w-full max-w-md shadow-2xl overflow-hidden">
             <div className="px-8 py-6 border-b border-gray-100 flex items-center justify-between">
-              <h2 className="text-xl font-black text-gray-900 uppercase">{currentDevice ? 'Éditer' : 'Nouveau'}</h2>
+              <h2 className="text-xl font-black text-gray-900 uppercase">{currentDevice ? 'Edit' : 'New'}</h2>
               <button onClick={() => setIsDeviceModalOpen(false)} className="p-2 hover:bg-gray-100 rounded-xl transition-colors">
                 <X className="w-5 h-5 text-gray-400" />
               </button>
             </div>
             <form onSubmit={handleDeviceSubmit} className="p-8 space-y-5">
               <div className="space-y-1.5">
-                <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Nom du capteur</label>
+                <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Sensor name</label>
                 <input
                   type="text"
                   required
@@ -275,22 +275,22 @@ const AdminRoomEdit = () => {
                     onChange={(e) => setDeviceFormData({ ...deviceFormData, type: e.target.value })}
                     className="w-full px-5 py-3 bg-gray-50 border border-transparent rounded-2xl focus:bg-white outline-none font-bold text-sm"
                   >
-                    <option value="THERMOMETER">Thermomètre</option>
-                    <option value="HUMIDITY_SENSOR">Humidité</option>
+                    <option value="THERMOMETER">Thermometer</option>
+                    <option value="HUMIDITY_SENSOR">Humidity</option>
                     <option value="CO2_SENSOR">CO2</option>
-                    <option value="PEOPLE_COUNTER">Compteur</option>
-                    <option value="SMART_LIGHT">Lumière</option>
+                    <option value="PEOPLE_COUNTER">Counter</option>
+                    <option value="SMART_LIGHT">Light</option>
                   </select>
                 </div>
                 <div className="space-y-1.5">
-                  <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Statut Initial</label>
+                  <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Initial Status</label>
                   <select
                     value={deviceFormData.status}
                     onChange={(e) => setDeviceFormData({ ...deviceFormData, status: e.target.value })}
                     className="w-full px-5 py-3 bg-gray-50 border border-transparent rounded-2xl focus:bg-white outline-none font-bold text-sm"
                   >
-                    <option value="ONLINE">En ligne</option>
-                    <option value="OFFLINE">Hors ligne</option>
+                    <option value="ONLINE">Online</option>
+                    <option value="OFFLINE">Offline</option>
                     <option value="MAINTENANCE">Maintenance</option>
                   </select>
                 </div>
@@ -301,13 +301,13 @@ const AdminRoomEdit = () => {
                   onClick={() => setIsDeviceModalOpen(false)}
                   className="flex-1 px-4 py-3 border border-gray-100 text-gray-400 rounded-2xl hover:bg-gray-50 transition-colors font-black uppercase text-[10px] tracking-widest"
                 >
-                  Annuler
+                  Cancel
                 </button>
                 <button
                   type="submit"
                   className="flex-1 px-4 py-3 bg-accent text-white rounded-2xl hover:bg-accent/90 transition-colors font-black uppercase text-[10px] tracking-widest shadow-lg shadow-accent/20"
                 >
-                  Enregistrer
+                  Save
                 </button>
               </div>
             </form>

@@ -27,7 +27,7 @@ const Navbar = () => {
     const authItems = [
         {label: 'Dashboard', path: '/', icon: LayoutDashboard},
         {label: 'Monitoring', path: '/monitoring', icon: Activity},
-        {label: 'Trouver une salle', path: '/find-room', icon: Search},
+        {label: 'Find a room', path: '/find-room', icon: Search},
         {label: 'Users', path: '/users', icon: UsersIcon},
     ];
 

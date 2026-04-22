@@ -128,7 +128,7 @@ function AppContent() {
             <Route path="rooms" element={<AdminRooms />} />
             <Route path="rooms/:id" element={<AdminRoomEdit />} />
             <Route path="user/:id" element={<AdminUserEdit />} />
-            <Route path="settings" element={<div className="p-8 text-center text-gray-500">Paramètres système à venir.</div>} />
+            <Route path="settings" element={<div className="p-8 text-center text-gray-500">System settings coming soon.</div>} />
           </Route>
         </Routes>
       </div>
