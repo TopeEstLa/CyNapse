@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/admin/actuator-device")
+@RequestMapping("/api/admin/actuator")
 @PreAuthorize("@authService.hasRequiredRole('ADMIN')")
 public class AdminActuatorDeviceController {
 

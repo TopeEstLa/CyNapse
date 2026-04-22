@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/admin/automation-rule")
+@RequestMapping("/api/admin/automation")
 @PreAuthorize("@authService.hasRequiredRole('ADMIN')")
 public class AdminAutomationRuleController {
 
