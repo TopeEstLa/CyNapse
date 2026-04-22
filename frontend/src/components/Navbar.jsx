@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {Link, useLocation, useNavigate} from 'react-router-dom';
-import {Building2, ChevronDown, LayoutDashboard, LogIn, LogOut, Menu, User, UserPlus, X, Users as UsersIcon, Shield} from 'lucide-react';
+import {Building2, ChevronDown, LayoutDashboard, LogIn, LogOut, Menu, User, UserPlus, X, Users as UsersIcon, Shield, Activity, Search} from 'lucide-react';
 import {cn} from '../lib/utils';
 import {useAuth} from '../context/AuthContext';
 
@@ -26,6 +26,8 @@ const Navbar = () => {
 
     const authItems = [
         {label: 'Dashboard', path: '/', icon: LayoutDashboard},
+        {label: 'Monitoring', path: '/monitoring', icon: Activity},
+        {label: 'Trouver une salle', path: '/find-room', icon: Search},
         {label: 'Users', path: '/users', icon: UsersIcon},
     ];
 

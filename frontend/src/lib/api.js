@@ -17,9 +17,6 @@ async function apiFetch(endpoint, options = {}) {
     
     const data = await response.json().catch(() => null);
 
-    console.log("aaa")
-    console.log(data)
-
     if (!response.ok) {
       throw {
         status: response.status,

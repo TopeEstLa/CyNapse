@@ -13,6 +13,12 @@ import AdminDashboard from './pages/AdminDashboard';
 import AdminUsers from './pages/AdminUsers';
 import AdminPendingUsers from './pages/AdminPendingUsers';
 import AdminUserEdit from './pages/AdminUserEdit';
+import AdminRooms from './pages/AdminRooms';
+import AdminRoomEdit from './pages/AdminRoomEdit';
+import IoTMonitoring from './pages/IoTMonitoring';
+import RoomSensors from './pages/RoomSensors';
+import DeviceDetail from './pages/DeviceDetail';
+import FindRoom from './pages/FindRoom';
 import './index.css';
 
 const ProtectedRoute = ({ children }) => {
@@ -59,6 +65,38 @@ function AppContent() {
             } 
           />
           <Route 
+            path="/monitoring" 
+            element={
+              <ProtectedRoute>
+                <IoTMonitoring />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/find-room" 
+            element={
+              <ProtectedRoute>
+                <FindRoom />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/monitoring/room/:id" 
+            element={
+              <ProtectedRoute>
+                <RoomSensors />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/monitoring/room/:roomId/device/:deviceId" 
+            element={
+              <ProtectedRoute>
+                <DeviceDetail />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
             path="/users" 
             element={
               <ProtectedRoute>
@@ -87,6 +125,8 @@ function AppContent() {
             <Route index element={<AdminDashboard />} />
             <Route path="users" element={<AdminUsers />} />
             <Route path="pending" element={<AdminPendingUsers />} />
+            <Route path="rooms" element={<AdminRooms />} />
+            <Route path="rooms/:id" element={<AdminRoomEdit />} />
             <Route path="user/:id" element={<AdminUserEdit />} />
             <Route path="settings" element={<div className="p-8 text-center text-gray-500">Paramètres système à venir.</div>} />
           </Route>
