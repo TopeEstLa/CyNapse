@@ -1,5 +1,6 @@
 package io.squid.cynapse.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.squid.cynapse.enums.DeviceType;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -18,6 +19,10 @@ public class ActuatorDevice extends Device {
 
     @OneToMany(mappedBy = "device", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ActuatorHistory> history = new ArrayList<>();
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "actuatorDevice", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<AutomationRule> automationRules = new ArrayList<>();
 
 
     public ActuatorDevice() {
@@ -42,5 +47,13 @@ public class ActuatorDevice extends Device {
 
     public void setHistory(List<ActuatorHistory> history) {
         this.history = history;
+    }
+
+    public List<AutomationRule> getAutomationRules() {
+        return automationRules;
+    }
+
+    public void setAutomationRules(List<AutomationRule> automationRules) {
+        this.automationRules = automationRules;
     }
 }

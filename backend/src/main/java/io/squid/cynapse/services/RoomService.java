@@ -1,6 +1,6 @@
 package io.squid.cynapse.services;
 
-import io.squid.cynapse.dto.IoTDTO;
+import io.squid.cynapse.dto.DeviceDTO;
 import io.squid.cynapse.entities.Room;
 import io.squid.cynapse.enums.RoomStatus;
 import io.squid.cynapse.repositories.SensorDeviceRepository;
@@ -28,7 +28,7 @@ public class RoomService {
         return this.roomRepository.findById(roomId).orElse(null);
     }
 
-    public Room create(IoTDTO.RoomPayload payload) {
+    public Room create(DeviceDTO.RoomPayload payload) {
         if (this.roomRepository.findByNameIgnoreCase(payload.name()).isPresent()) {
             return null;
         }
@@ -45,7 +45,7 @@ public class RoomService {
 
     }
 
-    public Room update(IoTDTO.RoomPayload payload) {
+    public Room update(DeviceDTO.RoomPayload payload) {
         if (payload.id() == null) {
             return null;
         }

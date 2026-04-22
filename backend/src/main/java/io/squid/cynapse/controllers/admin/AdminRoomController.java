@@ -1,6 +1,6 @@
 package io.squid.cynapse.controllers.admin;
 
-import io.squid.cynapse.dto.IoTDTO;
+import io.squid.cynapse.dto.DeviceDTO;
 import io.squid.cynapse.entities.Room;
 import io.squid.cynapse.services.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +34,7 @@ public class AdminRoomController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<?> createRoom(@RequestBody IoTDTO.RoomPayload payload) {
+    public ResponseEntity<?> createRoom(@RequestBody DeviceDTO.RoomPayload payload) {
         Room room = this.roomService.create(payload);
         if (room == null) {
             return ResponseEntity.badRequest().body("Room name already exists");
@@ -44,7 +44,7 @@ public class AdminRoomController {
     }
 
     @PostMapping("/update")
-    public ResponseEntity<?> updateRoom(@RequestBody IoTDTO.RoomPayload payload) {
+    public ResponseEntity<?> updateRoom(@RequestBody DeviceDTO.RoomPayload payload) {
         Room room = this.roomService.update(payload);
         if (room == null) {
             return ResponseEntity.badRequest().body("Room not found");
