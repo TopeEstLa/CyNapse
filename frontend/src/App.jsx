@@ -19,6 +19,7 @@ import IoTMonitoring from './pages/IoTMonitoring';
 import RoomSensors from './pages/RoomSensors';
 import DeviceDetail from './pages/DeviceDetail';
 import FindRoom from './pages/FindRoom';
+import News from './pages/News';
 import './index.css';
 
 const ProtectedRoute = ({ children }) => {
@@ -70,6 +71,12 @@ function AppContent() {
               <ProtectedRoute>
                 <IoTMonitoring />
               </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/news" 
+            element={
+              <News />
             } 
           />
           <Route 
