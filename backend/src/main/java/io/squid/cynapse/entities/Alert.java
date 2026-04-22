@@ -15,8 +15,8 @@ public class Alert {
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "device_id", nullable = false)
-    private Device device;
+    @JoinColumn(name = "room_id", nullable = false)
+    private Room room;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -33,8 +33,8 @@ public class Alert {
     public Alert() {
     }
 
-    public Alert(Device device, AlertSeverity severity, String message, LocalDateTime createdAt) {
-        this.device = device;
+    public Alert(Room room, AlertSeverity severity, String message, LocalDateTime createdAt) {
+        this.room = room;
         this.severity = severity;
         this.message = message;
         this.createdAt = createdAt;
@@ -48,12 +48,12 @@ public class Alert {
         this.id = id;
     }
 
-    public Device getDevice() {
-        return device;
+    public Room getRoom() {
+        return this.room;
     }
 
-    public void setDevice(Device device) {
-        this.device = device;
+    public void setRoom(Room room) {
+        this.room = room;
     }
 
     public AlertSeverity getSeverity() {

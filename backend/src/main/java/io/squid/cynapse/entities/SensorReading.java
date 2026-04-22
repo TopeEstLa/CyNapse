@@ -14,14 +14,11 @@ public class SensorReading {
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "device_id", nullable = false)
-    private Device device;
+    @JoinColumn(name = "sensor_device_id", nullable = false)
+    private SensorDevice device;
 
     @Column(nullable = false)
     private LocalDateTime capturedAt;
-
-    @Column(nullable = false)
-    private String metric;
 
     @Column(nullable = false)
     private double value;
@@ -29,10 +26,9 @@ public class SensorReading {
     public SensorReading() {
     }
 
-    public SensorReading(Device device, String metric, double value) {
+    public SensorReading(SensorDevice device, double value) {
         this.device = device;
         this.capturedAt = LocalDateTime.now();
-        this.metric = metric;
         this.value = value;
     }
 
@@ -44,11 +40,11 @@ public class SensorReading {
         this.id = id;
     }
 
-    public Device getDevice() {
+    public SensorDevice getDevice() {
         return device;
     }
 
-    public void setDevice(Device device) {
+    public void setDevice(SensorDevice device) {
         this.device = device;
     }
 
@@ -58,14 +54,6 @@ public class SensorReading {
 
     public void setCapturedAt(LocalDateTime capturedAt) {
         this.capturedAt = capturedAt;
-    }
-
-    public String getMetric() {
-        return metric;
-    }
-
-    public void setMetric(String metric) {
-        this.metric = metric;
     }
 
     public double getValue() {

@@ -1,12 +1,9 @@
 package io.squid.cynapse.services;
 
 import io.squid.cynapse.dto.IoTDTO;
-import io.squid.cynapse.entities.Device;
 import io.squid.cynapse.entities.Room;
-import io.squid.cynapse.enums.DeviceType;
 import io.squid.cynapse.enums.RoomStatus;
-import io.squid.cynapse.repositories.AlertRepository;
-import io.squid.cynapse.repositories.DeviceRepository;
+import io.squid.cynapse.repositories.SensorDeviceRepository;
 import io.squid.cynapse.repositories.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,7 +18,7 @@ public class RoomService {
     private RoomRepository roomRepository;
 
     @Autowired
-    private DeviceRepository deviceRepository;
+    private SensorDeviceRepository sensorDeviceRepository;
 
     public List<Room> findAll() {
         return this.roomRepository.findAll();
@@ -45,14 +42,7 @@ public class RoomService {
 
     public void createDefaultDevice(Room room) {
         //create temp ceo population device
-        Device tempDevice = new Device("Temperature Sensor", DeviceType.THERMOMETER, room);
-        Device co2Device = new Device("CO2 Sensor", DeviceType.CO2_SENSOR, room);
-        Device popDevice = new Device("Population Sensor", DeviceType.PEOPLE_COUNTER, room);
-        Device lightDevice = new Device("AutoLight", DeviceType.SMART_LIGHT, room);
-        this.deviceRepository.save(tempDevice);
-        this.deviceRepository.save(co2Device);
-        this.deviceRepository.save(popDevice);
-        this.deviceRepository.save(lightDevice);
+
     }
 
     public Room update(IoTDTO.RoomPayload payload) {

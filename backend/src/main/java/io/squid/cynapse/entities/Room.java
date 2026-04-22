@@ -28,6 +28,10 @@ public class Room {
     @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Device> devices = new ArrayList<>();
 
+    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Alert> alerts = new ArrayList<>();
+
+
     public Room() {
         this.status = RoomStatus.FREE;
     }
@@ -85,6 +89,14 @@ public class Room {
 
     public void setDevices(List<Device> devices) {
         this.devices = devices;
+    }
+
+    public List<Alert> getAlerts() {
+        return alerts;
+    }
+
+    public void setAlerts(List<Alert> alerts) {
+        this.alerts = alerts;
     }
 }
 

@@ -10,16 +10,5 @@ import java.util.Optional;
 @Repository
 public interface AlertRepository extends CrudRepository<Alert, Long> {
 
-    List<Alert> findAll();
-
-    List<Alert> findByDeviceIdAndResolvedAtIsNullOrderByCreatedAtDesc(Long deviceId);
-
-    List<Alert> findByResolvedAtIsNullOrderByCreatedAtDesc();
-
-    Optional<Alert> findFirstByDeviceIdAndResolvedAtIsNull(Long deviceId);
-
-    Optional<Alert> findFirstByDeviceRoomIdAndResolvedAtIsNull(Long roomId);
-
-    long deleteByDeviceId(Long deviceId);
 }
 
