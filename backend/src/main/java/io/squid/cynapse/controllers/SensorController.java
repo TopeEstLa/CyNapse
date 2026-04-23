@@ -23,6 +23,8 @@ public class SensorController {
     @Autowired
     private DeviceService deviceService;
 
+
+
     /**
      * Get all sensors or sensors from a specific room
      *
