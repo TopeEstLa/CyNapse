@@ -1,6 +1,7 @@
 package io.squid.cynapse.dto;
 
-import io.squid.cynapse.enums.*;
+import io.squid.cynapse.enums.DeviceStatus;
+import io.squid.cynapse.enums.DeviceType;
 
 
 public class DeviceDTO {

@@ -1,6 +1,5 @@
 package io.squid.cynapse.repositories;
 
-import io.squid.cynapse.entities.Device;
 import io.squid.cynapse.entities.SensorDevice;
 import io.squid.cynapse.enums.DeviceStatus;
 import org.springframework.data.repository.CrudRepository;

@@ -1,20 +1,17 @@
 package io.squid.cynapse.services;
 
 import io.squid.cynapse.dto.AutomationDTO;
-import io.squid.cynapse.entities.*;
+import io.squid.cynapse.entities.ActuatorDevice;
+import io.squid.cynapse.entities.AutomationCondition;
+import io.squid.cynapse.entities.AutomationRule;
 import io.squid.cynapse.enums.AutomationConditionType;
 import io.squid.cynapse.enums.AutomationLogicalOperator;
-import io.squid.cynapse.enums.ComparisonOperator;
-import io.squid.cynapse.enums.DeviceType;
 import io.squid.cynapse.repositories.ActuatorDeviceRepository;
 import io.squid.cynapse.repositories.ActuatorHistoryRepository;
 import io.squid.cynapse.repositories.AutomationRuleRepository;
 import io.squid.cynapse.repositories.SensorReadingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;

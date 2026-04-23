@@ -66,6 +66,5 @@ public enum DeviceType {
     }
 
 
-
 }
 

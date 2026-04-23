@@ -4,7 +4,10 @@ import io.squid.cynapse.entities.Room;
 import io.squid.cynapse.services.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -21,6 +24,7 @@ public class RoomController {
 
     /**
      * Get all rooms with their devices and sensor data
+     *
      * @return List of all rooms
      */
     @GetMapping("/list")
@@ -30,6 +34,7 @@ public class RoomController {
 
     /**
      * Get a specific room with all its devices and sensor information
+     *
      * @param roomId the ID of the room
      * @return Room details or error if not found
      */

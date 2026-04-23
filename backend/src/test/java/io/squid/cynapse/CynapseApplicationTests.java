@@ -6,9 +6,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 class CynapseApplicationTests {
 
-	@Test
-	void contextLoads() {
-		System.out.println("Hello, Cynapse!");
-	}
+    @Test
+    void contextLoads() {
+        System.out.println("Hello, Cynapse!");
+    }
 
 }

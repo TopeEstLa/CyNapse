@@ -3,8 +3,8 @@ package io.squid.cynapse.services;
 import io.squid.cynapse.dto.DeviceDTO;
 import io.squid.cynapse.entities.Room;
 import io.squid.cynapse.enums.RoomStatus;
-import io.squid.cynapse.repositories.SensorDeviceRepository;
 import io.squid.cynapse.repositories.RoomRepository;
+import io.squid.cynapse.repositories.SensorDeviceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,7 +35,7 @@ public class RoomService {
 
         Room room = new Room(payload.name(), payload.floorNumber(), payload.capacity());
         room.setStatus(RoomStatus.FREE);
-        Room savedRoom =  this.roomRepository.save(room);
+        Room savedRoom = this.roomRepository.save(room);
         this.createDefaultDevice(savedRoom);
         return savedRoom;
     }

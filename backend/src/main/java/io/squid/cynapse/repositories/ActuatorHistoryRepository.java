@@ -1,9 +1,6 @@
 package io.squid.cynapse.repositories;
 
-import io.squid.cynapse.entities.ActuatorDevice;
 import io.squid.cynapse.entities.ActuatorHistory;
-import io.squid.cynapse.entities.SensorReading;
-import io.squid.cynapse.enums.DeviceStatus;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
@@ -16,7 +13,6 @@ public interface ActuatorHistoryRepository extends CrudRepository<ActuatorHistor
     List<ActuatorHistory> findAll();
 
     List<ActuatorHistory> findTop200ByDeviceIdOrderByCreatedAtDesc(Long deviceId);
-
 
 
 }

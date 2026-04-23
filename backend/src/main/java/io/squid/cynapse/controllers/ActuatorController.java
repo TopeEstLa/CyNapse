@@ -5,7 +5,10 @@ import io.squid.cynapse.entities.ActuatorHistory;
 import io.squid.cynapse.services.ActuatorDeviceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -22,6 +25,7 @@ public class ActuatorController {
 
     /**
      * Get all actuators or actuators from a specific room
+     *
      * @param roomId optional room ID to filter actuators
      * @return List of actuators with their current state
      */
@@ -32,6 +36,7 @@ public class ActuatorController {
 
     /**
      * Get a specific actuator with its details and state
+     *
      * @param actuatorId the ID of the actuator
      * @return Actuator details or error if not found
      */
@@ -46,6 +51,7 @@ public class ActuatorController {
 
     /**
      * Get the last 200 history entries from a specific actuator
+     *
      * @param actuatorId the ID of the actuator
      * @return List of last 200 actuator history entries ordered by most recent first
      */

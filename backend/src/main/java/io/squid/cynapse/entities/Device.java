@@ -5,10 +5,6 @@ import io.squid.cynapse.enums.DeviceStatus;
 import io.squid.cynapse.enums.DeviceType;
 import jakarta.persistence.*;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-
 @Entity
 public abstract class Device {
 

@@ -34,7 +34,7 @@ public class AutomationRule {
     private LocalDateTime lastEvaluationAt;
 
     @OneToMany(mappedBy = "rule", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<AutomationCondition> conditions = new ArrayList<>();
+    private final List<AutomationCondition> conditions = new ArrayList<>();
 
     public AutomationRule() {
     }

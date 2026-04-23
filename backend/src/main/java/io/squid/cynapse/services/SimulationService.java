@@ -1,13 +1,15 @@
 package io.squid.cynapse.services;
 
-import io.squid.cynapse.entities.*;
-import io.squid.cynapse.enums.AlertSeverity;
+import io.squid.cynapse.entities.Alert;
+import io.squid.cynapse.entities.Room;
+import io.squid.cynapse.entities.SensorDevice;
+import io.squid.cynapse.entities.SensorReading;
 import io.squid.cynapse.enums.DeviceStatus;
 import io.squid.cynapse.enums.DeviceType;
 import io.squid.cynapse.enums.RoomStatus;
 import io.squid.cynapse.repositories.AlertRepository;
-import io.squid.cynapse.repositories.SensorDeviceRepository;
 import io.squid.cynapse.repositories.RoomRepository;
+import io.squid.cynapse.repositories.SensorDeviceRepository;
 import io.squid.cynapse.repositories.SensorReadingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -72,14 +74,13 @@ public class SimulationService {
     private SensorReading buildReading(Room room, SensorDevice device, double lastValue, LocalDateTime lastView) {
         return switch (device.getType()) {
             case THERMOMETER -> {
-                double temp = lastValue +1;
+                double temp = lastValue + 1;
                 if (lastValue > 30) {
                     temp = 2;
                 }
                 yield new SensorReading(device, Math.round(temp));
             }
-            case PEOPLE_COUNTER ->
-                    new SensorReading(device, this.simulatePeople(room.getCapacity(), lastValue));
+            case PEOPLE_COUNTER -> new SensorReading(device, this.simulatePeople(room.getCapacity(), lastValue));
             case CO2_SENSOR -> {
                 double co2 = 500 + this.randomRange(-30, 30);
                 yield new SensorReading(device, Math.round(co2));

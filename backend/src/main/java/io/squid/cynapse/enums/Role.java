@@ -8,7 +8,7 @@ public enum Role {
     USER(1),
     ADMIN(10);
 
-    private int weight;
+    private final int weight;
 
     Role(int weight) {
         this.weight = weight;

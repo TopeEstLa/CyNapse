@@ -5,7 +5,10 @@ import io.squid.cynapse.entities.SensorReading;
 import io.squid.cynapse.services.DeviceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -22,6 +25,7 @@ public class SensorController {
 
     /**
      * Get all sensors or sensors from a specific room
+     *
      * @param roomId optional room ID to filter sensors
      * @return List of sensors
      */
@@ -33,6 +37,7 @@ public class SensorController {
 
     /**
      * Get a specific sensor with its details and readings
+     *
      * @param sensorId the ID of the sensor
      * @return Sensor details or error if not found
      */
@@ -47,6 +52,7 @@ public class SensorController {
 
     /**
      * Get the last 200 readings from a specific sensor
+     *
      * @param sensorId the ID of the sensor
      * @return List of last 200 sensor readings ordered by most recent first
      */

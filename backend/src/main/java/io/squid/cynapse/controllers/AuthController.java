@@ -2,9 +2,7 @@ package io.squid.cynapse.controllers;
 
 import io.squid.cynapse.dto.AuthDTO;
 import io.squid.cynapse.entities.User;
-import io.squid.cynapse.entities.UserValidationToken;
 import io.squid.cynapse.enums.Cookies;
-import io.squid.cynapse.repositories.UserValidationTokenRepository;
 import io.squid.cynapse.services.AuthService;
 import io.squid.cynapse.services.JwtService;
 import io.squid.cynapse.services.UserService;
@@ -14,8 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Optional;
 
 /**
  * @author TopeEstLa
@@ -34,7 +30,7 @@ public class AuthController {
     private JwtService jwtService;
 
     @PostMapping("/sign-up")
-    public ResponseEntity<?> signup(@RequestBody  AuthDTO.SignupDTO signupDTO) {
+    public ResponseEntity<?> signup(@RequestBody AuthDTO.SignupDTO signupDTO) {
         if (this.userService.userExists(signupDTO.getUsername(), signupDTO.getEmail())) {
             return ResponseEntity.badRequest().body("username or email already exists");
         }

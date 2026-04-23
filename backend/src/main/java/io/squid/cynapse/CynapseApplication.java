@@ -9,8 +9,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SpringBootApplication(exclude = {UserDetailsServiceAutoConfiguration.class}) //cause we don't have UserDetailService
 public class CynapseApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(CynapseApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(CynapseApplication.class, args);
+    }
 
 }
