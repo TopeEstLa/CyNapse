@@ -79,5 +79,9 @@ public abstract class Device {
     public void setStatus(DeviceStatus status) {
         this.status = status;
     }
+
+    public double getElectricityConsumption() {
+        return this.type.getElectricityConsumption();
+    }
 }
 

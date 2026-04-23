@@ -22,6 +22,7 @@ public class AuthService {
             "/api/auth/sign-out",
             "/api/auth/sign-up",
             "/api/auth/enable",
+            "/api/reports/**",
             //swagger
             "/v3/api-docs",
             "/swagger-ui",
