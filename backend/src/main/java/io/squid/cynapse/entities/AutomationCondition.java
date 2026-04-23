@@ -30,12 +30,22 @@ public class AutomationCondition {
 
     private Double thresholdValue;
 
-    private Integer startHourInclusive;
+    private Integer startHour;
 
-    private Integer endHourInclusive;
+    private Integer endHour;
 
-    @Column(nullable = false)
-    private int sequenceOrder;
+    public AutomationCondition() {
+    }
+
+    public AutomationCondition(AutomationRule rule, AutomationConditionType type, DeviceType sensorType, ComparisonOperator comparisonOperator, Double thresholdValue, Integer startHour, Integer endHour) {
+        this.rule = rule;
+        this.type = type;
+        this.sensorType = sensorType;
+        this.comparisonOperator = comparisonOperator;
+        this.thresholdValue = thresholdValue;
+        this.startHour = startHour;
+        this.endHour = endHour;
+    }
 
     public Long getId() {
         return id;
@@ -85,28 +95,20 @@ public class AutomationCondition {
         this.thresholdValue = thresholdValue;
     }
 
-    public Integer getStartHourInclusive() {
-        return startHourInclusive;
+    public Integer getStartHour() {
+        return startHour;
     }
 
-    public void setStartHourInclusive(Integer startHourInclusive) {
-        this.startHourInclusive = startHourInclusive;
+    public void setStartHour(Integer startHour) {
+        this.startHour = startHour;
     }
 
-    public Integer getEndHourInclusive() {
-        return endHourInclusive;
+    public Integer getEndHour() {
+        return endHour;
     }
 
-    public void setEndHourInclusive(Integer endHourInclusive) {
-        this.endHourInclusive = endHourInclusive;
-    }
-
-    public int getSequenceOrder() {
-        return sequenceOrder;
-    }
-
-    public void setSequenceOrder(int sequenceOrder) {
-        this.sequenceOrder = sequenceOrder;
+    public void setEndHour(Integer endHour) {
+        this.endHour = endHour;
     }
 }
 

@@ -41,9 +41,9 @@ public class AutomationRuleService {
     private ActuatorAutomationService actuatorAutomationService;
 
     public List<AutomationDTO.RuleResponse> findAll(Long actuatorDeviceId) {
-        List<AutomationRule> rules = actuatorDeviceId == null
-                ? this.automationRuleRepository.findAll()
-                : this.automationRuleRepository.findByActuatorDeviceId(actuatorDeviceId);
+        if (actuatorDeviceId == null) return List.of();
+
+        List<AutomationRule> rules = this.automationRuleRepository.findByActuatorDeviceId(actuatorDeviceId);
 
         return rules.stream().map(this::toResponse).toList();
     }
@@ -68,9 +68,17 @@ public class AutomationRuleService {
             return null;
         }
 
-        AutomationRule rule = new AutomationRule();
+        AutomationRule rule = new AutomationRule(
+                actuator,
+                payload.targetState(),
+                payload.logicalOperator() == null ? AutomationLogicalOperator.AND : payload.logicalOperator(),
+                payload.intervalSeconds() == null ? 5 : payload.intervalSeconds(),
+                payload.enabled() == null || payload.enabled());
+
+        List<AutomationCondition> conditions = this.buildCondition(rule, payload.conditions());
+        rule.getConditions().addAll(conditions);
+
         rule.setActuatorDevice(actuator);
-        this.applyPayload(rule, payload);
 
         AutomationRule savedRule = this.automationRuleRepository.save(rule);
         return this.toResponse(savedRule);
@@ -95,7 +103,23 @@ public class AutomationRuleService {
             rule.setActuatorDevice(actuator);
         }
 
-        this.applyPayload(rule, payload);
+        rule.setTargetState(payload.targetState());
+        if (payload.logicalOperator() != null) {
+            rule.setLogicalOperator(payload.logicalOperator());
+        }
+        if (payload.intervalSeconds() != null) {
+            rule.setIntervalSeconds(payload.intervalSeconds());
+        }
+
+        if (payload.enabled() != null) {
+            rule.setEnabled(payload.enabled());
+        }
+
+        if (payload.conditions() != null && !payload.conditions().isEmpty()) {
+            rule.getConditions().clear();
+            List<AutomationCondition> conditions = this.buildCondition(rule, payload.conditions());
+            rule.getConditions().addAll(conditions);
+        }
 
         AutomationRule savedRule = this.automationRuleRepository.save(rule);
         return this.toResponse(savedRule);
@@ -122,27 +146,22 @@ public class AutomationRuleService {
         return this.toResponse(savedRule);
     }
 
-    private void applyPayload(AutomationRule rule, AutomationDTO.RulePayload payload) {
-        rule.setTargetState(payload.targetState());
-        rule.setLogicalOperator(payload.logicalOperator() == null ? AutomationLogicalOperator.AND : payload.logicalOperator());
-        rule.setIntervalSeconds(payload.intervalSeconds() == null ? 5 : payload.intervalSeconds());
-        rule.setEnabled(payload.enabled() == null || payload.enabled());
+    private List<AutomationCondition> buildCondition(AutomationRule rule, List<AutomationDTO.RuleConditionPayload> conditionPayloads) {
 
         List<AutomationCondition> conditions = new ArrayList<>();
-        for (int i = 0; i < payload.conditions().size(); i++) {
-            AutomationDTO.RuleConditionPayload conditionPayload = payload.conditions().get(i);
-            AutomationCondition condition = new AutomationCondition();
-            condition.setType(conditionPayload.type());
-            condition.setSensorType(conditionPayload.sensorType());
-            condition.setComparisonOperator(conditionPayload.comparisonOperator());
-            condition.setThresholdValue(conditionPayload.thresholdValue());
-            condition.setStartHourInclusive(conditionPayload.startHourInclusive());
-            condition.setEndHourInclusive(conditionPayload.endHourInclusive());
-            condition.setSequenceOrder(i);
-            conditions.add(condition);
+        for (AutomationDTO.RuleConditionPayload ruleConditionPayload : conditionPayloads) {
+            conditions.add(new AutomationCondition(
+                    rule,
+                    ruleConditionPayload.type(),
+                    ruleConditionPayload.sensorType(),
+                    ruleConditionPayload.comparisonOperator(),
+                    ruleConditionPayload.thresholdValue(),
+                    ruleConditionPayload.startHourInclusive(),
+                    ruleConditionPayload.endHourInclusive()
+            ));
         }
 
-        rule.setConditions(conditions);
+        return conditions;
     }
 
     private String validatePayload(AutomationDTO.RulePayload payload, boolean update) {
@@ -206,9 +225,8 @@ public class AutomationRuleService {
                         condition.getSensorType(),
                         condition.getComparisonOperator(),
                         condition.getThresholdValue(),
-                        condition.getStartHourInclusive(),
-                        condition.getEndHourInclusive(),
-                        condition.getSequenceOrder()
+                        condition.getStartHour(),
+                        condition.getEndHour()
                 ))
                 .toList();
 

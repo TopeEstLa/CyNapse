@@ -9,12 +9,16 @@ import java.util.Optional;
 
 public interface AutomationRuleRepository extends CrudRepository<AutomationRule, Long> {
 
+    @EntityGraph(attributePaths = {"conditions", "actuatorDevice", "actuatorDevice.room"})
     List<AutomationRule> findAll();
 
+    @EntityGraph(attributePaths = {"conditions", "actuatorDevice", "actuatorDevice.room"})
     List<AutomationRule> findByActuatorDeviceId(Long actuatorDeviceId);
 
+    @EntityGraph(attributePaths = {"conditions", "actuatorDevice", "actuatorDevice.room"})
     List<AutomationRule> findByEnabledTrueOrderByIdAsc();
 
+    @EntityGraph(attributePaths = {"conditions", "actuatorDevice", "actuatorDevice.room"})
     Optional<AutomationRule> findById(Long id);
 }
 

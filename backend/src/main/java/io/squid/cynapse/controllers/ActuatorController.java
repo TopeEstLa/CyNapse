@@ -1,6 +1,7 @@
 package io.squid.cynapse.controllers;
 
 import io.squid.cynapse.entities.ActuatorDevice;
+import io.squid.cynapse.entities.ActuatorHistory;
 import io.squid.cynapse.services.ActuatorDeviceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -41,5 +42,20 @@ public class ActuatorController {
             return ResponseEntity.badRequest().body("Actuator not found");
         }
         return ResponseEntity.ok(device);
+    }
+
+    /**
+     * Get the last 200 history entries from a specific actuator
+     * @param actuatorId the ID of the actuator
+     * @return List of last 200 actuator history entries ordered by most recent first
+     */
+    @GetMapping("/history")
+    public ResponseEntity<?> getActuatorHistory(@RequestParam("id") long actuatorId) {
+        ActuatorDevice device = this.actuatorDeviceService.findById(actuatorId);
+        if (device == null) {
+            return ResponseEntity.badRequest().body("Actuator not found");
+        }
+        List<ActuatorHistory> history = this.actuatorDeviceService.getLastHistory(actuatorId);
+        return ResponseEntity.ok(history);
     }
 }

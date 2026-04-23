@@ -20,7 +20,5 @@ public class DeviceDTO {
             Long roomId
     ) {
     }
-
-
 }
 

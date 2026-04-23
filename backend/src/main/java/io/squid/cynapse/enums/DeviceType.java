@@ -48,7 +48,8 @@ public enum DeviceType {
     },
 
 
-    SMART_LIGHT(false);
+    SMART_LIGHT(false),
+    HEATER(false);
 
     private final boolean sensor;
 

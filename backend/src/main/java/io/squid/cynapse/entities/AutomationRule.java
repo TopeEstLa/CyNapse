@@ -33,9 +33,19 @@ public class AutomationRule {
 
     private LocalDateTime lastEvaluationAt;
 
-    @OrderBy("sequenceOrder ASC")
     @OneToMany(mappedBy = "rule", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<AutomationCondition> conditions = new ArrayList<>();
+
+    public AutomationRule() {
+    }
+
+    public AutomationRule(ActuatorDevice actuatorDevice, String targetState, AutomationLogicalOperator logicalOperator, int intervalSeconds, boolean enabled) {
+        this.actuatorDevice = actuatorDevice;
+        this.targetState = targetState;
+        this.logicalOperator = logicalOperator;
+        this.intervalSeconds = intervalSeconds;
+        this.enabled = enabled;
+    }
 
     public Long getId() {
         return id;

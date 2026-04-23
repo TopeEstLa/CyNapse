@@ -38,9 +38,8 @@ public class AutomationDTO {
             DeviceType sensorType,
             ComparisonOperator comparisonOperator,
             Double thresholdValue,
-            Integer startHourInclusive,
-            Integer endHourInclusive,
-            int sequenceOrder
+            Integer startHour,
+            Integer endHour
     ) {
     }
 

@@ -1,6 +1,7 @@
 package io.squid.cynapse.controllers;
 
 import io.squid.cynapse.entities.SensorDevice;
+import io.squid.cynapse.entities.SensorReading;
 import io.squid.cynapse.services.DeviceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -42,5 +43,20 @@ public class SensorController {
             return ResponseEntity.badRequest().body("Sensor not found");
         }
         return ResponseEntity.ok(device);
+    }
+
+    /**
+     * Get the last 200 readings from a specific sensor
+     * @param sensorId the ID of the sensor
+     * @return List of last 200 sensor readings ordered by most recent first
+     */
+    @GetMapping("/readings")
+    public ResponseEntity<?> getSensorReadings(@RequestParam("id") long sensorId) {
+        SensorDevice device = this.deviceService.findById(sensorId);
+        if (device == null) {
+            return ResponseEntity.badRequest().body("Sensor not found");
+        }
+        List<SensorReading> readings = this.deviceService.getLastReadings(sensorId);
+        return ResponseEntity.ok(readings);
     }
 }

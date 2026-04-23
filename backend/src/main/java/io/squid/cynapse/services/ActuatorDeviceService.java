@@ -2,9 +2,11 @@ package io.squid.cynapse.services;
 
 import io.squid.cynapse.dto.DeviceDTO;
 import io.squid.cynapse.entities.ActuatorDevice;
+import io.squid.cynapse.entities.ActuatorHistory;
 import io.squid.cynapse.entities.Room;
 import io.squid.cynapse.enums.DeviceStatus;
 import io.squid.cynapse.repositories.ActuatorDeviceRepository;
+import io.squid.cynapse.repositories.ActuatorHistoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +17,9 @@ public class ActuatorDeviceService {
 
     @Autowired
     private ActuatorDeviceRepository actuatorDeviceRepository;
+
+    @Autowired
+    private ActuatorHistoryRepository actuatorHistoryRepository;
 
     @Autowired
     private RoomService roomService;
@@ -81,6 +86,10 @@ public class ActuatorDeviceService {
 
         this.actuatorDeviceRepository.delete(device);
         return true;
+    }
+
+    public List<ActuatorHistory> getLastHistory(long deviceId) {
+        return this.actuatorHistoryRepository.findTop200ByDeviceIdOrderByCreatedAtDesc(deviceId);
     }
 }
 

@@ -72,7 +72,10 @@ public class SimulationService {
     private SensorReading buildReading(Room room, SensorDevice device, double lastValue, LocalDateTime lastView) {
         return switch (device.getType()) {
             case THERMOMETER -> {
-                double temp = 20 + this.randomRange(-1.2, 1.2);
+                double temp = lastValue +1;
+                if (lastValue > 30) {
+                    temp = 2;
+                }
                 yield new SensorReading(device, Math.round(temp));
             }
             case PEOPLE_COUNTER ->

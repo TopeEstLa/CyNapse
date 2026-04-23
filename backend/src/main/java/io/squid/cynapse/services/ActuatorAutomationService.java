@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -38,7 +39,9 @@ public class ActuatorAutomationService {
 
     @Value("${cynapse.automation.enabled:true}")
     private boolean enabled;
+
     @Scheduled(fixedDelayString = "${cynapse.automation.engine-tick-ms:1000}")
+    @Transactional
     public void runAutomationTick() {
         if (!this.enabled) {
             return;
@@ -52,6 +55,7 @@ public class ActuatorAutomationService {
         }
     }
 
+    @Transactional
     public void evaluateAndApply(AutomationRule rule, LocalDateTime now, boolean forceRun) {
         if (!forceRun && !this.isInCooldown(rule, now)) {
             return;
@@ -122,14 +126,14 @@ public class ActuatorAutomationService {
     }
 
     private boolean evaluateHourRange(AutomationCondition condition, int currentHour) {
-        int start = condition.getStartHourInclusive();
-        int end = condition.getEndHourInclusive();
+        int start = condition.getStartHour();
+        int end = condition.getEndHour();
 
         if (start <= end) {
             return currentHour >= start && currentHour <= end;
         }
 
-        // Handles ranges that cross midnight, e.g. 22 -> 6.
+        // Handles ranges that cross midnight,  22 -> 6.
         return currentHour >= start || currentHour <= end;
     }
 
