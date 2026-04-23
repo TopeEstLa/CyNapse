@@ -1,7 +1,9 @@
 package io.squid.cynapse.controllers;
 
+import io.squid.cynapse.annotation.AddUserExp;
 import io.squid.cynapse.dto.UserDTO;
 import io.squid.cynapse.entities.User;
+import io.squid.cynapse.enums.Role;
 import io.squid.cynapse.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,10 +18,8 @@ import java.util.List;
 @RequestMapping("/api/user")
 public class UserController {
 
-
     @Autowired
     private UserService userService;
-
 
     @GetMapping("/list")
     public ResponseEntity<List<UserDTO.UserProfile>> getUsersProfile() {
@@ -27,6 +27,7 @@ public class UserController {
     }
 
     @GetMapping("/get")
+    @AddUserExp(exp = 20)
     public ResponseEntity<?> getUserProfile(@RequestParam("id") long userId) {
         UserDTO.UserProfile userProfile = this.userService.getUserProfile(userId);
         if (userProfile == null) {
@@ -64,4 +65,51 @@ public class UserController {
         return ResponseEntity.ok(this.userService.save(user));
     }
 
+    @GetMapping("/nextRole")
+    public ResponseEntity<?> getNextRole() {
+        User user = this.userService.getCurrentUser();
+        if (user == null) {
+            return ResponseEntity.badRequest().body("User not found");
+        }
+
+        Role nextRole = this.userService.getNextRole(user);
+        if (nextRole == null) {
+            return ResponseEntity.ok(Role.ADMIN);
+        }
+
+        return ResponseEntity.ok(nextRole);
+    }
+
+    @GetMapping("/expToNextRole")
+    public ResponseEntity<?> getExpToNextRole() {
+        User user = this.userService.getCurrentUser();
+        if (user == null) {
+            return ResponseEntity.badRequest().body("User not found");
+        }
+
+        double expToNextRole = this.userService.getExpToNextRole(user);
+        return ResponseEntity.ok(expToNextRole);
+    }
+
+    @GetMapping("/neededExpForNextRole")
+    public ResponseEntity<?> getNeededExpForNextRole() {
+        User user = this.userService.getCurrentUser();
+        if (user == null) {
+            return ResponseEntity.badRequest().body("User not found");
+        }
+
+        Role nextRole = this.userService.getNextRole(user);
+        if (nextRole == null) {
+            return ResponseEntity.ok("Already at highest role");
+        }
+
+        double nextRoleExpThreshold = this.userService.getNeededExpForNextRole(user);
+
+        return ResponseEntity.ok(nextRoleExpThreshold);
+    }
+
+    @GetMapping("/expToRoleMapping")
+    public ResponseEntity<?> getExpToRoleMapping() {
+        return ResponseEntity.ok(this.userService.getExpToRoleMap());
+    }
 }

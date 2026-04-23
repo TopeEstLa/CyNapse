@@ -1,6 +1,7 @@
 package io.squid.cynapse.dto;
 
 import io.squid.cynapse.enums.MemberType;
+import io.squid.cynapse.enums.Role;
 
 import java.time.LocalDate;
 
@@ -16,16 +17,20 @@ public class UserDTO {
         private MemberType memberType;
         private LocalDate birthDate;
         private String image;
+        private Role role;
+        private double exp;
 
         public UserProfile() {
         }
 
-        public UserProfile(long id, String username, MemberType memberType, LocalDate birthDate, String image) {
+        public UserProfile(long id, String username, MemberType memberType, LocalDate birthDate, String image, Role role, double exp) {
             this.id = id;
             this.username = username;
             this.memberType = memberType;
             this.birthDate = birthDate;
             this.image = image;
+            this.role =role;
+            this.exp = exp;
         }
 
         public long getId() {
@@ -46,6 +51,14 @@ public class UserDTO {
 
         public String getImage() {
             return image;
+        }
+
+        public double getExp() {
+            return exp;
+        }
+
+        public Role getRole() {
+            return role;
         }
     }
 

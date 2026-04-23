@@ -81,6 +81,10 @@ public class User {
         this.memberType = memberType;
     }
 
+    public void addExp(double exp) {
+        this.exp += exp;
+    }
+
     public Long getId() {
         return id;
     }

@@ -6,7 +6,9 @@ package io.squid.cynapse.enums;
 public enum Role {
 
     USER(1),
-    ADMIN(10);
+    ADVANCED(10),
+    EXPERT(20),
+    ADMIN(100);
 
     private final int weight;
 
