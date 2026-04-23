@@ -103,18 +103,25 @@ public class SimulationService {
         };
     }
 
-    private int simulatePeople(int capacity, double lastValue) {
+    private double simulatePeople(int capacity, double lastValue) {
         if (capacity <= 0) {
             return 0;
         }
 
         int currentHour = LocalDateTime.now().getHour();
-        int maxForHour = (currentHour >= 8 && currentHour <= 18) ? (capacity + 3) : Math.max(1, (capacity + 4) / 5);
-        int change = this.random.nextInt(7) - 3; // -3 to +3
-        int newValue = (int) lastValue + change;
-        newValue = Math.max(0, newValue);
-        newValue = Math.min(maxForHour, newValue);
-        return newValue;
+        if (currentHour >= 19 || currentHour < 8) {
+            return 0;
+        }
+
+        if (lastValue >= 0) {
+            double change = this.randomRange(0, 100);
+            if (change <= 10) return lastValue;
+            return 0;
+        } else {
+            double change = this.randomRange(0, 100);
+            if (change <= 10) return lastValue;
+            return 30;
+        }
     }
 
     private void updateRoomStatus(Room room) {

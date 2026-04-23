@@ -17,12 +17,12 @@ public class ActuatorDevice extends Device {
 
     private String currentState;
 
-    @OneToMany(mappedBy = "device", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ActuatorHistory> history = new ArrayList<>();
-
     @JsonIgnore
     @OneToMany(mappedBy = "actuatorDevice", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<AutomationRule> automationRules = new ArrayList<>();
+
+    @OneToMany(mappedBy = "device", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ActuatorHistory> history = new ArrayList<>();
 
 
     public ActuatorDevice() {
@@ -41,19 +41,19 @@ public class ActuatorDevice extends Device {
         this.currentState = currentState;
     }
 
-    public List<ActuatorHistory> getHistory() {
-        return history;
-    }
-
-    public void setHistory(List<ActuatorHistory> history) {
-        this.history = history;
-    }
-
     public List<AutomationRule> getAutomationRules() {
         return automationRules;
     }
 
     public void setAutomationRules(List<AutomationRule> automationRules) {
         this.automationRules = automationRules;
+    }
+
+    public List<ActuatorHistory> getHistory() {
+        return history;
+    }
+
+    public void setHistory(List<ActuatorHistory> history) {
+        this.history = history;
     }
 }

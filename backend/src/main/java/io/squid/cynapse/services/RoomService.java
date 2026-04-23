@@ -1,13 +1,15 @@
 package io.squid.cynapse.services;
 
 import io.squid.cynapse.dto.DeviceDTO;
-import io.squid.cynapse.entities.Room;
-import io.squid.cynapse.enums.RoomStatus;
+import io.squid.cynapse.entities.*;
+import io.squid.cynapse.enums.*;
+import io.squid.cynapse.repositories.ActuatorDeviceRepository;
 import io.squid.cynapse.repositories.RoomRepository;
 import io.squid.cynapse.repositories.SensorDeviceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,6 +21,9 @@ public class RoomService {
 
     @Autowired
     private SensorDeviceRepository sensorDeviceRepository;
+
+    @Autowired
+    private ActuatorDeviceRepository actuatorDeviceRepository;
 
     public List<Room> findAll() {
         return this.roomRepository.findAll();
@@ -42,7 +47,23 @@ public class RoomService {
 
     public void createDefaultDevice(Room room) {
         //create temp ceo population device
+        this.sensorDeviceRepository.save(new SensorDevice("Temperature Sensor", room, DeviceType.THERMOMETER));
+        this.sensorDeviceRepository.save(new SensorDevice("CO2 Sensor", room, DeviceType.CO2_SENSOR));
+        this.sensorDeviceRepository.save(new SensorDevice("Occupancy Sensor", room, DeviceType.PEOPLE_COUNTER));
 
+        ActuatorDevice actuatorDevice = new ActuatorDevice("Smart Light", room, DeviceType.SMART_LIGHT, "OFF");
+
+        AutomationRule automationRule = new AutomationRule(actuatorDevice, "OFF", AutomationLogicalOperator.AND, 20, true);
+        AutomationCondition offCondition = new AutomationCondition(automationRule, AutomationConditionType.SENSOR_VALUE, DeviceType.PEOPLE_COUNTER, ComparisonOperator.LTE, 0.0, 0, 0);
+        automationRule.setConditions(new ArrayList<>(List.of(offCondition)));
+
+        AutomationRule automationRuleOn = new AutomationRule(actuatorDevice, "ON", AutomationLogicalOperator.AND, 20, true);
+        AutomationCondition onCondition = new AutomationCondition(automationRuleOn, AutomationConditionType.SENSOR_VALUE, DeviceType.PEOPLE_COUNTER, ComparisonOperator.GT, 0.0, 0, 0);
+        automationRuleOn.setConditions(new ArrayList<>(List.of(onCondition)));
+
+        actuatorDevice.getAutomationRules().add(automationRule);
+        actuatorDevice.getAutomationRules().add(automationRuleOn);
+        this.actuatorDeviceRepository.save(actuatorDevice);
     }
 
     public Room update(DeviceDTO.RoomPayload payload) {
