@@ -22,7 +22,7 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    private Map<Integer, Role> expToRoleMap = Map.of(150, Role.ADVANCED, 300, Role.EXPERT, 500, Role.ADMIN);
+    private final Map<Integer, Role> expToRoleMap = Map.of(150, Role.ADVANCED, 300, Role.EXPERT, 500, Role.ADMIN);
 
     public boolean userExists(String username, String email) {
         return this.userExistByUsername(username) || this.userExistByUsername(email);
