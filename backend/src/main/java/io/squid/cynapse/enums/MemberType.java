@@ -5,6 +5,10 @@ package io.squid.cynapse.enums;
  */
 public enum MemberType {
 
-    FRIEND,
+    STUDENT,
+    TEACHER,
+    RESEARCHER,
+    STAFF,
+    DIRECTOR,
 
 }
