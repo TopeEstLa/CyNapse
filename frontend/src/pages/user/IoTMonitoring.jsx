@@ -182,45 +182,6 @@ const IoTMonitoring = () => {
             </div>
           ))}
         </section>
-
-        <aside className="space-y-6">
-          <div className="bg-gray-900 p-6 rounded-xl shadow-lg text-white space-y-6 lg:sticky lg:top-24">
-            <div className="flex items-center justify-between border-b border-gray-700 pb-4">
-              <h2 className="text-lg font-bold flex items-center gap-2">
-                <AlertTriangle className="w-5 h-5 text-red-500" />
-                Alerts
-              </h2>
-              <span className="bg-red-600 text-white px-2 py-1 rounded text-xs font-bold">
-                {alerts.length}
-              </span>
-            </div>
-
-            <div className="space-y-4 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
-              {alerts.length === 0 ? (
-                <div className="py-8 text-center text-gray-500">
-                  <ShieldCheck className="w-8 h-8 mx-auto mb-2 opacity-50" />
-                  <p className="text-sm">All systems nominal</p>
-                </div>
-              ) : (
-                alerts.map(alert => (
-                  <div key={alert.id} className="p-3 rounded-lg bg-gray-800 border border-gray-700">
-                    <div className="flex justify-between items-center mb-1">
-                      <span className={`px-1.5 py-0.5 rounded text-[10px] font-bold ${
-                        alert.severity === 'HIGH' ? 'bg-red-600' : 'bg-yellow-600'
-                      }`}>
-                        {alert.severity}
-                      </span>
-                      <span className="text-[10px] text-gray-400">{new Date(alert.createdAt).toLocaleTimeString()}</span>
-                    </div>
-                    <p className="text-sm text-gray-300">
-                       <span className="font-bold text-white">{alert.roomName || 'Room'}</span>: {alert.message}
-                    </p>
-                  </div>
-                ))
-              )}
-            </div>
-          </div>
-        </aside>
       </div>
     </main>
   );

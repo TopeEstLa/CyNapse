@@ -18,6 +18,7 @@ import Profile from './pages/user/Profile';
 import Users from './pages/user/Users';
 import UserProfileView from './pages/user/UserProfileView';
 import IoTMonitoring from './pages/user/IoTMonitoring';
+import AllDevices from './pages/user/AllDevices';
 import RoomSensors from './pages/user/RoomSensors';
 import DeviceDetail from './pages/user/DeviceDetail';
 import FindRoom from './pages/user/FindRoom';
@@ -67,8 +68,9 @@ function App() {
               <Route path="/users" element={<Users />} />
               <Route path="/user/:id" element={<UserProfileView />} />
               <Route path="/monitoring" element={<IoTMonitoring />} />
+              <Route path="/all-devices" element={<AllDevices />} />
               <Route path="/monitoring/room/:id" element={<RoomSensors />} />
-              <Route path="/monitoring/room/:roomId/device/:deviceId" element={<DeviceDetail />} />
+              <Route path="/device/:deviceId" element={<DeviceDetail />} />
               <Route path="/find-room" element={<FindRoom />} />
               <Route path="/my-requests" element={<MyDeleteRequests />} />
             </Route>

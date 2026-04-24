@@ -24,7 +24,7 @@ import {
 import { DeviceType } from '../../utils/constants';
 
 const DeviceDetail = () => {
-  const { roomId, deviceId } = useParams();
+  const { deviceId } = useParams();
   const navigate = useNavigate();
   
   const isSensor = deviceId.startsWith('sensor-');
@@ -43,7 +43,7 @@ const DeviceDetail = () => {
     fetchData();
     const interval = setInterval(fetchData, 10000);
     return () => clearInterval(interval);
-  }, [roomId, deviceId]);
+  }, [deviceId]);
 
   const fetchData = async () => {
     try {
@@ -255,7 +255,7 @@ const DeviceDetail = () => {
   if (!device) return (
     <div className="max-w-4xl mx-auto px-4 py-20 text-center text-xs uppercase font-black">
       <h2 className="text-2xl mb-4">Device not found</h2>
-      <button onClick={() => navigate(`/monitoring/room/${roomId}`)} className="text-primary">
+      <button onClick={() => navigate('/monitoring')} className="text-primary">
         <ArrowLeft className="w-4 h-4 inline mr-2" /> Back
       </button>
     </div>
@@ -270,11 +270,11 @@ const DeviceDetail = () => {
       <header className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b pb-6">
         <div className="space-y-4">
           <button 
-            onClick={() => navigate(`/monitoring/room/${roomId}`)}
+            onClick={() => navigate('/monitoring')}
             className="inline-flex items-center gap-2 text-sm font-semibold text-gray-500 hover:text-gray-900 transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
-            Back to Room
+            Back to Monitoring
           </button>
           <div className="flex flex-col md:flex-row items-center gap-4">
             <h1 className="text-3xl font-bold tracking-tight uppercase leading-tight">{device.name}</h1>

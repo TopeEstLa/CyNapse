@@ -247,7 +247,7 @@ const RoomSensors = () => {
             return (
               <div key={device.id} className="relative group">
                 <button
-                  onClick={() => navigate(`/monitoring/room/${id}/device/sensor-${device.id}`)}
+                  onClick={() => navigate(`/device/sensor-${device.id}`)}
                   className="w-full bg-white rounded-xl p-6 text-left border border-gray-200 shadow-sm hover:border-blue-500 hover:shadow-md transition-all"
                 >
                   <div className="flex justify-between items-start mb-6">
@@ -326,7 +326,7 @@ const RoomSensors = () => {
             return (
               <div key={device.id} className="relative group">
                 <button
-                  onClick={() => navigate(`/monitoring/room/${id}/device/actuator-${device.id}`)}
+                  onClick={() => navigate(`/device/actuator-${device.id}`)}
                   className="w-full bg-white rounded-xl p-6 text-left border border-gray-200 shadow-sm hover:border-blue-500 hover:shadow-md transition-all"
                 >
                   <div className="flex justify-between items-start mb-6">
