@@ -1,174 +1,98 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, Outlet } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
-import Navbar from './components/Navbar';
-import Home from './pages/Home';
-import Login from './pages/Login';
-import Register from './pages/Register';
-import Profile from './pages/Profile';
-import Users from './pages/Users';
-import UserProfileView from './pages/UserProfileView';
-import AdminLayout from './components/AdminLayout';
-import AdminDashboard from './pages/admin/AdminDashboard.jsx';
-import AdminUsers from './pages/admin/user/AdminUsers.jsx';
-import AdminPendingUsers from './pages/admin/AdminPendingUsers.jsx';
-import AdminUserEdit from './pages/admin/user/AdminUserEdit.jsx';
-import AdminRooms from './pages/admin/room/AdminRooms.jsx';
-import AdminRoomEdit from './pages/admin/room/AdminRoomEdit.jsx';
-import AdminSensorEdit from './pages/admin/room/device/AdminSensorEdit.jsx';
-import AdminActuatorEdit from './pages/admin/room/device/AdminActuatorEdit.jsx';
-import AdminNews from './pages/admin/news/AdminNews.jsx';
-import AdminNewsEdit from './pages/admin/news/AdminNewsEdit.jsx';
-import IoTMonitoring from './pages/IoTMonitoring';
-import RoomSensors from './pages/RoomSensors';
-import DeviceDetail from './pages/DeviceDetail';
-import FindRoom from './pages/FindRoom';
-import News from './pages/News';
-import MyDeleteRequests from './pages/MyDeleteRequests';
-import AdminDeleteRequests from './pages/admin/AdminDeleteRequests.jsx';
-import { Role } from './utils/constants';
+
+// Layouts
+import MainLayout from './layouts/MainLayout';
+import AdminLayout from './layouts/AdminLayout';
+
+// Public Pages
+import Home from './pages/public/Home';
+import Login from './pages/public/Login';
+import Register from './pages/public/Register';
+import News from './pages/public/News';
+import NewsDetail from './pages/public/NewsDetail';
+
+// User Pages
+import Profile from './pages/user/Profile';
+import Users from './pages/user/Users';
+import UserProfileView from './pages/user/UserProfileView';
+import IoTMonitoring from './pages/user/IoTMonitoring';
+import RoomSensors from './pages/user/RoomSensors';
+import DeviceDetail from './pages/user/DeviceDetail';
+import FindRoom from './pages/user/FindRoom';
+import MyDeleteRequests from './pages/user/MyDeleteRequests';
+
+// Admin Pages
+import AdminDashboard from './pages/admin/AdminDashboard';
+import AdminUsers from './pages/admin/users/AdminUsers';
+import AdminPendingUsers from './pages/admin/users/AdminPendingUsers';
+import AdminUserEdit from './pages/admin/users/AdminUserEdit';
+import AdminRooms from './pages/admin/rooms/AdminRooms';
+import AdminRoomEdit from './pages/admin/rooms/AdminRoomEdit';
+import AdminSensorEdit from './pages/admin/devices/AdminSensorEdit';
+import AdminActuatorEdit from './pages/admin/devices/AdminActuatorEdit';
+import AdminNews from './pages/admin/news/AdminNews';
+import AdminNewsEdit from './pages/admin/news/AdminNewsEdit';
+import AdminDeleteRequests from './pages/admin/AdminDeleteRequests';
+
 import './index.css';
 
-const ProtectedRoute = ({ children }) => {
+const ProtectedRoute = () => {
   const { user, loading } = useAuth();
-  
-  if (loading) return (
-    <div className="min-h-screen flex items-center justify-center bg-background">
-      <div className="animate-spin rounded-full h-12 w-12 border-4 border-primary/20 border-t-primary"></div>
-    </div>
-  );
-  
-  if (!user) return <Navigate to="/login" />;
-  return children;
-};
 
-const AdminRoute = ({ children }) => {
-  const { user, loading } = useAuth();
-  
-  if (loading) return (
-    <div className="min-h-screen flex items-center justify-center bg-background">
-      <div className="animate-spin rounded-full h-12 w-12 border-4 border-primary/20 border-t-primary"></div>
-    </div>
-  );
-  
-  if (!user || user.role !== Role.ADMIN) return <Navigate to="/" />;
-  return children;
-};
+  if (loading) return <div className="p-8 text-center">Loading...</div>;
+  if (!user) return <Navigate to="/login" replace />;
 
-function AppContent() {
-  return (
-    <div className="min-h-screen bg-background flex flex-col">
-      <Navbar />
-      <div className="flex-1">
-        <Routes>
-          <Route path="/" element={<main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8"><Home /></main>} />
-          <Route path="/login" element={<main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8"><Login /></main>} />
-          <Route path="/register" element={<main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8"><Register /></main>} />
-          <Route 
-            path="/profile" 
-            element={
-              <ProtectedRoute>
-                <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8"><Profile /></main>
-              </ProtectedRoute>
-            } 
-          />
-          <Route 
-            path="/monitoring" 
-            element={
-              <ProtectedRoute>
-                <IoTMonitoring />
-              </ProtectedRoute>
-            } 
-          />
-          <Route 
-            path="/news" 
-            element={
-              <News />
-            } 
-          />
-          <Route 
-            path="/find-room" 
-            element={
-              <ProtectedRoute>
-                <FindRoom />
-              </ProtectedRoute>
-            } 
-          />
-          <Route 
-            path="/monitoring/room/:id" 
-            element={
-              <ProtectedRoute>
-                <RoomSensors />
-              </ProtectedRoute>
-            } 
-          />
-          <Route 
-            path="/monitoring/room/:roomId/device/:deviceId" 
-            element={
-              <ProtectedRoute>
-                <DeviceDetail />
-              </ProtectedRoute>
-            } 
-          />
-          <Route 
-            path="/users" 
-            element={
-              <ProtectedRoute>
-                <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8"><Users /></main>
-              </ProtectedRoute>
-            } 
-          />
-          <Route 
-            path="/my-requests" 
-            element={
-              <ProtectedRoute>
-                <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8"><MyDeleteRequests /></main>
-              </ProtectedRoute>
-            } 
-          />
-          <Route 
-            path="/user/:id" 
-            element={
-              <ProtectedRoute>
-                <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8"><UserProfileView /></main>
-              </ProtectedRoute>
-            } 
-          />
-          
-          {/* Admin Routes with Sidebar Layout */}
-          <Route 
-            path="/admin" 
-            element={
-              <AdminRoute>
-                <AdminLayout />
-              </AdminRoute>
-            }
-          >
-            <Route index element={<AdminDashboard />} />
-            <Route path="users" element={<AdminUsers />} />
-            <Route path="pending" element={<AdminPendingUsers />} />
-            <Route path="rooms" element={<AdminRooms />} />
-            <Route path="rooms/:id" element={<AdminRoomEdit />} />
-            <Route path="sensors/:id" element={<AdminSensorEdit />} />
-            <Route path="actuators/:id" element={<AdminActuatorEdit />} />
-            <Route path="user/:id" element={<AdminUserEdit />} />
-            <Route path="news" element={<AdminNews />} />
-            <Route path="news/create" element={<AdminNewsEdit />} />
-            <Route path="news/edit/:slug" element={<AdminNewsEdit />} />
-            <Route path="requests" element={<AdminDeleteRequests />} />
-            <Route path="settings" element={<div className="p-8 text-center text-gray-500">System settings coming soon.</div>} />
-          </Route>
-        </Routes>
-      </div>
-    </div>
-  );
-}
+  return <Outlet />;
+};
 
 function App() {
   return (
     <AuthProvider>
       <Router>
-        <AppContent />
+        <Routes>
+          {/* Main Layout - Public & User Routes */}
+          <Route element={<MainLayout />}>
+            {/* Public Routes */}
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/news" element={<News />} />
+            <Route path="/news/:slug" element={<NewsDetail />} />
+
+            {/* Protected User Routes */}
+            <Route element={<ProtectedRoute />}>
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/users" element={<Users />} />
+              <Route path="/user/:id" element={<UserProfileView />} />
+              <Route path="/monitoring" element={<IoTMonitoring />} />
+              <Route path="/monitoring/room/:id" element={<RoomSensors />} />
+              <Route path="/monitoring/room/:roomId/device/:deviceId" element={<DeviceDetail />} />
+              <Route path="/find-room" element={<FindRoom />} />
+              <Route path="/my-requests" element={<MyDeleteRequests />} />
+            </Route>
+          </Route>
+
+          {/* Admin Layout - Admin Routes */}
+          <Route path="/admin" element={<AdminLayout />}>
+            <Route index element={<AdminDashboard />} />
+            <Route path="users" element={<AdminUsers />} />
+            <Route path="pending" element={<AdminPendingUsers />} />
+            <Route path="user/:id" element={<AdminUserEdit />} />
+            <Route path="rooms" element={<AdminRooms />} />
+            <Route path="rooms/:id" element={<AdminRoomEdit />} />
+            <Route path="sensors/:id" element={<AdminSensorEdit />} />
+            <Route path="actuators/:id" element={<AdminActuatorEdit />} />
+            <Route path="news" element={<AdminNews />} />
+            <Route path="news/create" element={<AdminNewsEdit />} />
+            <Route path="news/edit/:slug" element={<AdminNewsEdit />} />
+            <Route path="requests" element={<AdminDeleteRequests />} />
+          </Route>
+
+          {/* Fallback */}
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
       </Router>
     </AuthProvider>
   );

@@ -2,109 +2,77 @@ import React, { useState, useEffect } from 'react';
 import { userApi } from '../utils/api';
 import { Role } from '../utils/constants';
 
-const ExpProgressBar = ({ user, isCurrentUser = true }) => {
-  const [nextRoleData, setNextRoleData] = useState(null);
-  const [neededExp, setNeededExp] = useState(null);
+const ExpProgressBar = ({ user }) => {
   const [mapping, setMapping] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchExpData = async () => {
+    const fetchMapping = async () => {
       try {
-        const roleMapping = await userApi.getExpMapping();
-        setMapping(roleMapping);
-        const sortedRoles = Object.entries(roleMapping).sort((a, b) => a[1] - b[1]);
-        const currentExp = user.exp || 0;
-
-        const currentRoleIndex = [...sortedRoles].reverse().findIndex(([_, roleExp]) => currentExp >= roleExp);
-        const actualCurrentRoleIndex = currentRoleIndex !== -1 ? (sortedRoles.length - 1 - currentRoleIndex) : 0;
-        
-        const nextRoleEntry = sortedRoles[actualCurrentRoleIndex + 1];
-
-        if (nextRoleEntry) {
-          setNextRoleData(nextRoleEntry[0]);
-          setNeededExp(nextRoleEntry[1]);
-        } else {
-          setNextRoleData(null);
-          setNeededExp(null);
-        }
+        const rawMapping = await userApi.getExpMapping();
+        // Invert mapping: from { "100": "ADVANCED" } to { "ADVANCED": 100 }
+        const invertedMapping = Object.entries(rawMapping).reduce((acc, [exp, role]) => {
+          acc[role] = parseInt(exp);
+          return acc;
+        }, {});
+        setMapping(invertedMapping);
       } catch (err) {
-        console.error('Failed to fetch XP data:', err);
+        console.error('Failed to fetch XP mapping:', err);
       } finally {
         setLoading(false);
       }
     };
+    fetchMapping();
+  }, []);
 
-    if (user) {
-      fetchExpData();
-    }
-  }, [user]);
+  if (loading) return <div className="h-4 bg-gray-100 animate-pulse rounded w-full"></div>;
+  if (!user || !mapping) return null;
 
-  if (loading) {
+  const rolesOrder = [Role.USER, Role.ADVANCED, Role.EXPERT, Role.ADMIN];
+  const currentRole = user.role || Role.USER;
+  const currentExp = user.exp || 0;
+
+  const currentIndex = rolesOrder.indexOf(currentRole);
+  const nextRole = rolesOrder[currentIndex + 1];
+
+  if (!nextRole || mapping[nextRole] === undefined) {
     return (
-      <div className="w-full animate-pulse">
-        <div className="h-4 bg-gray-200 rounded w-1/4 mb-2"></div>
-        <div className="h-2 bg-gray-200 rounded-full w-full"></div>
+      <div className="w-full">
+        <div className="flex justify-between text-xs mb-1">
+          <span className="font-bold text-gray-700">{currentRole} (Max Rank)</span>
+          <span className="text-gray-500">{Math.floor(currentExp)} XP</span>
+        </div>
+        <div className="h-2 w-full bg-gray-200 rounded-full overflow-hidden">
+          <div className="h-full bg-blue-600 w-full" />
+        </div>
       </div>
     );
   }
 
-  const currentExp = user.exp || 0;
-  let currentRole = user.role || Role.USER;
+  const minExp = mapping[currentRole] || 0;
+  const targetExp = mapping[nextRole];
+  const expInLevel = currentExp - minExp;
+  const range = targetExp - minExp;
   
-  if (mapping) {
-      const sortedRoles = Object.entries(mapping).sort((a, b) => a[1] - b[1]);
-      const roleFound = [...sortedRoles].reverse().find(([_, roleExp]) => currentExp >= roleExp);
-      if (roleFound) currentRole = roleFound[0];
-  }
-
-  if (!nextRoleData) {
-      return (
-        <div className="space-y-2 w-full text-left">
-          <div className="flex justify-between items-end">
-            <div>
-              <span className="text-[10px] font-black text-primary uppercase tracking-wider">Maximum Level</span>
-              <h4 className="text-sm font-bold text-gray-900">{currentRole}</h4>
-            </div>
-            <span className="text-xs text-gray-500 font-medium">{Math.floor(currentExp)} XP</span>
-          </div>
-          <div className="h-2 w-full bg-gray-100 rounded-full overflow-hidden">
-            <div className="h-full bg-primary w-full" />
-          </div>
-        </div>
-      );
-  }
-
-  const totalNextExp = neededExp;
-  
-  let prevLevelExp = 0;
-  if (mapping) {
-      const sortedRoles = Object.entries(mapping).sort((a, b) => a[1] - b[1]);
-      const currentIndex = sortedRoles.findIndex(([role]) => role === currentRole);
-      if (currentIndex !== -1) {
-          prevLevelExp = sortedRoles[currentIndex][1];
-      }
-  }
-
-  const expRange = totalNextExp - prevLevelExp;
-  const progress = expRange > 0 
-    ? Math.min(100, Math.max(0, ((currentExp - prevLevelExp) / expRange) * 100))
-    : 100;
+  // Calculate progress within the current level range
+  const progress = range > 0 ? Math.min(100, Math.max(0, (expInLevel / range) * 100)) : 100;
+  const expToNext = targetExp - currentExp;
 
   return (
-    <div className="space-y-2 w-full text-left">
-      <div className="flex justify-between items-end">
-        <div>
-          <span className="text-[10px] font-black text-primary uppercase tracking-wider">Rank: {currentRole}</span>
-          <h4 className="text-sm font-bold text-gray-900">Next: {nextRoleData}</h4>
-        </div>
-        <span className="text-xs text-gray-500 font-medium">{Math.floor(currentExp)} / {Math.floor(totalNextExp)} XP</span>
+    <div className="w-full space-y-1">
+      <div className="flex justify-between text-xs font-medium">
+        <span className="text-gray-600">{currentRole}</span>
+        <span className="text-blue-600">Next: {nextRole}</span>
       </div>
-      <div className="h-2 w-full bg-gray-100 rounded-full overflow-hidden">
+      <div className="h-2 w-full bg-gray-200 rounded-full overflow-hidden border">
         <div 
-          className="h-full bg-primary transition-all duration-500 ease-out"
-          style={{ width: `${progress}%` }}
+          className="h-full bg-blue-600 transition-all duration-700 ease-out" 
+          style={{ width: `${progress}%` }} 
         />
+      </div>
+      <div className="flex justify-between text-[10px] text-gray-500 uppercase font-bold">
+        <span>{Math.floor(currentExp)} XP</span>
+        <span>{Math.max(0, Math.floor(expToNext))} XP to go</span>
       </div>
     </div>
   );

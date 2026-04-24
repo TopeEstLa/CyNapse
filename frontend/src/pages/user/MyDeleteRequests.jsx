@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { api } from '../utils/api';
+import { api } from '../../utils/api';
 import { Loader2, Trash2, Clock, CheckCircle2, XCircle, ArrowLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
@@ -54,35 +54,39 @@ const MyDeleteRequests = () => {
   );
 
   return (
-    <div className="max-w-4xl mx-auto space-y-8">
-      <div className="flex items-center justify-between">
+    <main className="max-w-4xl mx-auto space-y-8 text-gray-900">
+      <header className="flex items-center justify-between border-b pb-4">
         <div>
-          <h1 className="text-2xl font-black text-gray-900 uppercase tracking-tight">My Delete Requests</h1>
-          <p className="text-sm text-gray-500">Track the status of your device removal requests.</p>
+          <h1 className="text-2xl font-bold uppercase tracking-tight">Deletion Requests</h1>
+          <p className="text-sm text-gray-500 font-medium">Track status of device removal requests.</p>
         </div>
-        <Link to="/monitoring" className="p-2.5 bg-surface border border-gray-100 rounded-xl text-gray-400 hover:text-gray-900 transition-all shadow-sm">
+        <Link 
+          to="/monitoring" 
+          className="p-2 bg-white border border-gray-300 rounded-lg text-gray-500 hover:text-gray-900 transition-colors shadow-sm"
+          aria-label="Back to Monitoring"
+        >
            <ArrowLeft className="w-5 h-5" />
         </Link>
-      </div>
+      </header>
 
-      <div className="space-y-4">
+      <section className="space-y-4">
         {requests.length === 0 ? (
-          <div className="bg-surface rounded-[2rem] p-12 text-center border border-gray-100 shadow-sm">
-            <Trash2 className="w-12 h-12 text-gray-200 mx-auto mb-4" />
-            <p className="text-gray-500 font-medium">You haven't made any deletion requests yet.</p>
+          <div className="bg-gray-50 rounded-xl p-12 text-center border-2 border-dashed border-gray-200">
+            <Trash2 className="w-12 h-12 text-gray-300 mx-auto mb-4" />
+            <p className="text-gray-500 font-semibold uppercase text-xs tracking-widest">No active requests</p>
           </div>
         ) : (
           requests.map((req) => (
-            <div key={req.id} className="bg-surface rounded-3xl p-6 border border-gray-100 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-6 hover:shadow-md transition-shadow">
+            <div key={req.id} className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-6 hover:shadow-md transition-shadow">
               <div className="flex items-center gap-4">
-                <div className="p-4 bg-background-light rounded-2xl text-gray-400">
+                <div className="p-4 bg-gray-50 rounded-lg text-gray-400 border border-gray-100">
                    <Trash2 className="w-6 h-6" />
                 </div>
                 <div>
-                  <h3 className="font-black text-gray-900 uppercase tracking-tight">
-                    {req.deviceType} #{req.deviceId}
+                  <h3 className="font-bold text-gray-900 uppercase tracking-tight">
+                    {req.deviceType} <span className="text-blue-600">#{req.deviceId}</span>
                   </h3>
-                  <p className="text-xs text-gray-400 font-bold uppercase tracking-widest mt-0.5">
+                  <p className="text-xs text-gray-500 font-bold uppercase tracking-wider mt-1">
                     Requested on {new Date(req.requestedAt).toLocaleDateString()}
                   </p>
                 </div>
@@ -91,17 +95,19 @@ const MyDeleteRequests = () => {
               <div className="flex items-center gap-6">
                 {req.reviewedAt && (
                    <div className="text-right hidden md:block">
-                      <p className="text-[9px] font-black text-gray-400 uppercase tracking-[0.2em]">Reviewed on</p>
-                      <p className="text-xs font-bold text-gray-600">{new Date(req.reviewedAt).toLocaleDateString()}</p>
+                      <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Reviewed on</p>
+                      <p className="text-xs font-semibold text-gray-600">{new Date(req.reviewedAt).toLocaleDateString()}</p>
                    </div>
                 )}
-                {getStatusBadge(req.status)}
+                <div className="min-w-[120px] flex justify-end">
+                  {getStatusBadge(req.status)}
+                </div>
               </div>
             </div>
           ))
         )}
-      </div>
-    </div>
+      </section>
+    </main>
   );
 };
 

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { api } from '../../utils/api.js';
-import { Loader2, Trash2, MessageSquare, User } from 'lucide-react';
+import { Loader2, Trash2, User } from 'lucide-react';
 
 const AdminDeleteRequests = () => {
   const [requests, setRequests] = useState([]);
@@ -36,130 +36,117 @@ const AdminDeleteRequests = () => {
     }
   };
 
-  const getStatusBadge = (status) => {
+  const getStatusColor = (status) => {
     switch (status) {
-      case 'PENDING':
-        return <span className="px-2.5 py-1 bg-warning/10 text-warning rounded-lg text-[10px] font-black uppercase tracking-widest border border-warning/20">Pending</span>;
-      case 'APPROVED':
-        return <span className="px-2.5 py-1 bg-secondary/10 text-secondary rounded-lg text-[10px] font-black uppercase tracking-widest border border-secondary/20">Approved</span>;
-      case 'REJECTED':
-        return <span className="px-2.5 py-1 bg-danger/10 text-danger rounded-lg text-[10px] font-black uppercase tracking-widest border border-danger/20">Rejected</span>;
-      default:
-        return null;
+      case 'PENDING': return 'bg-yellow-100 text-yellow-800 border-yellow-200';
+      case 'APPROVED': return 'bg-green-100 text-green-800 border-green-200';
+      case 'REJECTED': return 'bg-red-100 text-red-800 border-red-200';
+      default: return 'bg-gray-100 text-gray-800 border-gray-200';
     }
   };
 
   return (
-    <div className="space-y-6 text-gray-900">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div className="space-y-6">
+      <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Device Removal Requests</h1>
-          <p className="text-sm text-gray-500">Review and approve requests to delete devices from the system.</p>
+          <h1 className="text-2xl font-bold">Removal Requests</h1>
+          <p className="text-gray-500">Review and moderate device deletion requests.</p>
         </div>
-        <div className="flex items-center gap-2 bg-surface p-1 rounded-xl border border-gray-100 shadow-sm">
+        <nav className="flex bg-gray-100 p-1 rounded border">
            {['PENDING', 'APPROVED', 'REJECTED', ''].map((s) => (
              <button
                key={s}
                onClick={() => setStatusFilter(s)}
-               className={`px-4 py-2 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all ${
-                 statusFilter === s ? 'bg-background-dark text-white shadow-md' : 'text-gray-400 hover:text-gray-600'
+               className={`px-4 py-2 rounded text-xs font-bold transition-colors ${
+                 statusFilter === s ? 'bg-white shadow-sm text-blue-600' : 'text-gray-500 hover:text-gray-700'
                }`}
              >
                {s || 'All'}
              </button>
            ))}
-        </div>
-      </div>
+        </nav>
+      </header>
 
-      <div className="bg-surface rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full text-left border-collapse min-w-[900px]">
-            <thead>
-              <tr className="bg-background-light border-b border-gray-100">
-                <th className="px-6 py-4 text-[10px] font-black text-gray-400 uppercase tracking-widest">Device Info</th>
-                <th className="px-6 py-4 text-[10px] font-black text-gray-400 uppercase tracking-widest">Reason</th>
-                <th className="px-6 py-4 text-[10px] font-black text-gray-400 uppercase tracking-widest">Date</th>
-                <th className="px-6 py-4 text-[10px] font-black text-gray-400 uppercase tracking-widest">Status</th>
-                <th className="px-6 py-4 text-[10px] font-black text-gray-400 uppercase tracking-widest text-right">Actions</th>
+      <div className="bg-white border rounded overflow-hidden">
+        <table className="w-full text-left border-collapse">
+          <thead className="bg-gray-50 border-b text-xs font-semibold text-gray-500 uppercase">
+            <tr>
+              <th className="px-6 py-3">Device</th>
+              <th className="px-6 py-3">Reason</th>
+              <th className="px-6 py-3">Requested By</th>
+              <th className="px-6 py-3">Date</th>
+              <th className="px-6 py-3">Status</th>
+              <th className="px-6 py-3 text-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y">
+            {loading ? (
+              <tr>
+                <td colSpan="6" className="px-6 py-12 text-center text-gray-500">
+                  <Loader2 className="w-6 h-6 animate-spin mx-auto mb-2" />
+                  <span>Loading requests...</span>
+                </td>
               </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-100">
-              {loading ? (
-                <tr>
-                  <td colSpan="5" className="px-6 py-12 text-center">
-                    <Loader2 className="w-8 h-8 animate-spin text-primary mx-auto mb-2" />
-                    <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Loading requests...</p>
+            ) : requests.length > 0 ? (
+              requests.map((r) => (
+                <tr key={r.id} className="hover:bg-gray-50">
+                  <td className="px-6 py-4">
+                    <div className="flex items-center gap-2">
+                      <Trash2 size={16} className="text-gray-400" />
+                      <div>
+                        <div className="font-bold">{r.deviceType}</div>
+                        <div className="text-[10px] text-gray-400">ID: {r.deviceId}</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td className="px-6 py-4">
+                    <p className="text-sm italic text-gray-600 max-w-xs truncate" title={r.reason}>"{r.reason}"</p>
+                  </td>
+                  <td className="px-6 py-4">
+                    <div className="flex items-center gap-1 text-sm text-gray-600">
+                      <User size={14} />
+                      User #{r.userId}
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-600">
+                    {new Date(r.requestedAt).toLocaleDateString()}
+                  </td>
+                  <td className="px-6 py-4">
+                    <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase border ${getStatusColor(r.status)}`}>
+                      {r.status}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 text-right">
+                    {r.status === 'PENDING' ? (
+                      <div className="flex justify-end gap-2">
+                        <button
+                          onClick={() => handleAction(r.id, 'reject')}
+                          disabled={processingId !== null}
+                          className="px-3 py-1 border border-red-200 text-red-600 rounded text-xs hover:bg-red-50"
+                        >
+                          Reject
+                        </button>
+                        <button
+                          onClick={() => handleAction(r.id, 'approve')}
+                          disabled={processingId !== null}
+                          className="px-3 py-1 bg-blue-600 text-white rounded text-xs hover:bg-blue-700"
+                        >
+                          Approve
+                        </button>
+                      </div>
+                    ) : (
+                      <span className="text-xs text-gray-400 italic">Completed</span>
+                    )}
                   </td>
                 </tr>
-              ) : requests.length > 0 ? (
-                requests.map((r) => (
-                  <tr key={r.id} className="hover:bg-background-light transition-colors">
-                    <td className="px-6 py-4">
-                      <div className="flex items-center gap-3">
-                        <div className="p-3 bg-background-light rounded-xl text-gray-400">
-                          <Trash2 className="w-4 h-4" />
-                        </div>
-                        <div>
-                          <div className="text-sm font-bold text-gray-900 uppercase tracking-tight">
-                            {r.deviceType} #{r.deviceId}
-                          </div>
-                          <div className="text-[10px] text-gray-400 font-bold uppercase tracking-widest flex items-center gap-1">
-                             <User className="w-3 h-3" /> Requester ID: {r.userId || 'N/A'}
-                          </div>
-                        </div>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4">
-                      <div className="flex items-start gap-2 max-w-xs">
-                         <MessageSquare className="w-4 h-4 text-gray-300 shrink-0 mt-0.5" />
-                         <p className="text-sm text-gray-600 leading-relaxed italic">"{r.reason}"</p>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4">
-                      <div className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">
-                         {new Date(r.requestedAt).toLocaleDateString()}
-                      </div>
-                      <div className="text-[9px] text-gray-400 font-medium">
-                         {new Date(r.requestedAt).toLocaleTimeString()}
-                      </div>
-                    </td>
-                    <td className="px-6 py-4">
-                      {getStatusBadge(r.status)}
-                    </td>
-                    <td className="px-6 py-4 text-right">
-                      {r.status === 'PENDING' ? (
-                        <div className="flex justify-end gap-2">
-                          <button
-                            onClick={() => handleAction(r.id, 'reject')}
-                            disabled={processingId !== null}
-                            className="px-4 py-2 text-[10px] font-black uppercase tracking-widest text-danger hover:bg-danger/10 rounded-xl transition-all border border-danger/20"
-                          >
-                            Reject
-                          </button>
-                          <button
-                            onClick={() => handleAction(r.id, 'approve')}
-                            disabled={processingId !== null}
-                            className="px-4 py-2 text-[10px] font-black uppercase tracking-widest text-white bg-background-dark hover:bg-black rounded-xl transition-all shadow-md shadow-slate-200"
-                          >
-                            Approve
-                          </button>
-                        </div>
-                      ) : (
-                        <span className="text-[10px] font-bold text-gray-300 uppercase italic">Reviewed</span>
-                      )}
-                    </td>
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan="5" className="px-6 py-12 text-center text-gray-400 font-medium uppercase text-[10px] tracking-[0.2em]">
-                    No requests found for this status.
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="6" className="px-6 py-12 text-center text-gray-500 italic">No removal requests found.</td>
+              </tr>
+            )}
+          </tbody>
+        </table>
       </div>
     </div>
   );

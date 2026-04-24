@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { userApi } from '../utils/api';
+import { userApi } from '../../utils/api';
 import { User, Search, Loader2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
@@ -33,8 +33,8 @@ const Users = () => {
   );
 
   return (
-    <div className="max-w-6xl mx-auto p-4">
-      <div className="mb-8">
+    <main className="max-w-6xl mx-auto p-4 space-y-8">
+      <header>
         <h1 className="text-2xl font-bold text-gray-900 mb-4">Discover People</h1>
         <div className="relative">
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
@@ -43,44 +43,44 @@ const Users = () => {
             placeholder="Search users..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-12 pr-4 py-3 bg-surface border border-gray-200 rounded-2xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all shadow-sm"
+            className="w-full pl-12 pr-4 py-3 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all shadow-sm"
           />
         </div>
-      </div>
+      </header>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {filteredUsers.map((u) => (
           <Link 
             key={u.id} 
             to={`/user/${u.id}`}
-            className="bg-surface p-6 rounded-3xl border border-gray-100 shadow-sm hover:shadow-md transition-all group"
+            className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm hover:shadow-md hover:border-blue-500 transition-all group"
           >
             <div className="flex flex-col items-center text-center">
-              <div className="w-20 h-20 rounded-2xl bg-primary/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+              <div className="w-20 h-20 rounded-lg bg-gray-100 flex items-center justify-center mb-4 overflow-hidden border border-gray-200">
                 {u.image ? (
-                  <img src={u.image} alt="" className="w-full h-full object-cover rounded-2xl" />
+                  <img src={u.image} alt="" className="w-full h-full object-cover" />
                 ) : (
-                  <User className="w-10 h-10 text-primary" />
+                  <User className="w-10 h-10 text-gray-400" />
                 )}
               </div>
               <h3 className="font-bold text-gray-900">{u.username}</h3>
-              <div className="flex flex-col gap-1 mt-1">
-                <span className="text-[10px] font-black uppercase tracking-widest text-primary bg-primary/5 px-2 py-0.5 rounded-full">
+              <div className="flex flex-col gap-1 mt-2">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-blue-600 bg-blue-50 px-2 py-0.5 rounded border border-blue-100">
                   {u.role || 'USER'}
                 </span>
-                <p className="text-xs text-gray-400 font-medium">
+                <p className="text-xs text-gray-500 font-medium">
                   {Math.floor(u.exp || 0)} XP
                 </p>
               </div>
               
-              <div className="mt-4 pt-4 border-t border-gray-50 w-full">
-                <span className="text-primary text-sm font-semibold">View Profile</span>
+              <div className="mt-4 pt-4 border-t border-gray-100 w-full">
+                <span className="text-blue-600 text-sm font-semibold group-hover:underline">View Profile</span>
               </div>
             </div>
           </Link>
         ))}
-      </div>
-    </div>
+      </section>
+    </main>
   );
 };
 

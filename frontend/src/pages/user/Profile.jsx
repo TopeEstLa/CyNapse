@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../../context/AuthContext';
 import { User, Calendar, Mail, Tag, Shield, Edit2, Lock, Save, AlertCircle, TrendingUp } from 'lucide-react';
-import { userApi, authApi } from '../utils/api';
-import ExpProgressBar from '../components/ExpProgressBar';
-import { MemberType } from '../utils/constants';
+import { userApi, authApi } from '../../utils/api';
+import ExpProgressBar from '../../components/ExpProgressBar';
+import { MemberType } from '../../utils/constants';
 
 const Profile = () => {
   const { user, setUser } = useAuth();
@@ -72,27 +72,27 @@ const Profile = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-4 space-y-6">
+    <main className="max-w-4xl mx-auto p-4 space-y-6">
       {error && (
-        <div className="bg-danger/10 border border-danger/20 text-danger px-4 py-3 rounded-2xl flex items-center gap-2">
+        <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-lg flex items-center gap-2">
           <AlertCircle className="w-5 h-5" />
           {error}
         </div>
       )}
       {success && (
-        <div className="bg-secondary/10 border border-secondary/20 text-secondary px-4 py-3 rounded-2xl flex items-center gap-2">
+        <div className="bg-green-50 border border-green-200 text-green-600 px-4 py-3 rounded-lg flex items-center gap-2">
           <Save className="w-5 h-5" />
           {success}
         </div>
       )}
 
-      <div className="bg-surface rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
-        <div className="h-32 bg-primary/10 flex items-center px-8 justify-between">
-          <div className="w-20 h-20 rounded-2xl bg-surface shadow-sm flex items-center justify-center border-4 border-white translate-y-6 overflow-hidden">
+      <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+        <header className="h-24 bg-gray-50 flex items-center px-8 justify-between border-b">
+          <div className="w-20 h-20 rounded-lg bg-white shadow-sm flex items-center justify-center border-2 border-gray-200 translate-y-8 overflow-hidden">
             {user.image ? (
                 <img src={user.image} alt="" className="w-full h-full object-cover" />
             ) : (
-                <User className="w-10 h-10 text-primary" />
+                <User className="w-10 h-10 text-gray-400" />
             )}
           </div>
           <div className="flex gap-2">
@@ -100,14 +100,14 @@ const Profile = () => {
               <>
                 <button
                   onClick={() => setIsEditing(true)}
-                  className="flex items-center gap-2 px-4 py-2 bg-surface text-gray-700 rounded-xl shadow-sm border border-gray-200 hover:bg-gray-50 transition-colors"
+                  className="flex items-center gap-2 px-4 py-2 bg-white text-gray-700 rounded-lg border border-gray-300 hover:bg-gray-50 transition-colors"
                 >
                   <Edit2 className="w-4 h-4" />
                   Edit Profile
                 </button>
                 <button
                   onClick={() => setIsChangingPassword(true)}
-                  className="flex items-center gap-2 px-4 py-2 bg-surface text-gray-700 rounded-xl shadow-sm border border-gray-200 hover:bg-gray-50 transition-colors"
+                  className="flex items-center gap-2 px-4 py-2 bg-white text-gray-700 rounded-lg border border-gray-300 hover:bg-gray-50 transition-colors"
                 >
                   <Lock className="w-4 h-4" />
                   Password
@@ -115,7 +115,7 @@ const Profile = () => {
               </>
             )}
           </div>
-        </div>
+        </header>
         
         <div className="pt-12 px-8 pb-8">
           {isEditing ? (
@@ -127,7 +127,7 @@ const Profile = () => {
                     type="text"
                     value={formData.firstName}
                     onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
-                    className="w-full px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none"
                     required
                   />
                 </div>
@@ -137,7 +137,7 @@ const Profile = () => {
                     type="text"
                     value={formData.lastName}
                     onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
-                    className="w-full px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none"
                     required
                   />
                 </div>
@@ -146,7 +146,7 @@ const Profile = () => {
                   <select
                     value={formData.gender}
                     onChange={(e) => setFormData({ ...formData, gender: e.target.value })}
-                    className="w-full px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none"
                   >
                     <option value="Homme">Homme</option>
                     <option value="Femme">Femme</option>
@@ -159,7 +159,7 @@ const Profile = () => {
                     type="date"
                     value={formData.birthDate}
                     onChange={(e) => setFormData({ ...formData, birthDate: e.target.value })}
-                    className="w-full px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none"
                     required
                   />
                 </div>
@@ -169,14 +169,14 @@ const Profile = () => {
                     type="text"
                     value={formData.image}
                     onChange={(e) => setFormData({ ...formData, image: e.target.value })}
-                    className="w-full px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none"
                     placeholder="https://example.com/image.jpg"
                   />
                 </div>
               </div>
 
-              <div className="p-4 bg-primary/5 border border-primary/10 rounded-2xl flex items-center gap-4">
-                 <TrendingUp className="w-6 h-6 text-primary" />
+              <div className="p-4 bg-blue-50 border border-blue-100 rounded-lg flex items-center gap-4">
+                 <TrendingUp className="w-6 h-6 text-blue-600" />
                  <ExpProgressBar user={user} />
               </div>
 
@@ -184,14 +184,14 @@ const Profile = () => {
                 <button
                   type="button"
                   onClick={() => setIsEditing(false)}
-                  className="px-6 py-2 border border-gray-200 rounded-xl text-gray-600 hover:bg-gray-50"
+                  className="px-6 py-2 border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-50"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={loading}
-                  className="px-6 py-2 bg-primary text-white rounded-xl hover:bg-primary/90 disabled:opacity-50"
+                  className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
                 >
                   {loading ? 'Saving...' : 'Save Changes'}
                 </button>
@@ -206,7 +206,7 @@ const Profile = () => {
                     type="password"
                     value={passwordData.currentPassword}
                     onChange={(e) => setPasswordData({ ...passwordData, currentPassword: e.target.value })}
-                    className="w-full px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none"
                     required
                   />
                 </div>
@@ -216,7 +216,7 @@ const Profile = () => {
                     type="password"
                     value={passwordData.newPassword}
                     onChange={(e) => setPasswordData({ ...passwordData, newPassword: e.target.value })}
-                    className="w-full px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none"
                     required
                   />
                 </div>
@@ -226,7 +226,7 @@ const Profile = () => {
                     type="password"
                     value={passwordData.confirmPassword}
                     onChange={(e) => setPasswordData({ ...passwordData, confirmPassword: e.target.value })}
-                    className="w-full px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none"
                     required
                   />
                 </div>
@@ -235,22 +235,22 @@ const Profile = () => {
                 <button
                   type="button"
                   onClick={() => setIsChangingPassword(false)}
-                  className="px-6 py-2 border border-gray-200 rounded-xl text-gray-600 hover:bg-gray-50"
+                  className="px-6 py-2 border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-50"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={loading}
-                  className="px-6 py-2 bg-primary text-white rounded-xl hover:bg-primary/90 disabled:opacity-50"
+                  className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
                 >
                   {loading ? 'Updating...' : 'Update Password'}
                 </button>
               </div>
             </form>
           ) : (
-            <>
-              <div className="flex justify-between items-start">
+            <section>
+              <div className="flex justify-between items-start border-b pb-6 mb-6">
                 <div>
                   <h1 className="text-2xl font-bold text-gray-900">{user.firstName} {user.lastName}</h1>
                   <p className="text-gray-500">@{user.username}</p>
@@ -260,8 +260,8 @@ const Profile = () => {
                 </div>
               </div>
 
-              <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-2xl">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg border border-gray-100">
                   <Mail className="w-5 h-5 text-gray-400" />
                   <div>
                     <p className="text-xs text-gray-500 font-semibold uppercase tracking-wider">Email</p>
@@ -269,7 +269,7 @@ const Profile = () => {
                   </div>
                 </div>
 
-                <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-2xl">
+                <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg border border-gray-100">
                   <Calendar className="w-5 h-5 text-gray-400" />
                   <div>
                     <p className="text-xs text-gray-500 font-semibold uppercase tracking-wider">Birth Date</p>
@@ -277,7 +277,7 @@ const Profile = () => {
                   </div>
                 </div>
 
-                <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-2xl">
+                <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg border border-gray-100">
                   <Tag className="w-5 h-5 text-gray-400" />
                   <div>
                     <p className="text-xs text-gray-500 font-semibold uppercase tracking-wider">Member Type</p>
@@ -285,7 +285,7 @@ const Profile = () => {
                   </div>
                 </div>
 
-                <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-2xl">
+                <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg border border-gray-100">
                   <Shield className="w-5 h-5 text-gray-400" />
                   <div>
                     <p className="text-xs text-gray-500 font-semibold uppercase tracking-wider">Gender</p>
@@ -293,11 +293,11 @@ const Profile = () => {
                   </div>
                 </div>
               </div>
-            </>
+            </section>
           )}
         </div>
       </div>
-    </div>
+    </main>
   );
 };
 

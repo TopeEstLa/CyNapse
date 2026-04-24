@@ -74,93 +74,95 @@ const AdminUserEdit = () => {
   );
 
   return (
-    <div className="max-w-4xl mx-auto p-4 text-gray-900">
-      <Link to="/admin" className="inline-flex items-center gap-2 text-gray-500 hover:text-gray-900 mb-6 transition-colors">
-        <ArrowLeft className="w-4 h-4" />
-        Back to User Management
-      </Link>
+    <main className="max-w-4xl mx-auto p-4 text-gray-900">
+      <nav className="mb-6">
+        <Link to="/admin" className="inline-flex items-center gap-2 text-gray-500 hover:text-gray-900 transition-colors">
+          <ArrowLeft className="w-4 h-4" />
+          Back to Admin Dashboard
+        </Link>
+      </nav>
 
-      <div className="flex items-center gap-4 mb-8">
-        <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center overflow-hidden">
+      <header className="flex items-center gap-4 mb-8 border-b pb-6">
+        <div className="w-16 h-16 rounded-lg bg-gray-100 flex items-center justify-center overflow-hidden border border-gray-200">
           {user.image ? (
             <img src={user.image} alt="" className="w-full h-full object-cover" />
           ) : (
-            <User className="w-8 h-8 text-primary" />
+            <User className="w-8 h-8 text-gray-400" />
           )}
         </div>
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Edit User: {user.username}</h1>
-          <p className="text-gray-500">ID: {user.id}</p>
+          <p className="text-sm text-gray-500">System ID: {user.id}</p>
         </div>
-      </div>
+      </header>
 
       {error && (
-        <div className="bg-danger/10 border border-danger/20 text-danger px-4 py-3 rounded-2xl flex items-center gap-2 mb-6">
+        <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-lg flex items-center gap-2 mb-6">
           <AlertCircle className="w-5 h-5" />
           {error}
         </div>
       )}
       {success && (
-        <div className="bg-secondary/10 border border-secondary/20 text-secondary px-4 py-3 rounded-2xl flex items-center gap-2 mb-6">
+        <div className="bg-green-50 border border-green-200 text-green-600 px-4 py-3 rounded-lg flex items-center gap-2 mb-6">
           <CheckCircle2 className="w-5 h-5" />
           {success}
         </div>
       )}
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <div className="md:col-span-2 space-y-6">
-          <div className="bg-surface p-8 rounded-3xl border border-gray-100 shadow-sm">
-            <h2 className="text-lg font-bold text-gray-900 mb-6">Profile Information</h2>
+        <section className="md:col-span-2 space-y-6">
+          <div className="bg-white p-6 md:p-8 rounded-lg border border-gray-200 shadow-sm">
+            <h2 className="text-lg font-bold text-gray-900 mb-6 border-b pb-2">Profile Details</h2>
             <form onSubmit={handleUpdateUser} className="space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1">
-                  <label className="text-sm font-medium text-gray-700">First Name</label>
+                  <label className="text-xs font-bold text-gray-500 uppercase">First Name</label>
                   <input
                     type="text"
                     value={user.firstName || ''}
                     onChange={(e) => setUser({ ...user, firstName: e.target.value })}
-                    className="w-full px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none"
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="text-sm font-medium text-gray-700">Last Name</label>
+                  <label className="text-xs font-bold text-gray-500 uppercase">Last Name</label>
                   <input
                     type="text"
                     value={user.lastName || ''}
                     onChange={(e) => setUser({ ...user, lastName: e.target.value })}
-                    className="w-full px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none"
                   />
                 </div>
               </div>
               
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1">
-                  <label className="text-sm font-medium text-gray-700">Email</label>
+                  <label className="text-xs font-bold text-gray-500 uppercase">Email Address</label>
                   <input
                     type="email"
                     value={user.email || ''}
                     onChange={(e) => setUser({ ...user, email: e.target.value })}
-                    className="w-full px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none"
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="text-sm font-medium text-gray-700">Username</label>
+                  <label className="text-xs font-bold text-gray-500 uppercase">Username</label>
                   <input
                     type="text"
                     value={user.username || ''}
                     onChange={(e) => setUser({ ...user, username: e.target.value })}
-                    className="w-full px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1">
-                  <label className="text-sm font-medium text-gray-700">Gender</label>
+                  <label className="text-xs font-bold text-gray-500 uppercase">Gender</label>
                   <select
                     value={user.gender || ''}
                     onChange={(e) => setUser({ ...user, gender: e.target.value })}
-                    className="w-full px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none"
                   >
                     <option value="">Select Gender</option>
                     <option value="Homme">Homme</option>
@@ -169,34 +171,34 @@ const AdminUserEdit = () => {
                   </select>
                 </div>
                 <div className="space-y-1">
-                  <label className="text-sm font-medium text-gray-700">Birth Date</label>
+                  <label className="text-xs font-bold text-gray-500 uppercase">Birth Date</label>
                   <input
                     type="date"
                     value={user.birthDate || ''}
                     onChange={(e) => setUser({ ...user, birthDate: e.target.value })}
-                    className="w-full px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1">
-                  <label className="text-sm font-medium text-gray-700">Experience (Exp)</label>
+                  <label className="text-xs font-bold text-gray-500 uppercase">Experience (XP)</label>
                   <input
                     type="number"
                     step="0.1"
                     value={user.exp || 0}
                     onChange={(e) => setUser({ ...user, exp: parseFloat(e.target.value) })}
-                    className="w-full px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none"
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="text-sm font-medium text-gray-700">Profile Image URL</label>
+                  <label className="text-xs font-bold text-gray-500 uppercase">Avatar URL</label>
                   <input
                     type="text"
                     value={user.image || ''}
                     onChange={(e) => setUser({ ...user, image: e.target.value })}
-                    className="w-full px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none"
                     placeholder="https://example.com/image.jpg"
                   />
                 </div>
@@ -204,11 +206,11 @@ const AdminUserEdit = () => {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1">
-                  <label className="text-sm font-medium text-gray-700">Role</label>
+                  <label className="text-xs font-bold text-gray-500 uppercase">System Role</label>
                   <select
                     value={user.role}
                     onChange={(e) => setUser({ ...user, role: e.target.value })}
-                    className="w-full px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none font-bold"
                   >
                     <option value={Role.USER}>USER</option>
                     <option value={Role.ADVANCED}>ADVANCED</option>
@@ -217,11 +219,11 @@ const AdminUserEdit = () => {
                   </select>
                 </div>
                 <div className="space-y-1">
-                  <label className="text-sm font-medium text-gray-700">Member Type</label>
+                  <label className="text-xs font-bold text-gray-500 uppercase">Member Category</label>
                   <select
                     value={user.memberType}
                     onChange={(e) => setUser({ ...user, memberType: e.target.value })}
-                    className="w-full px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none"
                   >
                     {Object.values(MemberType).map(type => (
                       <option key={type} value={type}>{type}</option>
@@ -236,39 +238,39 @@ const AdminUserEdit = () => {
                   id="enable"
                   checked={user.enable}
                   onChange={(e) => setUser({ ...user, enable: e.target.checked })}
-                  className="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary"
+                  className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
                 />
-                <label htmlFor="enable" className="text-sm font-medium text-gray-700">Account Enabled</label>
+                <label htmlFor="enable" className="text-sm font-bold text-gray-700">Account Active</label>
               </div>
 
-              <div className="pt-4">
+              <div className="pt-4 border-t mt-6">
                 <button
                   type="submit"
                   disabled={saving}
-                  className="flex items-center gap-2 px-6 py-2 bg-primary text-white rounded-xl hover:bg-primary/90 disabled:opacity-50 transition-all shadow-md"
+                  className="flex items-center gap-2 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 transition-all shadow-sm font-bold uppercase text-xs tracking-wider"
                 >
                   <Save className="w-4 h-4" />
-                  {saving ? 'Saving...' : 'Save Changes'}
+                  {saving ? 'Processing...' : 'Save User Changes'}
                 </button>
               </div>
             </form>
           </div>
-        </div>
+        </section>
 
-        <div className="space-y-6">
-          <div className="bg-surface p-6 rounded-3xl border border-gray-100 shadow-sm">
-            <h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+        <aside className="space-y-6">
+          <div className="bg-white p-6 rounded-lg border border-gray-200 shadow-sm">
+            <h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2 border-b pb-2">
               <Lock className="w-5 h-5 text-gray-400" />
-              Reset Password
+              Reset Security
             </h2>
             <form onSubmit={handleUpdatePassword} className="space-y-4">
               <div className="space-y-1">
-                <label className="text-sm font-medium text-gray-700">New Password</label>
+                <label className="text-xs font-bold text-gray-500 uppercase">New Password</label>
                 <input
                   type="password"
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none"
                   placeholder="Enter new password"
                   required
                 />
@@ -276,15 +278,15 @@ const AdminUserEdit = () => {
               <button
                 type="submit"
                 disabled={saving || !newPassword}
-                className="w-full py-2 bg-background-dark text-white rounded-xl hover:bg-black disabled:opacity-50 transition-all"
+                className="w-full py-2 bg-gray-900 text-white rounded-lg hover:bg-black disabled:opacity-50 transition-all font-bold uppercase text-xs tracking-wider"
               >
-                Update Password
+                Force Update Password
               </button>
             </form>
           </div>
-        </div>
+        </aside>
       </div>
-    </div>
+    </main>
   );
 };
 
