@@ -112,3 +112,8 @@ export const adminApi = {
     updateRoom: (data) => api.post('/api/admin/room/update', data),
     deleteRoom: (id) => api.delete(`/api/admin/room/delete?id=${id}`),
 };
+
+// Transport
+export const transportApi = {
+    getNextRerA: () => api.get('/api/transport/rer-a/next'),
+};
