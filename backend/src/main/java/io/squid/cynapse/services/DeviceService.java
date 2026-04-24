@@ -62,15 +62,9 @@ public class DeviceService {
             return null;
         }
 
-        Room room = this.roomService.findById(payload.roomId());
-        if (room == null) {
-            return null;
-        }
-
         device.setName(payload.name());
         device.setType(payload.type());
         device.setStatus(payload.status() == null ? DeviceStatus.ONLINE : payload.status());
-        device.setRoom(room);
         return this.sensorDeviceRepository.save(device);
     }
 
