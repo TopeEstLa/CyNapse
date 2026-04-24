@@ -19,7 +19,8 @@ import {
   BarChart3,
   Flame,
   Zap,
-  FileText
+  FileText,
+  MapPin
 } from 'lucide-react';
 import { DeviceType } from '../../utils/constants';
 
@@ -27,8 +28,10 @@ const DeviceDetail = () => {
   const { deviceId } = useParams();
   const navigate = useNavigate();
   
-  const isSensor = deviceId.startsWith('sensor-');
-  const trueId = deviceId.split('-')[1];
+  // Robust ID parsing
+  const isSensor = deviceId?.startsWith('sensor-');
+  const isActuator = deviceId?.startsWith('actuator-');
+  const trueId = deviceId?.split('-')[1];
 
   const [device, setDevice] = useState(null);
   const [history, setHistory] = useState([]);
@@ -38,8 +41,15 @@ const DeviceDetail = () => {
   const [hoveredPoint, setHoveredPoint] = useState(null);
   const [manualValue, setManualValue] = useState('');
   const [downloading, setDownloading] = useState(false);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
+    if (!deviceId || (!isSensor && !isActuator) || !trueId) {
+      setError("Invalid device ID format");
+      setLoading(false);
+      return;
+    }
+    
     fetchData();
     const interval = setInterval(fetchData, 10000);
     return () => clearInterval(interval);
@@ -48,6 +58,7 @@ const DeviceDetail = () => {
   const fetchData = async () => {
     try {
       setRefreshing(true);
+      setError(null);
       
       let deviceData;
 
@@ -55,7 +66,7 @@ const DeviceDetail = () => {
         deviceData = await deviceApi.sensorDetails(trueId);
         setDevice(deviceData);
         setHistory(deviceData.readings || []);
-      } else {
+      } else if (isActuator) {
         deviceData = await deviceApi.actuatorDetails(trueId);
         setDevice(deviceData);
         setHistory(deviceData.history || []);
@@ -64,7 +75,8 @@ const DeviceDetail = () => {
       setLastRefresh(new Date());
 
     } catch (err) {
-      console.error(err);
+      console.error("Error fetching device details:", err);
+      setError(err.message || "Failed to load device data");
     } finally {
       setLoading(false);
       setRefreshing(false);
@@ -252,11 +264,12 @@ const DeviceDetail = () => {
     </div>
   );
 
-  if (!device) return (
-    <div className="max-w-4xl mx-auto px-4 py-20 text-center text-xs uppercase font-black">
-      <h2 className="text-2xl mb-4">Device not found</h2>
-      <button onClick={() => navigate('/monitoring')} className="text-primary">
-        <ArrowLeft className="w-4 h-4 inline mr-2" /> Back
+  if (!device || error) return (
+    <div className="max-w-4xl mx-auto px-4 py-20 text-center uppercase font-black">
+      <h2 className="text-2xl mb-2">Device not found</h2>
+      <p className="text-red-500 text-xs mb-6 lowercase font-medium">{error || "The requested device could not be located in our infrastructure."}</p>
+      <button onClick={() => navigate('/monitoring')} className="text-blue-600 flex items-center gap-2 mx-auto hover:underline">
+        <ArrowLeft className="w-4 h-4" /> Back to Monitoring
       </button>
     </div>
   );
@@ -287,6 +300,12 @@ const DeviceDetail = () => {
             ID: <span className="text-gray-900 font-bold">{trueId}</span> |
             Category: <span className="text-blue-600 font-bold uppercase">{isSensor ? 'Sensor' : 'Actuator'}</span>
           </p>
+          {device.room && (
+            <p className="text-sm text-gray-500 font-medium flex items-center gap-2">
+              <MapPin size={14} className="text-blue-500" />
+              Room: <Link to={`/monitoring/room/${device.room.id}`} className="text-blue-600 font-bold hover:underline">{device.room.name}</Link> (ID: {device.room.id})
+            </p>
+          )}
         </div>
         
         <div className="flex gap-4 items-center">

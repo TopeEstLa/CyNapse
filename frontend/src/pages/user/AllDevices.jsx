@@ -1,35 +1,39 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { deviceApi } from '../../utils/api';
-import { Loader2, Search, Zap, Activity, Thermometer, Droplets, Wind, Lightbulb, Heater } from 'lucide-react';
+import { deviceApi, roomApi } from '../../utils/api';
+import { Loader2, Search, Zap, Activity, Thermometer, Droplets, Wind, Lightbulb, Heater, Home } from 'lucide-react';
 
 const AllDevices = () => {
   const [devices, setDevices] = useState([]);
+  const [rooms, setRooms] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchBar] = useState('');
   const [filterType, setFilterType] = useState('ALL');
+  const [filterRoom, setFilterRoom] = useState('ALL');
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchAllDevices = async () => {
+    const fetchData = async () => {
       try {
-        const [sensors, actuators] = await Promise.all([
+        const [sensors, actuators, roomsData] = await Promise.all([
           deviceApi.sensors(),
-          deviceApi.actuators()
+          deviceApi.actuators(),
+          roomApi.list()
         ]);
 
         const mappedSensors = sensors.map(s => ({ ...s, deviceCategory: 'SENSOR' }));
         const mappedActuators = actuators.map(a => ({ ...a, deviceCategory: 'ACTUATOR' }));
 
         setDevices([...mappedSensors, ...mappedActuators]);
+        setRooms(roomsData);
       } catch (err) {
-        console.error('Failed to fetch all devices:', err);
+        console.error('Failed to fetch data:', err);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchAllDevices();
+    fetchData();
   }, []);
 
   const getDeviceIcon = (type) => {
@@ -46,7 +50,8 @@ const AllDevices = () => {
   const filteredDevices = devices.filter(device => {
     const matchesSearch = device.name.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesType = filterType === 'ALL' || device.deviceCategory === filterType;
-    return matchesSearch && matchesType;
+    const matchesRoom = filterRoom === 'ALL' || device.room?.id?.toString() === filterRoom;
+    return matchesSearch && matchesType && matchesRoom;
   });
 
   if (loading) {
@@ -65,7 +70,7 @@ const AllDevices = () => {
           <Zap className="text-blue-600" fill="currentColor" /> All Devices
         </h1>
         
-        <div className="flex flex-col sm:flex-row gap-3">
+        <div className="flex flex-col sm:flex-row flex-wrap gap-3">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
             <input
@@ -85,6 +90,17 @@ const AllDevices = () => {
             <option value="ALL">All Types</option>
             <option value="SENSOR">Sensors Only</option>
             <option value="ACTUATOR">Actuators Only</option>
+          </select>
+
+          <select
+            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+            value={filterRoom}
+            onChange={(e) => setFilterRoom(e.target.value)}
+          >
+            <option value="ALL">All Rooms</option>
+            {rooms.map(room => (
+              <option key={room.id} value={room.id}>{room.name}</option>
+            ))}
           </select>
         </div>
       </div>
@@ -106,8 +122,8 @@ const AllDevices = () => {
               </div>
               <div>
                 <h3 className="font-bold text-gray-900 group-hover:text-blue-600 transition-colors">{device.name}</h3>
-                <p className="text-xs text-gray-500 font-medium uppercase tracking-tight">
-                  {device.room?.name || 'Unassigned'}
+                <p className="text-xs text-gray-500 font-medium uppercase tracking-tight flex items-center gap-1">
+                  <Home size={10} /> {device.room?.name || 'Unassigned'}
                 </p>
               </div>
             </div>
