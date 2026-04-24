@@ -25,6 +25,7 @@ public class AuthService {
             "/api/reports/**",
             "/api/news/list",
             "/api/news/get",
+            "/api/transport/rer-a/next",
             //swagger
             "/v3/api-docs",
             "/swagger-ui",
