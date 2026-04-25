@@ -58,42 +58,42 @@ const FindRoom = () => {
   );
 
   return (
-    <main className="max-w-7xl mx-auto px-4 py-8 space-y-10 text-gray-900">
+    <main className="max-w-7xl mx-auto px-4 py-6 md:py-8 space-y-8 md:space-y-10 text-gray-900">
       {/* Header Section */}
-      <header className="space-y-2 border-b pb-4">
-        <h1 className="text-3xl font-bold tracking-tight uppercase">Find a Room</h1>
-        <p className="text-gray-500 font-medium">Locate available spaces for meetings or activities.</p>
+      <header className="space-y-2 border-b pb-4 text-center md:text-left">
+        <h1 className="text-2xl md:text-3xl font-bold tracking-tight uppercase">Find a Room</h1>
+        <p className="text-gray-500 font-medium text-sm md:text-base">Locate available spaces for meetings or activities.</p>
       </header>
 
       {/* Filters Bar */}
-      <section className="bg-white p-6 md:p-8 rounded-xl border border-gray-200 shadow-sm space-y-6">
-        <div className="flex items-center gap-3 mb-2 border-b pb-4">
+      <section className="bg-white p-4 md:p-8 rounded-[2rem] border border-gray-100 shadow-sm space-y-6">
+        <div className="flex items-center gap-3 mb-2 border-b border-gray-50 pb-4">
            <Filter className="w-5 h-5 text-blue-600" />
-           <h2 className="text-sm font-bold uppercase tracking-wider text-gray-700">Filter Results</h2>
+           <h2 className="text-xs font-black uppercase tracking-widest text-gray-400">Filter Results</h2>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 items-end">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 items-end">
           <div className="space-y-2">
-            <label className="text-xs font-bold uppercase tracking-wider text-gray-500 flex items-center gap-2">
-              <Users className="w-3 h-3" /> Min. Capacity
+            <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 flex items-center gap-2">
+              <Users className="w-3 h-3 text-blue-500" /> Min. Capacity
             </label>
             <input
               type="number"
               placeholder="Ex: 5"
               value={filters.minCapacity}
               onChange={(e) => setFilters({...filters, minCapacity: e.target.value})}
-              className="w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none font-medium transition-all"
+              className="w-full px-4 py-2.5 bg-gray-50 border border-transparent rounded-xl focus:bg-white focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none font-bold text-sm transition-all"
             />
           </div>
 
           <div className="space-y-2">
-            <label className="text-xs font-bold uppercase tracking-wider text-gray-500 flex items-center gap-2">
-              <Layers className="w-3 h-3" /> Floor
+            <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 flex items-center gap-2">
+              <Layers className="w-3 h-3 text-blue-500" /> Floor
             </label>
             <select
               value={filters.floor}
               onChange={(e) => setFilters({...filters, floor: e.target.value})}
-              className="w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none font-medium transition-all appearance-none"
+              className="w-full px-4 py-2.5 bg-gray-50 border border-transparent rounded-xl focus:bg-white focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none font-bold text-sm transition-all appearance-none"
             >
               <option value="">All Floors</option>
               {floors.map(f => (
@@ -102,27 +102,27 @@ const FindRoom = () => {
             </select>
           </div>
 
-          <div className="flex items-center gap-3 py-2 px-2">
+          <div className="flex items-center justify-between sm:justify-start gap-4 py-2 px-2 bg-gray-50 sm:bg-transparent rounded-xl sm:rounded-none p-3 sm:p-0">
+            <span className="text-[10px] font-black text-gray-500 uppercase tracking-widest">Available only</span>
             <button
               onClick={() => setFilters({...filters, onlyAvailable: !filters.onlyAvailable})}
               className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none ring-2 ring-offset-2 ring-transparent ${filters.onlyAvailable ? 'bg-blue-600' : 'bg-gray-300'}`}
             >
               <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${filters.onlyAvailable ? 'translate-x-6' : 'translate-x-1'}`} />
             </button>
-            <span className="text-xs font-bold text-gray-600 uppercase">Available only</span>
           </div>
 
-          <div className="lg:col-span-1 md:col-span-3 flex justify-end">
-             <div className="text-right hidden lg:block">
-                <p className="text-[10px] font-bold text-gray-400 uppercase">Rooms found</p>
-                <p className="text-2xl font-bold text-blue-600">{filteredRooms.length}</p>
+          <div className="hidden lg:flex justify-end">
+             <div className="text-right">
+                <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Rooms found</p>
+                <p className="text-3xl font-black text-blue-600 tracking-tighter">{filteredRooms.length}</p>
              </div>
           </div>
         </div>
       </section>
 
       {/* Results Grid */}
-      <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <section className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
         {filteredRooms.map(room => (
           <div 
             key={room.id}

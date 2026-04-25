@@ -64,48 +64,50 @@ const AllDevices = () => {
   }
 
   return (
-    <div className="space-y-8 py-6">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <h1 className="text-3xl font-black text-gray-900 flex items-center gap-3">
-          <Zap className="text-blue-600" fill="currentColor" /> All Devices
+    <div className="space-y-6 md:space-y-8 py-4 md:py-6">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <h1 className="text-2xl md:text-3xl font-black text-gray-900 flex items-center gap-3">
+          <Zap className="text-blue-600" fill="currentColor" size={28} md:size={32} /> All Devices
         </h1>
         
-        <div className="flex flex-col sm:flex-row flex-wrap gap-3">
-          <div className="relative">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+          <div className="relative flex-1 sm:flex-initial">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
             <input
               type="text"
               placeholder="Search device..."
-              className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none w-full sm:w-64"
+              className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none w-full sm:w-48 lg:w-64"
               value={searchTerm}
               onChange={(e) => setSearchBar(e.target.value)}
             />
           </div>
           
-          <select
-            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
-            value={filterType}
-            onChange={(e) => setFilterType(e.target.value)}
-          >
-            <option value="ALL">All Types</option>
-            <option value="SENSOR">Sensors Only</option>
-            <option value="ACTUATOR">Actuators Only</option>
-          </select>
+          <div className="flex gap-2 flex-1 sm:flex-initial">
+            <select
+              className="flex-1 sm:flex-none px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-sm"
+              value={filterType}
+              onChange={(e) => setFilterType(e.target.value)}
+            >
+              <option value="ALL">All Types</option>
+              <option value="SENSOR">Sensors</option>
+              <option value="ACTUATOR">Actuators</option>
+            </select>
 
-          <select
-            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
-            value={filterRoom}
-            onChange={(e) => setFilterRoom(e.target.value)}
-          >
-            <option value="ALL">All Rooms</option>
-            {rooms.map(room => (
-              <option key={room.id} value={room.id}>{room.name}</option>
-            ))}
-          </select>
+            <select
+              className="flex-1 sm:flex-none px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-sm"
+              value={filterRoom}
+              onChange={(e) => setFilterRoom(e.target.value)}
+            >
+              <option value="ALL">All Rooms</option>
+              {rooms.map(room => (
+                <option key={room.id} value={room.id}>{room.name}</option>
+              ))}
+            </select>
+          </div>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
         {filteredDevices.map((device) => (
           <div
             key={`${device.deviceCategory}-${device.id}`}

@@ -73,21 +73,36 @@ const News = () => {
       </div>
 
       {loading ? (
-        <div className="text-center py-12">Loading news...</div>
+        <div className="flex flex-col items-center justify-center py-20">
+          <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-blue-600 mb-4"></div>
+          <p className="text-gray-500 font-bold uppercase tracking-widest text-xs">Fetching News...</p>
+        </div>
       ) : filteredNews.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
           {filteredNews.map((news) => (
-            <div key={news.id} className="border p-6 rounded hover:shadow-lg transition-shadow bg-white">
-              <div className="flex justify-between items-start mb-4 text-sm text-gray-500">
-                <span>{formatDate(news.publicationDate)}</span>
-                <span>By {news.author}</span>
+            <div key={news.id} className="group bg-white p-6 md:p-8 rounded-[2rem] border border-gray-100 shadow-sm hover:shadow-xl hover:border-blue-100 transition-all duration-300 flex flex-col justify-between">
+              <div>
+                <div className="flex justify-between items-center mb-6">
+                  <span className="text-[10px] font-black text-blue-600 uppercase tracking-widest bg-blue-50 px-3 py-1 rounded-lg">
+                    {formatDate(news.publicationDate)}
+                  </span>
+                  <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+                    By {news.author}
+                  </span>
+                </div>
+                <h2 className="text-xl md:text-2xl font-black text-gray-900 leading-tight mb-4 group-hover:text-blue-600 transition-colors uppercase tracking-tight">
+                  {news.title}
+                </h2>
+                <p className="text-gray-500 text-sm mb-8 line-clamp-3 font-medium">
+                  {news.content?.substring(0, 150)}...
+                </p>
               </div>
-              <h2 className="text-2xl font-bold mb-3">{news.title}</h2>
               <Link 
                 to={`/news/${news.slug}`} 
-                className="text-blue-600 font-bold hover:underline"
+                className="flex items-center justify-center w-full py-4 bg-gray-50 text-gray-900 rounded-xl font-black text-xs uppercase tracking-widest hover:bg-blue-600 hover:text-white transition-all group/btn"
               >
-                Read full article →
+                Read full article
+                <span className="ml-2 group-hover/btn:translate-x-1 transition-transform">→</span>
               </Link>
             </div>
           ))}

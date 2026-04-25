@@ -279,9 +279,9 @@ const DeviceDetail = () => {
     : device.currentState;
 
   return (
-    <main className="max-w-7xl mx-auto px-4 py-6 md:py-8 space-y-8 text-gray-900">
-      <header className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b pb-6">
-        <div className="space-y-4">
+    <main className="max-w-7xl mx-auto px-4 py-4 md:py-8 space-y-6 md:space-y-8 text-gray-900">
+      <header className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 border-b pb-6">
+        <div className="space-y-4 text-center md:text-left">
           <button 
             onClick={() => navigate('/monitoring')}
             className="inline-flex items-center gap-2 text-sm font-semibold text-gray-500 hover:text-gray-900 transition-colors"
@@ -289,35 +289,35 @@ const DeviceDetail = () => {
             <ArrowLeft className="w-4 h-4" />
             Back to Monitoring
           </button>
-          <div className="flex flex-col md:flex-row items-center gap-4">
-            <h1 className="text-3xl font-bold tracking-tight uppercase leading-tight">{device.name}</h1>
+          <div className="flex flex-col md:flex-row items-center gap-3 md:gap-4">
+            <h1 className="text-2xl md:text-3xl font-bold tracking-tight uppercase leading-tight">{device.name}</h1>
             <span className={`px-3 py-1 rounded-lg text-xs font-bold uppercase tracking-wider ${getStatusColor(device.status)}`}>
               {device.status}
             </span>
           </div>
-          <p className="text-sm text-gray-500 font-medium">
-            Type: <span className="text-gray-900 font-bold uppercase">{device.type.replace('_', ' ')}</span> | 
-            ID: <span className="text-gray-900 font-bold">{trueId}</span> |
-            Category: <span className="text-blue-600 font-bold uppercase">{isSensor ? 'Sensor' : 'Actuator'}</span>
+          <p className="text-xs md:text-sm text-gray-500 font-medium flex flex-wrap justify-center md:justify-start gap-x-3 gap-y-1">
+            <span>Type: <span className="text-gray-900 font-bold uppercase">{device.type.replace('_', ' ')}</span></span> 
+            <span>ID: <span className="text-gray-900 font-bold">{trueId}</span></span>
+            <span>Category: <span className="text-blue-600 font-bold uppercase">{isSensor ? 'Sensor' : 'Actuator'}</span></span>
           </p>
           {device.room && (
-            <p className="text-sm text-gray-500 font-medium flex items-center gap-2">
+            <p className="text-xs md:text-sm text-gray-500 font-medium flex items-center justify-center md:justify-start gap-2">
               <MapPin size={14} className="text-blue-500" />
-              Room: <Link to={`/monitoring/room/${device.room.id}`} className="text-blue-600 font-bold hover:underline">{device.room.name}</Link> (ID: {device.room.id})
+              Room: <Link to={`/monitoring/room/${device.room.id}`} className="text-blue-600 font-bold hover:underline">{device.room.name}</Link>
             </p>
           )}
         </div>
         
-        <div className="flex gap-4 items-center">
-          <div className="text-right hidden sm:block">
+        <div className="flex flex-col xs:flex-row gap-4 items-center justify-center">
+          <div className="text-center md:text-right">
             <p className="text-[10px] text-gray-400 font-bold uppercase">Last update</p>
             <p className="text-xs font-bold text-gray-600">{lastRefresh.toLocaleTimeString()}</p>
           </div>
-          <div className="flex gap-2">
+          <div className="flex gap-2 w-full xs:w-auto">
             <button 
               onClick={fetchData} 
               disabled={refreshing}
-              className="flex items-center justify-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg shadow-sm text-xs font-bold text-gray-700 hover:bg-gray-50 transition-colors disabled:opacity-50 uppercase tracking-wider"
+              className="flex-1 xs:flex-none flex items-center justify-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg shadow-sm text-xs font-bold text-gray-700 hover:bg-gray-50 transition-colors disabled:opacity-50 uppercase tracking-wider"
             >
               <RefreshCcw className={`w-4 h-4 ${refreshing ? 'animate-spin' : ''}`} />
               Sync
@@ -325,7 +325,7 @@ const DeviceDetail = () => {
             <button 
               onClick={handleDownloadReport} 
               disabled={downloading}
-              className="flex items-center justify-center gap-2 px-4 py-2 bg-gray-900 text-white rounded-lg shadow-sm text-xs font-bold hover:bg-black transition-colors disabled:opacity-50 uppercase tracking-wider"
+              className="flex-1 xs:flex-none flex items-center justify-center gap-2 px-4 py-2 bg-gray-900 text-white rounded-lg shadow-sm text-xs font-bold hover:bg-black transition-colors disabled:opacity-50 uppercase tracking-wider"
             >
               {downloading ? <Loader2 className={`w-4 h-4 animate-spin`} /> : <FileText className={`w-4 h-4 text-blue-400`} />}
               Report

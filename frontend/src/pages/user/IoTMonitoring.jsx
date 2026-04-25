@@ -83,13 +83,13 @@ const IoTMonitoring = () => {
   if (loading && !rooms.length) return <Loader2 className="w-8 h-8 animate-spin text-primary mx-auto mt-20" />;
 
   return (
-    <main className="max-w-7xl mx-auto px-4 py-6 md:py-8 space-y-8">
-      <header className="flex justify-between items-center border-b pb-4">
+    <main className="max-w-7xl mx-auto px-4 py-4 md:py-8 space-y-6 md:space-y-8">
+      <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b pb-4">
         <div>
           <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Building Monitoring</h1>
-          <p className="hidden sm:block text-gray-500 text-sm">Global view by floor and room.</p>
+          <p className="hidden xs:block text-gray-500 text-sm">Global view by floor and room.</p>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center justify-between sm:justify-end w-full sm:w-auto gap-3">
           <span className="text-[10px] text-gray-400 font-bold uppercase">
             Last update: {lastRefresh.toLocaleTimeString()}
           </span>
@@ -104,26 +104,26 @@ const IoTMonitoring = () => {
       </header>
 
       {overview && (
-        <section className="grid grid-cols-2 lg:grid-cols-5 gap-4">
+        <section className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-5 gap-4">
           <div className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm">
-            <p className="text-xs font-semibold text-gray-500 uppercase mb-1">Total Rooms</p>
-            <p className="text-2xl font-bold text-gray-900">{overview.roomsTotal}</p>
+            <p className="text-[10px] font-semibold text-gray-500 uppercase mb-1">Total Rooms</p>
+            <p className="text-xl md:text-2xl font-bold text-gray-900">{overview.roomsTotal}</p>
           </div>
           <div className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm border-l-4 border-l-blue-500">
-            <p className="text-xs font-semibold text-gray-500 uppercase mb-1">Occupied</p>
-            <p className="text-2xl font-bold text-blue-600">{overview.roomsOccupied}</p>
+            <p className="text-[10px] font-semibold text-gray-500 uppercase mb-1">Occupied</p>
+            <p className="text-xl md:text-2xl font-bold text-blue-600">{overview.roomsOccupied}</p>
           </div>
           <div className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm border-l-4 border-l-red-500">
-            <p className="text-xs font-semibold text-gray-500 uppercase mb-1">In Alert</p>
-            <p className="text-2xl font-bold text-red-600">{overview.roomsInAlert}</p>
+            <p className="text-[10px] font-semibold text-gray-500 uppercase mb-1">In Alert</p>
+            <p className="text-xl md:text-2xl font-bold text-red-600">{overview.roomsInAlert}</p>
           </div>
           <div className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm">
-            <p className="text-xs font-semibold text-gray-500 uppercase mb-1">Active Alerts</p>
-            <p className="text-2xl font-bold text-yellow-600">{overview.activeAlerts}</p>
+            <p className="text-[10px] font-semibold text-gray-500 uppercase mb-1">Active Alerts</p>
+            <p className="text-xl md:text-2xl font-bold text-yellow-600">{overview.activeAlerts}</p>
           </div>
           <div className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm border-l-4 border-l-blue-500 hidden lg:block">
-            <p className="text-xs font-semibold text-gray-500 uppercase mb-1">Avg. Temp</p>
-            <p className="text-2xl font-bold text-blue-600">{overview.avgTemperature?.toFixed(1) || '0.0'}°C</p>
+            <p className="text-[10px] font-semibold text-gray-500 uppercase mb-1">Avg. Temp</p>
+            <p className="text-xl md:text-2xl font-bold text-blue-600">{overview.avgTemperature?.toFixed(1) || '0.0'}°C</p>
           </div>
         </section>
       )}

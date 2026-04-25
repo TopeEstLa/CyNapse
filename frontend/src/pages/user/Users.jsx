@@ -48,33 +48,33 @@ const Users = () => {
         </div>
       </header>
 
-      <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      <section className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
         {filteredUsers.map((u) => (
           <Link 
             key={u.id} 
             to={`/user/${u.id}`}
-            className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm hover:shadow-md hover:border-blue-500 transition-all group"
+            className="bg-white p-4 md:p-6 rounded-xl border border-gray-200 shadow-sm hover:shadow-md hover:border-blue-500 transition-all group"
           >
             <div className="flex flex-col items-center text-center">
-              <div className="w-20 h-20 rounded-lg bg-gray-100 flex items-center justify-center mb-4 overflow-hidden border border-gray-200">
+              <div className="w-16 h-16 md:w-20 md:h-20 rounded-lg bg-gray-100 flex items-center justify-center mb-3 md:mb-4 overflow-hidden border border-gray-200">
                 {u.image ? (
                   <img src={u.image} alt="" className="w-full h-full object-cover" />
                 ) : (
-                  <User className="w-10 h-10 text-gray-400" />
+                  <User className="w-8 h-8 md:w-10 md:h-10 text-gray-400" />
                 )}
               </div>
-              <h3 className="font-bold text-gray-900">{u.username}</h3>
+              <h3 className="font-bold text-gray-900 text-sm md:text-base truncate w-full">{u.username}</h3>
               <div className="flex flex-col gap-1 mt-2">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-blue-600 bg-blue-50 px-2 py-0.5 rounded border border-blue-100">
+                <span className="text-[8px] md:text-[10px] font-bold uppercase tracking-wider text-blue-600 bg-blue-50 px-1.5 md:px-2 py-0.5 rounded border border-blue-100">
                   {u.role || 'USER'}
                 </span>
-                <p className="text-xs text-gray-500 font-medium">
+                <p className="text-[10px] md:text-xs text-gray-500 font-medium">
                   {Math.floor(u.exp || 0)} XP
                 </p>
               </div>
               
-              <div className="mt-4 pt-4 border-t border-gray-100 w-full">
-                <span className="text-blue-600 text-sm font-semibold group-hover:underline">View Profile</span>
+              <div className="mt-3 md:mt-4 pt-3 md:pt-4 border-t border-gray-100 w-full hidden xs:block">
+                <span className="text-blue-600 text-xs md:text-sm font-semibold group-hover:underline">View Profile</span>
               </div>
             </div>
           </Link>

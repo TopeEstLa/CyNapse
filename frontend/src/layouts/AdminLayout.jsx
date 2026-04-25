@@ -32,7 +32,7 @@ const AdminLayout = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col md:flex-row">
+    <div className="min-h-screen bg-transparent flex flex-col md:flex-row">
       {/* Sidebar */}
       <aside className={`bg-white border-r w-full md:w-64 space-y-2 p-4 ${isMobileMenuOpen ? 'block' : 'hidden md:block'}`}>
         <div className="flex items-center justify-between mb-6">

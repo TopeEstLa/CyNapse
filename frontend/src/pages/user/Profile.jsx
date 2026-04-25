@@ -87,40 +87,40 @@ const Profile = () => {
       )}
 
       <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-        <header className="h-24 bg-gray-50 flex items-center px-8 justify-between border-b">
-          <div className="w-20 h-20 rounded-lg bg-white shadow-sm flex items-center justify-center border-2 border-gray-200 translate-y-8 overflow-hidden">
+        <header className="h-24 md:h-28 bg-gray-50 flex items-center px-4 md:px-8 justify-between border-b relative">
+          <div className="w-16 h-16 md:w-20 md:h-20 rounded-lg bg-white shadow-sm flex items-center justify-center border-2 border-gray-200 translate-y-8 md:translate-y-10 overflow-hidden">
             {user.image ? (
                 <img src={user.image} alt="" className="w-full h-full object-cover" />
             ) : (
-                <User className="w-10 h-10 text-gray-400" />
+                <User className="w-8 h-8 md:w-10 md:h-10 text-gray-400" />
             )}
           </div>
           <div className="flex gap-2">
             {!isEditing && !isChangingPassword && (
-              <>
+              <div className="flex flex-col xs:flex-row gap-2">
                 <button
                   onClick={() => setIsEditing(true)}
-                  className="flex items-center gap-2 px-4 py-2 bg-white text-gray-700 rounded-lg border border-gray-300 hover:bg-gray-50 transition-colors"
+                  className="flex items-center justify-center gap-2 px-3 py-1.5 md:px-4 md:py-2 bg-white text-gray-700 rounded-lg border border-gray-300 hover:bg-gray-50 transition-colors text-xs md:text-sm font-bold"
                 >
-                  <Edit2 className="w-4 h-4" />
-                  Edit Profile
+                  <Edit2 className="w-3.5 h-3.5" />
+                  <span className="hidden xxs:inline">Edit Profile</span>
                 </button>
                 <button
                   onClick={() => setIsChangingPassword(true)}
-                  className="flex items-center gap-2 px-4 py-2 bg-white text-gray-700 rounded-lg border border-gray-300 hover:bg-gray-50 transition-colors"
+                  className="flex items-center justify-center gap-2 px-3 py-1.5 md:px-4 md:py-2 bg-white text-gray-700 rounded-lg border border-gray-300 hover:bg-gray-50 transition-colors text-xs md:text-sm font-bold"
                 >
-                  <Lock className="w-4 h-4" />
-                  Password
+                  <Lock className="w-3.5 h-3.5" />
+                  <span className="hidden xxs:inline">Password</span>
                 </button>
-              </>
+              </div>
             )}
           </div>
         </header>
         
-        <div className="pt-12 px-8 pb-8">
+        <div className="pt-12 md:pt-16 px-4 md:px-8 pb-8">
           {isEditing ? (
             <form onSubmit={handleProfileUpdate} className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-gray-700">First Name</label>
                   <input
@@ -175,23 +175,25 @@ const Profile = () => {
                 </div>
               </div>
 
-              <div className="p-4 bg-blue-50 border border-blue-100 rounded-lg flex items-center gap-4">
-                 <TrendingUp className="w-6 h-6 text-blue-600" />
-                 <ExpProgressBar user={user} />
+              <div className="p-4 bg-blue-50 border border-blue-100 rounded-lg flex flex-col sm:flex-row items-center gap-4">
+                 <TrendingUp className="w-6 h-6 text-blue-600 flex-shrink-0" />
+                 <div className="w-full">
+                    <ExpProgressBar user={user} />
+                 </div>
               </div>
 
               <div className="flex justify-end gap-3">
                 <button
                   type="button"
                   onClick={() => setIsEditing(false)}
-                  className="px-6 py-2 border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-50"
+                  className="flex-1 sm:flex-none px-6 py-2 border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-50 font-bold"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={loading}
-                  className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
+                  className="flex-1 sm:flex-none px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 font-bold"
                 >
                   {loading ? 'Saving...' : 'Save Changes'}
                 </button>
@@ -199,7 +201,7 @@ const Profile = () => {
             </form>
           ) : isChangingPassword ? (
             <form onSubmit={handlePasswordUpdate} className="space-y-6">
-              <div className="grid grid-cols-1 gap-6 max-w-md">
+              <div className="grid grid-cols-1 gap-4 md:gap-6 max-w-md">
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-gray-700">Current Password</label>
                   <input
@@ -235,14 +237,14 @@ const Profile = () => {
                 <button
                   type="button"
                   onClick={() => setIsChangingPassword(false)}
-                  className="px-6 py-2 border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-50"
+                  className="flex-1 sm:flex-none px-6 py-2 border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-50 font-bold"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={loading}
-                  className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
+                  className="flex-1 sm:flex-none px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 font-bold"
                 >
                   {loading ? 'Updating...' : 'Update Password'}
                 </button>
@@ -250,46 +252,46 @@ const Profile = () => {
             </form>
           ) : (
             <section>
-              <div className="flex justify-between items-start border-b pb-6 mb-6">
+              <div className="flex flex-col sm:flex-row justify-between items-start border-b pb-6 mb-6 gap-6">
                 <div>
-                  <h1 className="text-2xl font-bold text-gray-900">{user.firstName} {user.lastName}</h1>
-                  <p className="text-gray-500">@{user.username}</p>
+                  <h1 className="text-xl md:text-2xl font-bold text-gray-900">{user.firstName} {user.lastName}</h1>
+                  <p className="text-gray-500 text-sm">@{user.username}</p>
                 </div>
-                <div className="w-64">
+                <div className="w-full sm:w-64">
                    <ExpProgressBar user={user} />
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg border border-gray-100">
-                  <Mail className="w-5 h-5 text-gray-400" />
-                  <div>
-                    <p className="text-xs text-gray-500 font-semibold uppercase tracking-wider">Email</p>
-                    <p className="text-gray-900 font-medium">{user.email}</p>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
+                <div className="flex items-center gap-4 p-3 md:p-4 bg-gray-50 rounded-lg border border-gray-100">
+                  <Mail className="w-5 h-5 text-gray-400 flex-shrink-0" />
+                  <div className="min-w-0 flex-1">
+                    <p className="text-[10px] text-gray-500 font-semibold uppercase tracking-wider">Email</p>
+                    <p className="text-sm md:text-base text-gray-900 font-medium truncate">{user.email}</p>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg border border-gray-100">
-                  <Calendar className="w-5 h-5 text-gray-400" />
+                <div className="flex items-center gap-4 p-3 md:p-4 bg-gray-50 rounded-lg border border-gray-100">
+                  <Calendar className="w-5 h-5 text-gray-400 flex-shrink-0" />
                   <div>
-                    <p className="text-xs text-gray-500 font-semibold uppercase tracking-wider">Birth Date</p>
-                    <p className="text-gray-900 font-medium">{user.birthDate}</p>
+                    <p className="text-[10px] text-gray-500 font-semibold uppercase tracking-wider">Birth Date</p>
+                    <p className="text-sm md:text-base text-gray-900 font-medium">{user.birthDate}</p>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg border border-gray-100">
-                  <Tag className="w-5 h-5 text-gray-400" />
+                <div className="flex items-center gap-4 p-3 md:p-4 bg-gray-50 rounded-lg border border-gray-100">
+                  <Tag className="w-5 h-5 text-gray-400 flex-shrink-0" />
                   <div>
-                    <p className="text-xs text-gray-500 font-semibold uppercase tracking-wider">Member Type</p>
-                    <p className="text-gray-900 font-medium">{user.memberType}</p>
+                    <p className="text-[10px] text-gray-500 font-semibold uppercase tracking-wider">Member Type</p>
+                    <p className="text-sm md:text-base text-gray-900 font-medium">{user.memberType}</p>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg border border-gray-100">
-                  <Shield className="w-5 h-5 text-gray-400" />
+                <div className="flex items-center gap-4 p-3 md:p-4 bg-gray-50 rounded-lg border border-gray-100">
+                  <Shield className="w-5 h-5 text-gray-400 flex-shrink-0" />
                   <div>
-                    <p className="text-xs text-gray-500 font-semibold uppercase tracking-wider">Gender</p>
-                    <p className="text-gray-900 font-medium">{user.gender}</p>
+                    <p className="text-[10px] text-gray-500 font-semibold uppercase tracking-wider">Gender</p>
+                    <p className="text-sm md:text-base text-gray-900 font-medium">{user.gender}</p>
                   </div>
                 </div>
               </div>
