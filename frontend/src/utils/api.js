@@ -96,6 +96,7 @@ export const deviceApi = {
     actuatorDetails: (id) => api.get(`/api/actuator/get?id=${id}`),
     sensorReadings: (id) => api.get(`/api/sensor/readings?id=${id}`),
     actuatorHistory: (id) => api.get(`/api/actuator/history?id=${id}`),
+    updateActuatorState: (id, state) => api.post(`/api/actuator/update-state?id=${id}&state=${state}`),
 };
 
 // News

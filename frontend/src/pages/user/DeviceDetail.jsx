@@ -112,15 +112,7 @@ const DeviceDetail = () => {
   const handleManualControl = async () => {
     try {
       setRefreshing(true);
-      // Update endpoint for actuator
-      await fetch('/api/admin/actuator/update', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-            ...device,
-            currentState: manualValue
-        })
-      });
+      await deviceApi.updateActuatorState(trueId, manualValue);
       alert('State updated successfully');
       fetchData();
     } catch (err) {
@@ -386,9 +378,11 @@ const DeviceDetail = () => {
                </div>
             </div>
 
-            <div className="border border-gray-100 rounded-lg overflow-hidden">
-               {renderSimpleChart()}
-            </div>
+            {!isActuator && (
+              <div className="border border-gray-100 rounded-lg overflow-hidden">
+                 {renderSimpleChart()}
+              </div>
+            )}
 
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4 pt-8 border-t border-gray-100 text-xs uppercase font-semibold">
                <div>
