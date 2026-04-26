@@ -15,7 +15,6 @@ import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -145,14 +144,23 @@ public class SimulationService {
             return 0;
         }
 
-        if (lastValue > 0) {
-            double change = this.randomRange(0, 100);
-            if (change <= 10) return lastValue;
-            return 0;
-        } else {
-            double change = this.randomRange(0, 100);
-            if (change <= 25) return lastValue;
-            return 30;
+
+        if (lastValue > 0) { //lastValue = 30
+            //33% chance to have 0 as new value
+            double chance = this.randomRange(0, 100);
+            if (chance < 33) {
+                return 0;
+            } else {
+                return 30;
+            }
+        } else { //lastValue = 0
+            // 33 % chance to have 30 as new value
+            double chance = this.randomRange(0, 100);
+            if (chance < 33) {
+                return 30;
+            } else {
+                return 0;
+            }
         }
     }
 
