@@ -1,5 +1,6 @@
 package io.squid.cynapse.controllers;
 
+import io.squid.cynapse.annotation.AddUserExp;
 import io.squid.cynapse.entities.SensorDevice;
 import io.squid.cynapse.entities.SensorReading;
 import io.squid.cynapse.services.SensorDeviceService;
@@ -45,6 +46,7 @@ public class SensorController {
      * @return Sensor details or error if not found
      */
     @GetMapping("/get")
+    @AddUserExp(exp = 20)
     public ResponseEntity<?> getSensor(@RequestParam("id") long sensorId) {
         SensorDevice device = this.sensorDeviceService.findById(sensorId);
         if (device == null) {

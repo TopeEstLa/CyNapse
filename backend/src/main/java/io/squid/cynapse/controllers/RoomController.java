@@ -1,5 +1,6 @@
 package io.squid.cynapse.controllers;
 
+import io.squid.cynapse.annotation.AddUserExp;
 import io.squid.cynapse.entities.Room;
 import io.squid.cynapse.services.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,7 @@ public class RoomController {
      * @return List of all rooms
      */
     @GetMapping("/list")
+    @AddUserExp(exp = 10)
     public ResponseEntity<List<Room>> getRooms() {
         return ResponseEntity.ok(this.roomService.findAll());
     }

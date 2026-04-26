@@ -1,5 +1,6 @@
 package io.squid.cynapse.controllers;
 
+import io.squid.cynapse.annotation.AddUserExp;
 import io.squid.cynapse.dto.AuthDTO;
 import io.squid.cynapse.entities.User;
 import io.squid.cynapse.enums.Cookies;
@@ -52,6 +53,7 @@ public class AuthController {
     }
 
     @PostMapping("/sign-in")
+    @AddUserExp(exp = 50)
     public ResponseEntity<?> signin(@RequestBody AuthDTO.SigninDTO signinDTO, HttpServletRequest req, HttpServletResponse resp) {
         User user = this.userService.findByUsernameOrEmail(signinDTO.getUsername());
         if (user == null) {

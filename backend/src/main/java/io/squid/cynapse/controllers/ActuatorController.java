@@ -1,5 +1,6 @@
 package io.squid.cynapse.controllers;
 
+import io.squid.cynapse.annotation.AddUserExp;
 import io.squid.cynapse.entities.ActuatorDevice;
 import io.squid.cynapse.entities.ActuatorHistory;
 import io.squid.cynapse.services.ActuatorDeviceService;
@@ -54,6 +55,7 @@ public class ActuatorController {
      * @return Actuator details or error if not found
      */
     @GetMapping("/get")
+    @AddUserExp(exp = 20)
     public ResponseEntity<?> getActuator(@RequestParam("id") long actuatorId) {
         ActuatorDevice device = this.actuatorDeviceService.findById(actuatorId);
         if (device == null) {
