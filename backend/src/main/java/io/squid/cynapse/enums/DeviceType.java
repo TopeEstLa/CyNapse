@@ -1,14 +1,11 @@
 package io.squid.cynapse.enums;
 
 
-import io.squid.cynapse.entities.Alert;
-import io.squid.cynapse.entities.Room;
-
 public enum DeviceType {
 
     THERMOMETER(true, 0.0),
     HUMIDITY_SENSOR(true, 0.0),
-    CO2_SENSOR(true, 0.0) ,
+    CO2_SENSOR(true, 0.0),
     PEOPLE_COUNTER(true, 0.0),
 
 

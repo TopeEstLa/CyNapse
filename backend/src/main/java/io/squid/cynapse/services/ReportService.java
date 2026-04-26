@@ -1,10 +1,6 @@
 package io.squid.cynapse.services;
 
-import io.squid.cynapse.entities.ActuatorDevice;
-import io.squid.cynapse.entities.ActuatorHistory;
-import io.squid.cynapse.entities.Room;
-import io.squid.cynapse.entities.SensorDevice;
-import io.squid.cynapse.entities.SensorReading;
+import io.squid.cynapse.entities.*;
 import io.squid.cynapse.enums.DeviceType;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,13 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service

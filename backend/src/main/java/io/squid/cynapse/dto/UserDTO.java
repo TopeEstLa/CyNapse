@@ -29,7 +29,7 @@ public class UserDTO {
             this.memberType = memberType;
             this.birthDate = birthDate;
             this.image = image;
-            this.role =role;
+            this.role = role;
             this.exp = exp;
         }
 

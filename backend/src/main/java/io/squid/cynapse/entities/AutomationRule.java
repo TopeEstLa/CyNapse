@@ -30,11 +30,11 @@ public class AutomationRule {
 
     @Column(nullable = false)
     private boolean enabled;
-
     private LocalDateTime lastEvaluationAt;
 
     @OneToMany(mappedBy = "rule", cascade = CascadeType.ALL, orphanRemoval = true)
     private final List<AutomationCondition> conditions = new ArrayList<>();
+
 
     public AutomationRule() {
     }

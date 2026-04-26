@@ -26,7 +26,6 @@ public class SensorController {
     private SensorDeviceService sensorDeviceService;
 
 
-
     /**
      * Get all sensors or sensors from a specific room
      *

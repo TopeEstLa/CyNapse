@@ -1,6 +1,5 @@
 package io.squid.cynapse.controllers.admin;
 
-import io.squid.cynapse.dto.DeleteRequestDTO;
 import io.squid.cynapse.entities.DeleteRequest;
 import io.squid.cynapse.enums.DeleteRequestStatus;
 import io.squid.cynapse.services.DeleteRequestService;

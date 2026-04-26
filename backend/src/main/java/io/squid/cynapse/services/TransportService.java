@@ -46,7 +46,6 @@ public class TransportService {
     }
 
 
-
     public URI buildStopMonitoringUri() {
         UriComponentsBuilder builder = UriComponentsBuilder
                 .fromUriString("https://prim.iledefrance-mobilites.fr/marketplace/stop-monitoring")

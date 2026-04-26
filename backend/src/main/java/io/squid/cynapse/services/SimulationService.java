@@ -162,7 +162,7 @@ public class SimulationService {
         Optional<SensorReading> populationReading = this.sensorReadingRepository.findFirstByDeviceRoomIdAndDeviceTypeOrderByCapturedAtDesc(room.getId(), DeviceType.PEOPLE_COUNTER);
         boolean occupied = populationReading.map(reading -> reading.getValue() > 0).orElse(false);
 
-      if (occupied) {
+        if (occupied) {
             room.setStatus(RoomStatus.OCCUPIED);
         } else {
             room.setStatus(RoomStatus.FREE);

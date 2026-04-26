@@ -50,7 +50,8 @@ public class SecurityConfig {
                 })
                 .headers(headers -> headers
                         .frameOptions(fo -> fo.deny())
-                        .contentTypeOptions(cto -> {})
+                        .contentTypeOptions(cto -> {
+                        })
                         .httpStrictTransportSecurity(hsts -> hsts
                                 .maxAgeInSeconds(31536000)
                                 .includeSubDomains(true)

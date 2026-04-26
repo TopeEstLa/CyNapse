@@ -1,6 +1,5 @@
 package io.squid.cynapse.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.squid.cynapse.enums.DeviceStatus;
 import io.squid.cynapse.enums.DeviceType;
 import jakarta.persistence.*;
