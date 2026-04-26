@@ -321,14 +321,16 @@ const DeviceDetail = () => {
               Sync
             </button>
             {canDownloadReport && (
-              <button 
-                onClick={handleDownloadReport} 
-                disabled={downloading}
-                className="flex-1 xs:flex-none flex items-center justify-center gap-2 px-4 py-2 bg-gray-900 text-white rounded-lg shadow-sm text-xs font-bold hover:bg-black transition-colors disabled:opacity-50 uppercase tracking-wider"
+              <a 
+                href={isSensor ? `${BASE_URL}/api/reports/sensors/${trueId}` : `${BASE_URL}/api/reports/actuators/${trueId}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                download={`report-${isSensor ? 'sensor' : 'actuator'}-${device?.name || trueId}.txt`}
+                className="flex-1 xs:flex-none flex items-center justify-center gap-2 px-4 py-2 bg-gray-900 text-white rounded-lg shadow-sm text-xs font-bold hover:bg-black transition-colors uppercase tracking-wider"
               >
-                {downloading ? <Loader2 className={`w-4 h-4 animate-spin`} /> : <FileText className={`w-4 h-4 text-blue-400`} />}
+                <FileText className={`w-4 h-4 text-blue-400`} />
                 Report
-              </button>
+              </a>
             )}
           </div>
         </div>

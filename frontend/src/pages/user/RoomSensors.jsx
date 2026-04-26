@@ -161,14 +161,16 @@ const RoomSensors = () => {
         </Link>
         <div className="flex gap-2">
            {canDownloadReport && (
-             <button 
-               onClick={handleDownloadReport}
-               disabled={downloading}
-               className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg text-xs font-semibold text-gray-700 hover:bg-gray-50 transition-all shadow-sm disabled:opacity-50"
+             <a 
+               href={`${BASE_URL}/api/reports/rooms/${id}`}
+               target="_blank"
+               rel="noopener noreferrer"
+               download={`report-room-${room?.name || id}.txt`}
+               className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg text-xs font-semibold text-gray-700 hover:bg-gray-50 transition-all shadow-sm"
              >
-               {downloading ? <Loader2 className="w-4 h-4 animate-spin" /> : <FileText className="w-4 h-4" />}
+               <FileText className="w-4 h-4" />
                Download Report
-             </button>
+             </a>
            )}
            <div className="flex items-center gap-3">
              <span className="text-[10px] text-gray-400 font-bold uppercase whitespace-nowrap">
