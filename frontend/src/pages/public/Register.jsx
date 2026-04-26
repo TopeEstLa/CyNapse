@@ -33,7 +33,7 @@ const Register = () => {
     setError(null);
     try {
       await authApi.signUp(formData);
-      alert('Account created! You can now log in.');
+      alert('Account created! Please wait an administrator to authorize your sign-up');
       navigate('/login');
     } catch (err) {
       setError(err.message);

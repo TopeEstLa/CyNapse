@@ -66,6 +66,16 @@ public class UserService {
         return this.userRepository.save(user);
     }
 
+    public boolean delete(Long userId) {
+        User user = this.findById(userId);
+
+        if (user == null) {
+            return false;
+        }
+        this.userRepository.delete(user);
+        return true;
+    }
+
     public List<UserDTO.UserProfile> getUsersProfile() {
         List<UserDTO.UserProfile> userProfiles = new ArrayList<>();
 

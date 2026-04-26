@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { adminApi } from '../../../utils/api.js';
-import { User, Shield, Loader2, Edit2, CheckCircle, XCircle, Search } from 'lucide-react';
+import { User, Shield, Loader2, Edit2, CheckCircle, XCircle, Search, Trash2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { cn } from '../../../utils/ui.js';
 import { Role } from '../../../utils/constants.js';
@@ -22,6 +22,19 @@ const AdminUsers = () => {
       console.error(err);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleDelete = async (userId, username) => {
+    if (!window.confirm(`Are you sure you want to delete user "${username}"? This action cannot be undone.`)) {
+      return;
+    }
+
+    try {
+      await adminApi.deleteUser(userId);
+      setUsers(users.filter(u => u.id !== userId));
+    } catch (err) {
+      alert(err.message || "Failed to delete user");
     }
   };
 
@@ -106,13 +119,19 @@ const AdminUsers = () => {
                       </span>
                     )}
                   </td>
-                  <td className="px-6 py-4 text-right">
+                  <td className="px-6 py-4 text-right flex justify-end gap-2">
                     <Link
                       to={`/admin/user/${u.id}`}
                       className="inline-flex p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors border border-transparent hover:border-blue-100"
                     >
                       <Edit2 className="w-4 h-4" />
                     </Link>
+                    <button
+                      onClick={() => handleDelete(u.id, u.username)}
+                      className="inline-flex p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors border border-transparent hover:border-red-100"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
                   </td>
                 </tr>
               ))}
