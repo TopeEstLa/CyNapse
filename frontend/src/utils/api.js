@@ -1,4 +1,4 @@
-const BASE_URL = ''; // Proxy handles this in vite.config.js
+const BASE_URL = import.meta.env.VITE_API_URL || ''; 
 
 const handleResponse = async (response) => {
     if (!response.ok) {
@@ -28,13 +28,13 @@ const handleResponse = async (response) => {
 
 export const api = {
     get: async (url) => {
-        const response = await fetch(url, {
+        const response = await fetch(`${BASE_URL}${url}`, {
             credentials: 'include',
         });
         return handleResponse(response);
     },
     post: async (url, body) => {
-        const response = await fetch(url, {
+        const response = await fetch(`${BASE_URL}${url}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -45,7 +45,7 @@ export const api = {
         return handleResponse(response);
     },
     put: async (url, body) => {
-        const response = await fetch(url, {
+        const response = await fetch(`${BASE_URL}${url}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -56,7 +56,7 @@ export const api = {
         return handleResponse(response);
     },
     delete: async (url) => {
-        const response = await fetch(url, {
+        const response = await fetch(`${BASE_URL}${url}`, {
             method: 'DELETE',
             credentials: 'include',
         });
