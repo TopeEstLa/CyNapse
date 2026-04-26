@@ -20,7 +20,7 @@ const News = () => {
     setLoading(true);
     try {
       const data = await newsApi.list();
-      setNewsList(data);
+      setNewsList(Array.isArray(data) ? data : []);
     } catch (err) {
       console.error('Failed to fetch news:', err);
     } finally {

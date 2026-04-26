@@ -33,7 +33,7 @@ const FindRoom = () => {
   const fetchRooms = async () => {
     try {
       const data = await roomApi.list();
-      setRooms(data);
+      setRooms(Array.isArray(data) ? data : []);
     } catch (err) {
       console.error(err);
     } finally {
@@ -41,14 +41,14 @@ const FindRoom = () => {
     }
   };
 
-  const filteredRooms = rooms.filter(room => {
+  const filteredRooms = Array.isArray(rooms) ? rooms.filter(room => {
     const matchCapacity = filters.minCapacity === '' || room.capacity >= parseInt(filters.minCapacity);
     const matchFloor = filters.floor === '' || room.floorNumber === parseInt(filters.floor);
     const matchAvailability = !filters.onlyAvailable || room.status === RoomStatus.FREE;
     return matchCapacity && matchFloor && matchAvailability;
-  });
+  }) : [];
 
-  const floors = [...new Set(rooms.map(r => r.floorNumber))].sort((a, b) => a - b);
+  const floors = Array.isArray(rooms) ? [...new Set(rooms.map(r => r.floorNumber))].sort((a, b) => a - b) : [];
 
   if (loading && rooms.length === 0) return (
     <div className="min-h-[60vh] flex flex-col items-center justify-center space-y-4">

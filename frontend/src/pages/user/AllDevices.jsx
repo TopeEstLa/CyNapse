@@ -21,8 +21,8 @@ const AllDevices = () => {
           roomApi.list()
         ]);
 
-        const mappedSensors = sensors.map(s => ({ ...s, deviceCategory: 'SENSOR' }));
-        const mappedActuators = actuators.map(a => ({ ...a, deviceCategory: 'ACTUATOR' }));
+        const mappedSensors = Array.isArray(sensors) ? sensors.map(s => ({ ...s, deviceCategory: 'SENSOR' })) : [];
+        const mappedActuators = Array.isArray(actuators) ? actuators.map(a => ({ ...a, deviceCategory: 'ACTUATOR' })) : [];
 
         setDevices([...mappedSensors, ...mappedActuators]);
         setRooms(roomsData);

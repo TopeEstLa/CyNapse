@@ -1,12 +1,14 @@
-const BASE_URL = '';
+const BASE_URL = 'https://flacapi.antoninp.dev';
 
 const handleResponse = async (response) => {
+    const contentType = response.headers.get('content-type');
+    const isJson = contentType && contentType.includes('application/json');
+
     if (!response.ok) {
         let errorMessage = response.statusText;
-        const contentType = response.headers.get('content-type');
         
         try {
-            if (contentType && contentType.includes('application/json')) {
+            if (isJson) {
                 const errorData = await response.json();
                 errorMessage = errorData.message || errorData.error || errorData.detail || response.statusText;
             } else {
@@ -19,11 +21,18 @@ const handleResponse = async (response) => {
         throw new Error(errorMessage);
     }
     
-    const contentType = response.headers.get('content-type');
-    if (contentType && contentType.includes('application/json')) {
+    if (isJson) {
         return response.json().catch(() => ({}));
     }
-    return response.text();
+    
+    // If not JSON but OK, return empty object to avoid string .map() crashes
+    // but log a warning if it's clearly HTML
+    const text = await response.text();
+    if (text.trim().startsWith('<!DOCTYPE') || text.trim().startsWith('<html')) {
+        console.warn('API returned HTML instead of JSON. Check backend URL or proxy.');
+        return {};
+    }
+    return text;
 };
 
 export const api = {

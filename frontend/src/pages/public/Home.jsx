@@ -24,9 +24,15 @@ const Home = () => {
     const fetchLatestNews = async () => {
       try {
         const data = await newsApi.list();
-        setLatestNews(data.slice(0, 3));
+        if (Array.isArray(data)) {
+          setLatestNews(data.slice(0, 3));
+        } else {
+          console.error('Latest news data is not an array:', data);
+          setLatestNews([]);
+        }
       } catch (err) {
         console.error('Failed to fetch news:', err);
+        setLatestNews([]);
       } finally {
         setNewsLoading(false);
       }
@@ -38,6 +44,7 @@ const Home = () => {
         setTransportData(data);
       } catch (err) {
         console.error('Failed to fetch transport data:', err);
+        setTransportData(null);
       } finally {
         setTransportLoading(false);
       }
@@ -175,7 +182,7 @@ const Home = () => {
                 <div className="animate-spin rounded-full h-8 w-8 md:h-10 md:w-10 border-t-2 border-b-2 border-blue-500 mb-4"></div>
                 <p className="text-blue-200 font-bold uppercase tracking-widest text-[8px] md:text-[9px]">Synchronizing...</p>
               </div>
-            ) : transportData && transportData.departures ? (
+            ) : transportData && Array.isArray(transportData.departures) ? (
               <div className="space-y-2 md:space-y-3 relative z-10">
                 {transportData.departures.slice(0, 5).map((dep, index) => (
                   <div key={index} className="group bg-white/5 backdrop-blur-sm p-4 md:p-5 rounded-xl md:rounded-2xl flex items-center justify-between border border-white/5 hover:bg-white/10 hover:border-white/20 transition-all gap-3 md:gap-4">
