@@ -74,6 +74,7 @@ export const api = {
 export const authApi = {
     signIn: (credentials) => api.post('/api/auth/sign-in', credentials),
     signUp: (data) => api.post('/api/auth/sign-up', data),
+    signOut: () => api.post('/api/auth/sign-out', {}),
     updatePassword: (data) => api.post('/api/auth/updatePassword', data),
     me: () => api.get('/api/user/me'),
 };

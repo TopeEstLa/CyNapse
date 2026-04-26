@@ -30,8 +30,9 @@ export const AuthProvider = ({ children }) => {
 
   const logout = async () => {
     try {
-      // Endpoint to clear cookie if possible
-      await fetch('/api/auth/sign-out', { method: 'POST', credentials: 'include' }).catch(() => null);
+      await authApi.signOut();
+    } catch (err) {
+      console.error("Sign out error:", err);
     } finally {
       setUser(null);
     }
