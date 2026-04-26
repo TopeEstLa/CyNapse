@@ -1,6 +1,6 @@
 package io.squid.cynapse.enums;
 
-import jakarta.servlet.http.Cookie;
+import org.springframework.http.ResponseCookie;
 
 /**
  * @author TopeEstLa
@@ -17,13 +17,14 @@ public enum Cookies {
     }
 
 
-    public Cookie getCookie(String value, int maxAge) {
-        Cookie cookie = new Cookie(cookieName, value);
-        cookie.setMaxAge(maxAge);
-        cookie.setPath("/");
-        cookie.setHttpOnly(true);
-
-        return cookie;
+    public ResponseCookie getCookie(String value, int maxAge) {
+        return ResponseCookie.from(cookieName, value)
+                .maxAge(maxAge)
+                .path("/")
+                .httpOnly(true)
+                .secure(true)
+                .sameSite("None")
+                .build();
     }
 
     public String getCookieName() {

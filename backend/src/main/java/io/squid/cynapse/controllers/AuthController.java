@@ -9,6 +9,8 @@ import io.squid.cynapse.services.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -64,9 +66,17 @@ public class AuthController {
             return ResponseEntity.status(401).body("Invalid password");
         }
 
-        resp.addCookie(Cookies.ACCESS_TOKEN.getCookie(jwtService.buildToken(user.getUsername()), (int) jwtService.getAccessExpirySeconds()));
+        ResponseCookie cookie = Cookies.ACCESS_TOKEN.getCookie(jwtService.buildToken(user.getUsername()), (int) jwtService.getAccessExpirySeconds());
+        resp.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
 
         return ResponseEntity.ok(user);
+    }
+
+    @PostMapping("/sign-out")
+    public ResponseEntity<?> signout(HttpServletResponse resp) {
+        ResponseCookie cookie = Cookies.ACCESS_TOKEN.getCookie("", 0);
+        resp.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
+        return ResponseEntity.ok("Logged out successfully");
     }
 
     @PostMapping("/updatePassword")
