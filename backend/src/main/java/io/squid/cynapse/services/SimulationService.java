@@ -1,13 +1,11 @@
 package io.squid.cynapse.services;
 
-import io.squid.cynapse.entities.Alert;
 import io.squid.cynapse.entities.Room;
 import io.squid.cynapse.entities.SensorDevice;
 import io.squid.cynapse.entities.SensorReading;
 import io.squid.cynapse.enums.DeviceStatus;
 import io.squid.cynapse.enums.DeviceType;
 import io.squid.cynapse.enums.RoomStatus;
-import io.squid.cynapse.repositories.AlertRepository;
 import io.squid.cynapse.repositories.RoomRepository;
 import io.squid.cynapse.repositories.SensorDeviceRepository;
 import io.squid.cynapse.repositories.SensorReadingRepository;
@@ -39,9 +37,6 @@ public class SimulationService {
 
     @Autowired
     private SensorReadingRepository sensorReadingRepository;
-
-    @Autowired
-    private AlertRepository alertRepository;
 
     @Scheduled(fixedDelayString = "${cynapse.simulation.interval-ms:5000}")
     public void runTick() {
@@ -167,11 +162,7 @@ public class SimulationService {
         Optional<SensorReading> populationReading = this.sensorReadingRepository.findFirstByDeviceRoomIdAndDeviceTypeOrderByCapturedAtDesc(room.getId(), DeviceType.PEOPLE_COUNTER);
         boolean occupied = populationReading.map(reading -> reading.getValue() > 0).orElse(false);
 
-        Optional<Alert> activeAlert = Optional.empty();
-
-        if (activeAlert.isPresent()) {
-            room.setStatus(RoomStatus.ALERT);
-        } else if (occupied) {
+      if (occupied) {
             room.setStatus(RoomStatus.OCCUPIED);
         } else {
             room.setStatus(RoomStatus.FREE);
