@@ -281,7 +281,7 @@ const DeviceDetail = () => {
   );
 
   const lastValue = isSensor 
-    ? (history.length > 0 ? history[history.length - 1].value : null)
+    ? (history.length > 0 ? history[0].value : null)
     : device.currentState;
 
   return (
