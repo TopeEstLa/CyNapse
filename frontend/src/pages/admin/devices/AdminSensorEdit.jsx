@@ -7,7 +7,7 @@ import {
   Loader2, 
   Signal
 } from 'lucide-react';
-import { DeviceType } from '../../../utils/constants.js';
+import { DeviceType, SENSOR_TYPES } from '../../../utils/constants.js';
 
 const AdminSensorEdit = () => {
   const { id } = useParams();
@@ -49,7 +49,7 @@ const AdminSensorEdit = () => {
         name: data.name,
         type: data.type,
         status: data.status,
-        roomId: data.roomId
+        roomId: data.roomId || data.room?.id || (roomId ? parseInt(roomId) : '')
       });
     } catch (err) {
       console.error(err);
@@ -116,7 +116,7 @@ const AdminSensorEdit = () => {
                 onChange={(e) => setFormData({ ...formData, type: e.target.value })}
                 className="w-full p-2 border rounded bg-white"
               >
-                {Object.values(DeviceType).map(type => (
+                {SENSOR_TYPES.map(type => (
                   <option key={type} value={type}>{type.replace('_', ' ')}</option>
                 ))}
               </select>

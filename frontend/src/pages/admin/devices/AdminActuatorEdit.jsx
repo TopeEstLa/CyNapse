@@ -13,13 +13,14 @@ import {
   Activity,
   Edit2
 } from 'lucide-react';
-import { DeviceType } from '../../../utils/constants.js';
+import { DeviceType, ACTUATOR_TYPES, SENSOR_TYPES } from '../../../utils/constants.js';
 
 const AdminActuatorEdit = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
+  const roomId = queryParams.get('roomId');
 
   const [loading, setLoading] = useState(id !== 'new');
   const [saving, setSaving] = useState(false);
@@ -28,7 +29,9 @@ const AdminActuatorEdit = () => {
     type: DeviceType.SMART_LIGHT,
     status: 'ONLINE',
     currentState: 'OFF',
+    roomId: roomId ? parseInt(roomId) : ''
   });
+  const [rooms, setRooms] = useState([]);
   const [rules, setRules] = useState([]);
   const [isRuleModalOpen, setIsRuleModalOpen] = useState(false);
   const [currentRule, setCurrentRule] = useState(null);
@@ -41,11 +44,21 @@ const AdminActuatorEdit = () => {
   });
 
   useEffect(() => {
+    fetchRooms();
     if (id !== 'new') {
       fetchActuator();
       fetchRules();
     }
   }, [id]);
+
+  const fetchRooms = async () => {
+    try {
+      const data = await api.get('/api/admin/room/list');
+      setRooms(data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
 
   const fetchActuator = async () => {
@@ -55,7 +68,8 @@ const AdminActuatorEdit = () => {
         name: data.name,
         type: data.type,
         status: data.status,
-        currentState: data.currentState
+        currentState: data.currentState,
+        roomId: data.roomId || data.room?.id || (roomId ? parseInt(roomId) : '')
       });
     } catch (err) {
       console.error(err);
@@ -218,10 +232,9 @@ const AdminActuatorEdit = () => {
                   onChange={(e) => setFormData({ ...formData, type: e.target.value })}
                   className="w-full p-2 border rounded bg-white"
                 >
-                  <option value={DeviceType.SMART_LIGHT}>Smart Light</option>
-                  <option value={DeviceType.THERMOMETER}>HVAC</option>
-                  <option value={DeviceType.HEATER}>Heater</option>
-                  <option value={DeviceType.CO2_SENSOR}>Ventilation</option>
+                  {ACTUATOR_TYPES.map(type => (
+                    <option key={type} value={type}>{type.replace('_', ' ')}</option>
+                  ))}
                 </select>
               </div>
               <div>
@@ -245,6 +258,20 @@ const AdminActuatorEdit = () => {
                 className="w-full p-2 border rounded"
                 placeholder="ON/OFF or value"
               />
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-1">Assign to Room</label>
+              <select
+                required
+                value={formData.roomId}
+                onChange={(e) => setFormData({ ...formData, roomId: parseInt(e.target.value) })}
+                className="w-full p-2 border rounded bg-white"
+              >
+                <option value="">Select a room...</option>
+                {rooms.map(room => (
+                  <option key={room.id} value={room.id}>{room.name} (Floor {room.floorNumber})</option>
+                ))}
+              </select>
             </div>
             <button
               type="submit"
@@ -400,7 +427,7 @@ const AdminActuatorEdit = () => {
                               }}
                               className="w-full p-1 border rounded text-xs bg-white"
                             >
-                              {Object.values(DeviceType).map(t => <option key={t} value={t}>{t.replace('_', ' ')}</option>)}
+                              {SENSOR_TYPES.map(t => <option key={t} value={t}>{t.replace('_', ' ')}</option>)}
                             </select>
                           </div>
                           <div>

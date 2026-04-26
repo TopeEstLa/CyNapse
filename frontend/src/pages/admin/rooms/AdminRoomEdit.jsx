@@ -146,7 +146,7 @@ const AdminRoomEdit = () => {
                     <div className="text-xs text-gray-500 uppercase">{s.type.replace('_', ' ')} • ID: {s.id}</div>
                   </div>
                   <div className="flex gap-2">
-                    <Link to={`/admin/sensors/${s.id}`} className="p-1.5 text-blue-600 hover:bg-blue-50 rounded"><Edit2 size={16} /></Link>
+                    <Link to={`/admin/sensors/${s.id}?roomId=${id}`} className="p-1.5 text-blue-600 hover:bg-blue-50 rounded"><Edit2 size={16} /></Link>
                     <button onClick={() => handleDeleteDevice('sensor', s.id)} className="p-1.5 text-red-600 hover:bg-red-50 rounded"><Trash2 size={16} /></button>
                   </div>
                 </div>
@@ -172,7 +172,7 @@ const AdminRoomEdit = () => {
                     <div className="text-xs text-gray-500 uppercase">{a.type.replace('_', ' ')} • ID: {a.id}</div>
                   </div>
                   <div className="flex gap-2">
-                    <Link to={`/admin/actuators/${a.id}`} className="p-1.5 text-blue-600 hover:bg-blue-50 rounded"><Edit2 size={16} /></Link>
+                    <Link to={`/admin/actuators/${a.id}?roomId=${id}`} className="p-1.5 text-blue-600 hover:bg-blue-50 rounded"><Edit2 size={16} /></Link>
                     <button onClick={() => handleDeleteDevice('actuator', a.id)} className="p-1.5 text-red-600 hover:bg-red-50 rounded"><Trash2 size={16} /></button>
                   </div>
                 </div>

@@ -14,6 +14,18 @@ export const DeviceType = {
   HEATER: 'HEATER',
 };
 
+export const SENSOR_TYPES = [
+  DeviceType.THERMOMETER,
+  DeviceType.HUMIDITY_SENSOR,
+  DeviceType.CO2_SENSOR,
+  DeviceType.PEOPLE_COUNTER
+];
+
+export const ACTUATOR_TYPES = [
+  DeviceType.SMART_LIGHT,
+  DeviceType.HEATER
+];
+
 export const MemberType = {
   STUDENT: 'STUDENT',
   TEACHER: 'TEACHER',
