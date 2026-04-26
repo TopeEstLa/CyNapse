@@ -63,6 +63,7 @@ public class AdminUserController {
         currentUser.setLastName(user.getLastName());
         currentUser.setEnable(user.isEnable());
         currentUser.setExp(user.getExp());
+        currentUser.setRole(user.getRole());
         currentUser.setGender(user.getGender());
         currentUser.setBirthDate(user.getBirthDate());
         currentUser.setImage(user.getImage());
