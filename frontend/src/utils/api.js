@@ -6,7 +6,7 @@ const handleResponse = async (response) => {
 
     if (!response.ok) {
         let errorMessage = response.statusText;
-        
+
         try {
             if (isJson) {
                 const errorData = await response.json();
@@ -19,11 +19,11 @@ const handleResponse = async (response) => {
         }
         throw new Error(errorMessage);
     }
-    
+
     if (isJson) {
         return response.json().catch(() => ({}));
     }
-    
+
     const text = await response.text();
     if (text.trim().startsWith('<!DOCTYPE') || text.trim().startsWith('<html')) {
         console.warn('API returned HTML instead of JSON. Check backend URL or proxy.');

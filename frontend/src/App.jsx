@@ -1,6 +1,6 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate, Outlet } from 'react-router-dom';
-import { AuthProvider, useAuth } from './context/AuthContext';
+import {BrowserRouter as Router, Navigate, Outlet, Route, Routes} from 'react-router-dom';
+import {AuthProvider, useAuth} from './context/AuthContext';
 
 // Layouts
 import MainLayout from './layouts/MainLayout';
@@ -40,64 +40,64 @@ import AdminDeleteRequests from './pages/admin/AdminDeleteRequests';
 import './index.css';
 
 const ProtectedRoute = () => {
-  const { user, loading } = useAuth();
+    const {user, loading} = useAuth();
 
-  if (loading) return <div className="p-8 text-center">Loading...</div>;
-  if (!user) return <Navigate to="/login" replace />;
+    if (loading) return <div className="p-8 text-center">Loading...</div>;
+    if (!user) return <Navigate to="/login" replace/>;
 
-  return <Outlet />;
+    return <Outlet/>;
 };
 
 function App() {
-  return (
-    <AuthProvider>
-      <Router>
-        <Routes>
-          {/* Main Layout - Public & User Routes */}
-          <Route element={<MainLayout />}>
-            {/* Public Routes */}
-            <Route path="/" element={<Home />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/news" element={<News />} />
-            <Route path="/news/:slug" element={<NewsDetail />} />
+    return (
+        <AuthProvider>
+            <Router>
+                <Routes>
+                    {/* Main Layout - Public & User Routes */}
+                    <Route element={<MainLayout/>}>
+                        {/* Public Routes */}
+                        <Route path="/" element={<Home/>}/>
+                        <Route path="/login" element={<Login/>}/>
+                        <Route path="/register" element={<Register/>}/>
+                        <Route path="/news" element={<News/>}/>
+                        <Route path="/news/:slug" element={<NewsDetail/>}/>
 
-            {/* Protected User Routes */}
-            <Route element={<ProtectedRoute />}>
-              <Route path="/profile" element={<Profile />} />
-              <Route path="/users" element={<Users />} />
-              <Route path="/user/:id" element={<UserProfileView />} />
-              <Route path="/monitoring" element={<IoTMonitoring />} />
-              <Route path="/all-devices" element={<AllDevices />} />
-              <Route path="/monitoring/room/:id" element={<RoomSensors />} />
-              <Route path="/device/:deviceId" element={<DeviceDetail />} />
-              <Route path="/find-room" element={<FindRoom />} />
-              <Route path="/my-requests" element={<MyDeleteRequests />} />
-            </Route>
-          </Route>
+                        {/* Protected User Routes */}
+                        <Route element={<ProtectedRoute/>}>
+                            <Route path="/profile" element={<Profile/>}/>
+                            <Route path="/users" element={<Users/>}/>
+                            <Route path="/user/:id" element={<UserProfileView/>}/>
+                            <Route path="/monitoring" element={<IoTMonitoring/>}/>
+                            <Route path="/all-devices" element={<AllDevices/>}/>
+                            <Route path="/monitoring/room/:id" element={<RoomSensors/>}/>
+                            <Route path="/device/:deviceId" element={<DeviceDetail/>}/>
+                            <Route path="/find-room" element={<FindRoom/>}/>
+                            <Route path="/my-requests" element={<MyDeleteRequests/>}/>
+                        </Route>
+                    </Route>
 
-          {/* Admin Layout - Admin Routes */}
-          <Route path="/admin" element={<AdminLayout />}>
-            <Route index element={<AdminDashboard />} />
-            <Route path="users" element={<AdminUsers />} />
-            <Route path="pending" element={<AdminPendingUsers />} />
-            <Route path="user/:id" element={<AdminUserEdit />} />
-            <Route path="rooms" element={<AdminRooms />} />
-            <Route path="rooms/:id" element={<AdminRoomEdit />} />
-            <Route path="sensors/:id" element={<AdminSensorEdit />} />
-            <Route path="actuators/:id" element={<AdminActuatorEdit />} />
-            <Route path="news" element={<AdminNews />} />
-            <Route path="news/create" element={<AdminNewsEdit />} />
-            <Route path="news/edit/:slug" element={<AdminNewsEdit />} />
-            <Route path="requests" element={<AdminDeleteRequests />} />
-          </Route>
+                    {/* Admin Layout - Admin Routes */}
+                    <Route path="/admin" element={<AdminLayout/>}>
+                        <Route index element={<AdminDashboard/>}/>
+                        <Route path="users" element={<AdminUsers/>}/>
+                        <Route path="pending" element={<AdminPendingUsers/>}/>
+                        <Route path="user/:id" element={<AdminUserEdit/>}/>
+                        <Route path="rooms" element={<AdminRooms/>}/>
+                        <Route path="rooms/:id" element={<AdminRoomEdit/>}/>
+                        <Route path="sensors/:id" element={<AdminSensorEdit/>}/>
+                        <Route path="actuators/:id" element={<AdminActuatorEdit/>}/>
+                        <Route path="news" element={<AdminNews/>}/>
+                        <Route path="news/create" element={<AdminNewsEdit/>}/>
+                        <Route path="news/edit/:slug" element={<AdminNewsEdit/>}/>
+                        <Route path="requests" element={<AdminDeleteRequests/>}/>
+                    </Route>
 
-          {/* Fallback */}
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
-      </Router>
-    </AuthProvider>
-  );
+                    {/* Fallback */}
+                    <Route path="*" element={<Navigate to="/" replace/>}/>
+                </Routes>
+            </Router>
+        </AuthProvider>
+    );
 }
 
 export default App;
