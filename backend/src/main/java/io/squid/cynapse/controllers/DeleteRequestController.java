@@ -12,7 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/device-delete-request")
-@PreAuthorize("@authService.hasRequiredRole('ADVANCED')")
+@PreAuthorize("@authService.hasRequiredRole('EXPERT')")
 public class DeleteRequestController {
 
     @Autowired
