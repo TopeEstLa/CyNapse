@@ -73,7 +73,7 @@ public class AdminUserController {
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<?> deleteUser(long userId) {
+    public ResponseEntity<?> deleteUser(@RequestParam("userId") long userId) {
         if (!this.userService.delete(userId)) {
             return ResponseEntity.badRequest().body("User not found");
         }
