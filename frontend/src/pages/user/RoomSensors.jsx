@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { roomApi, deviceApi } from '../../utils/api';
+import { roomApi, deviceApi, BASE_URL } from '../../utils/api';
 import { 
   ArrowLeft, 
   Cpu, 
@@ -79,7 +79,7 @@ const RoomSensors = () => {
   const handleDownloadReport = async () => {
     try {
       setDownloading(true);
-      const response = await fetch(`/api/reports/rooms/${id}`, {
+      const response = await fetch(`${BASE_URL}/api/reports/rooms/${id}`, {
         method: 'GET',
       });
       if (!response.ok) throw new Error('Download failed');

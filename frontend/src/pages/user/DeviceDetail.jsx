@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { deviceApi } from '../../utils/api';
+import { deviceApi, BASE_URL } from '../../utils/api';
 import { 
   ArrowLeft, 
   Thermometer, 
@@ -92,7 +92,7 @@ const DeviceDetail = () => {
   const handleDownloadReport = async () => {
     try {
       setDownloading(true);
-      const endpoint = isSensor ? `/api/reports/sensors/${trueId}` : `/api/reports/actuators/${trueId}`;
+      const endpoint = isSensor ? `${BASE_URL}/api/reports/sensors/${trueId}` : `${BASE_URL}/api/reports/actuators/${trueId}`;
       const response = await fetch(endpoint, {
         method: 'GET',
       });
