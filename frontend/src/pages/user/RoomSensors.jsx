@@ -187,7 +187,6 @@ const RoomSensors = () => {
         </div>
       </header>
 
-      {/* Room Info Section */}
       <section className="bg-gray-900 rounded-xl p-8 text-white relative overflow-hidden shadow-lg">
          <div className="relative z-10 space-y-4">
             <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/10 rounded-full text-xs font-semibold uppercase tracking-wider">
@@ -203,7 +202,6 @@ const RoomSensors = () => {
          </div>
       </section>
 
-      {/* Sensor Cards */}
       <section className="space-y-6">
         <h2 className="text-xl font-bold flex items-center gap-3 border-b pb-2">
           <Signal className="w-6 h-6 text-blue-600" />
@@ -289,7 +287,6 @@ const RoomSensors = () => {
         </div>
       </section>
 
-      {/* Actuator Cards */}
       <section className="space-y-6">
         <h2 className="text-xl font-bold flex items-center gap-3 border-b pb-2">
           <Cpu className="w-6 h-6 text-blue-600" />

@@ -59,13 +59,11 @@ const FindRoom = () => {
 
   return (
     <main className="max-w-7xl mx-auto px-4 py-6 md:py-8 space-y-8 md:space-y-10 text-gray-900">
-      {/* Header Section */}
       <header className="space-y-2 border-b pb-4 text-center md:text-left">
         <h1 className="text-2xl md:text-3xl font-bold tracking-tight uppercase">Find a Room</h1>
         <p className="text-gray-500 font-medium text-sm md:text-base">Locate available spaces for meetings or activities.</p>
       </header>
 
-      {/* Filters Bar */}
       <section className="bg-white p-4 md:p-8 rounded-[2rem] border border-gray-100 shadow-sm space-y-6">
         <div className="flex items-center gap-3 mb-2 border-b border-gray-50 pb-4">
            <Filter className="w-5 h-5 text-blue-600" />
@@ -121,7 +119,6 @@ const FindRoom = () => {
         </div>
       </section>
 
-      {/* Results Grid */}
       <section className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
         {filteredRooms.map(room => (
           <div 

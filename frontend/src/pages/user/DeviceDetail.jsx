@@ -71,16 +71,16 @@ const DeviceDetail = () => {
       if (isSensor) {
         deviceData = await deviceApi.sensorDetails(trueId);
         setDevice(deviceData);
-        // Sort readings by date descending (most recent first)
-        const sortedReadings = (deviceData.readings || []).sort((a, b) => 
+
+        const sortedReadings = (deviceData.readings || []).sort((a, b) =>
           new Date(b.capturedAt) - new Date(a.capturedAt)
         );
         setHistory(sortedReadings);
       } else if (isActuator) {
         deviceData = await deviceApi.actuatorDetails(trueId);
         setDevice(deviceData);
-        // Sort history by date descending (most recent first)
-        const sortedHistory = (deviceData.history || []).sort((a, b) => 
+
+        const sortedHistory = (deviceData.history || []).sort((a, b) =>
           new Date(b.createdAt) - new Date(a.createdAt)
         );
         setHistory(sortedHistory);

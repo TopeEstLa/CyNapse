@@ -63,20 +63,16 @@ const Home = () => {
 
   return (
     <div className="space-y-12 pb-20 animate-fade-in pt-4">
-      {/* Hero Section */}
       <div className="relative max-w-7xl mx-auto px-4 py-8 md:py-12 text-center overflow-hidden rounded-[2rem] flex items-center justify-center">
-        {/* Background Image */}
-        <div 
+        <div
           className="absolute inset-0 z-0 bg-cover bg-center"
           style={{ 
             backgroundImage: 'url("https://cytech.cyu.fr/medias/photo/20210910-142739-1-_1658393597514-jpg?ID_FICHE=111566")',
           }}
         >
-          {/* Subtle Dimmer */}
           <div className="absolute inset-0 bg-black/10"></div>
         </div>
 
-        {/* Content Card for Visibility */}
         <div className="relative z-10 space-y-3 bg-white/75 backdrop-blur-md p-6 md:p-8 rounded-[2rem] border border-white/20 shadow-2xl max-w-2xl mx-auto">
           <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-blue-600 text-white text-[7px] md:text-[8px] font-black uppercase tracking-[0.2em] mb-0.5 shadow-lg shadow-blue-500/20">
             <span className="relative flex h-1.5 w-1.5">
@@ -96,10 +92,8 @@ const Home = () => {
         </div>
       </div>
 
-      {/* Main Grid Content */}
       <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16">
 
-        {/* Left: Latest News */}
         <section className="space-y-6 lg:space-y-8">
           <div className="flex items-end justify-between px-2">
             <div>
@@ -153,7 +147,6 @@ const Home = () => {
           </div>
         </section>
 
-        {/* Right: Network Mobility */}
         <section className="space-y-6 lg:space-y-8">
           <div className="flex items-end justify-between px-2">
             <div>

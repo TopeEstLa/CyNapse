@@ -77,7 +77,6 @@ const AdminRoomEdit = () => {
       </header>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        {/* Left column: Room Properties */}
         <div className="md:col-span-1">
           <section className="bg-white p-6 border rounded shadow-sm sticky top-24">
             <h2 className="text-lg font-bold mb-4 flex items-center gap-2">
@@ -126,9 +125,7 @@ const AdminRoomEdit = () => {
           </section>
         </div>
 
-        {/* Right column: Devices */}
         <div className="md:col-span-2 space-y-8">
-          {/* Sensors */}
           <section className="bg-white p-6 border rounded shadow-sm">
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-lg font-bold flex items-center gap-2">
@@ -154,7 +151,6 @@ const AdminRoomEdit = () => {
             </div>
           </section>
 
-          {/* Actuators */}
           <section className="bg-white p-6 border rounded shadow-sm">
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-lg font-bold flex items-center gap-2">
