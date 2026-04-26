@@ -37,7 +37,7 @@ public class AuthService {
 
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-    @Value("{cynapse.public-url:http://localhost:8080}")
+    @Value("${cynapse.public-url:http://localhost:8080}")
     public String publicUrl;
 
     @Autowired
