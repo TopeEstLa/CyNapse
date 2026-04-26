@@ -25,5 +25,4 @@ export const MemberType = {
 export const RoomStatus = {
   FREE: 'FREE',
   OCCUPIED: 'OCCUPIED',
-  ALERT: 'ALERT',
 };

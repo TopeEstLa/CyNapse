@@ -10,7 +10,6 @@ import {
   Wind, 
   Users, 
   Activity, 
-  ShieldAlert,
   CheckCircle,
   Signal,
   Flame,
@@ -149,8 +148,6 @@ const RoomSensors = () => {
     </div>
   );
 
-  const allRoomAlerts = room?.alerts || [];
-
   return (
     <main className="max-w-7xl mx-auto px-4 py-6 md:py-8 space-y-8 text-gray-900">
       <header className="flex items-center justify-between border-b pb-4">
@@ -187,43 +184,16 @@ const RoomSensors = () => {
 
       {/* Room Info Section */}
       <section className="bg-gray-900 rounded-xl p-8 text-white relative overflow-hidden shadow-lg">
-         <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-            <div className="space-y-4">
-               <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/10 rounded-full text-xs font-semibold uppercase tracking-wider">
-                  Floor {room?.floorNumber}
-               </div>
-               <h1 className="text-4xl md:text-5xl font-bold tracking-tight">{room?.name}</h1>
-               <div className="flex items-center gap-4 pt-2">
-                  <div className="flex items-center gap-2 text-gray-300">
-                     <Users className="w-5 h-5" />
-                     <span className="text-lg font-medium">Capacity: {room?.capacity} ppl.</span>
-                  </div>
-               </div>
+         <div className="relative z-10 space-y-4">
+            <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/10 rounded-full text-xs font-semibold uppercase tracking-wider">
+               Floor {room?.floorNumber}
             </div>
-
-            {/* Alert Section */}
-            <div>
-               {allRoomAlerts.length > 0 ? (
-                 <div className="bg-red-600/20 border border-red-500/50 rounded-lg p-6 space-y-4">
-                    <h2 className="flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-red-400">
-                       <ShieldAlert className="w-5 h-5" />
-                       Active Alerts ({allRoomAlerts.length})
-                    </h2>
-                    <div className="space-y-2 max-h-[150px] overflow-y-auto pr-2 custom-scrollbar">
-                       {allRoomAlerts.map((alert) => (
-                         <div key={alert.id} className="text-sm bg-black/20 p-3 rounded border border-white/5">
-                            <p className="font-medium text-gray-100">{alert.message}</p>
-                            <p className="text-[10px] text-gray-400 mt-1 uppercase">{new Date(alert.createdAt).toLocaleString()}</p>
-                         </div>
-                       ))}
-                    </div>
-                 </div>
-               ) : (
-                 <div className="bg-green-600/10 border border-green-500/30 rounded-lg p-6 text-center">
-                    <CheckCircle className="w-8 h-8 text-green-500 mx-auto mb-2" />
-                    <p className="text-sm font-bold uppercase tracking-widest text-green-500">System Nominal</p>
-                 </div>
-               )}
+            <h1 className="text-4xl md:text-5xl font-bold tracking-tight">{room?.name}</h1>
+            <div className="flex items-center gap-4 pt-2">
+               <div className="flex items-center gap-2 text-gray-300">
+                  <Users className="w-5 h-5" />
+                  <span className="text-lg font-medium">Capacity: {room?.capacity} ppl.</span>
+               </div>
             </div>
          </div>
       </section>

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { roomApi } from '../../utils/api';
 import { 
-  AlertTriangle, 
   Users, 
   Loader2, 
   ArrowRight, 
@@ -18,7 +17,6 @@ import { RoomStatus, Role } from '../../utils/constants';
 const IoTMonitoring = () => {
   const [rooms, setRooms] = useState([]);
   const [overview, setOverview] = useState(null);
-  const [alerts, setAlerts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [lastRefresh, setLastRefresh] = useState(new Date());
   const navigate = useNavigate();
@@ -43,18 +41,10 @@ const IoTMonitoring = () => {
       const overviewData = {
         roomsTotal: roomsData.length,
         roomsOccupied: roomsData.filter(r => r.status === RoomStatus.OCCUPIED).length,
-        roomsInAlert: roomsData.filter(r => r.status === RoomStatus.ALERT).length,
-        activeAlerts: roomsData.reduce((acc, r) => acc + (r.alerts?.length || 0), 0),
         avgTemperature: 22.5,
         totalConsumption: totalConsumption
       };
       setOverview(overviewData);
-
-      const allAlerts = roomsData.flatMap(r => 
-        (r.alerts || []).map(a => ({ ...a, roomName: r.name }))
-      ).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-      
-      setAlerts(allAlerts);
     } catch (err) {
       console.error(err);
     } finally {
@@ -66,7 +56,6 @@ const IoTMonitoring = () => {
     switch (status) {
       case RoomStatus.FREE: return 'bg-secondary';
       case RoomStatus.OCCUPIED: return 'bg-primary';
-      case RoomStatus.ALERT: return 'bg-danger shadow-[0_0_20px_rgba(239,68,68,0.3)]';
       default: return 'bg-gray-400';
     }
   };
@@ -104,7 +93,7 @@ const IoTMonitoring = () => {
       </header>
 
       {overview && (
-        <section className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-5 gap-4">
+        <section className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-3 gap-4">
           <div className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm">
             <p className="text-[10px] font-semibold text-gray-500 uppercase mb-1">Total Rooms</p>
             <p className="text-xl md:text-2xl font-bold text-gray-900">{overview.roomsTotal}</p>
@@ -113,15 +102,7 @@ const IoTMonitoring = () => {
             <p className="text-[10px] font-semibold text-gray-500 uppercase mb-1">Occupied</p>
             <p className="text-xl md:text-2xl font-bold text-blue-600">{overview.roomsOccupied}</p>
           </div>
-          <div className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm border-l-4 border-l-red-500">
-            <p className="text-[10px] font-semibold text-gray-500 uppercase mb-1">In Alert</p>
-            <p className="text-xl md:text-2xl font-bold text-red-600">{overview.roomsInAlert}</p>
-          </div>
-          <div className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm">
-            <p className="text-[10px] font-semibold text-gray-500 uppercase mb-1">Active Alerts</p>
-            <p className="text-xl md:text-2xl font-bold text-yellow-600">{overview.activeAlerts}</p>
-          </div>
-          <div className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm border-l-4 border-l-blue-500 hidden lg:block">
+          <div className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm border-l-4 border-l-blue-500">
             <p className="text-[10px] font-semibold text-gray-500 uppercase mb-1">Avg. Temp</p>
             <p className="text-xl md:text-2xl font-bold text-blue-600">{overview.avgTemperature?.toFixed(1) || '0.0'}°C</p>
           </div>
@@ -169,7 +150,6 @@ const IoTMonitoring = () => {
                          <span>{room.capacity}</span>
                        </div>
                        <span className={`px-2 py-0.5 rounded text-xs font-medium ${
-                         room.status === RoomStatus.ALERT ? 'bg-red-100 text-red-700' :
                          room.status === RoomStatus.OCCUPIED ? 'bg-blue-100 text-blue-700' :
                          'bg-green-100 text-green-700'
                        }`}>
