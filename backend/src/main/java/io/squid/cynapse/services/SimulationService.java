@@ -64,7 +64,6 @@ public class SimulationService {
                 device.setLastSeenAt(LocalDateTime.now());
                 this.sensorDeviceRepository.save(device);
 
-                if (lastValue == reading.getValue()) continue;
                 this.sensorReadingRepository.save(reading);
             }
 
