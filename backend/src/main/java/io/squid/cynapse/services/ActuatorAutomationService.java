@@ -76,7 +76,7 @@ public class ActuatorAutomationService {
 
         actuator.setCurrentState(targetState);
         this.actuatorDeviceRepository.save(actuator);
-        this.actuatorHistoryRepository.save(new ActuatorHistory(targetState, actuator));
+        this.actuatorHistoryRepository.save(new ActuatorHistory(actuator, targetState));
     }
 
     private boolean isInCooldown(AutomationRule rule, LocalDateTime now) {

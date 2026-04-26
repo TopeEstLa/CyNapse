@@ -29,9 +29,9 @@ public class ActuatorHistory {
     public ActuatorHistory() {
     }
 
-    public ActuatorHistory(String value, ActuatorDevice device) {
-        this.value = value;
+    public ActuatorHistory(ActuatorDevice device, String value) {
         this.device = device;
+        this.value = value;
         this.createdAt = LocalDateTime.now();
     }
 

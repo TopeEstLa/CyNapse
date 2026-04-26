@@ -72,6 +72,20 @@ public class ActuatorDeviceService {
         return this.actuatorDeviceRepository.save(device);
     }
 
+    public boolean updateState(long deviceId, String newState) {
+        ActuatorDevice device = this.findById(deviceId);
+        if (device == null) {
+            return false;
+        }
+
+        device.setCurrentState(newState);
+        this.actuatorDeviceRepository.save(device);
+
+        ActuatorHistory history = new ActuatorHistory(device, newState);
+        this.actuatorHistoryRepository.save(history);
+        return true;
+    }
+
     public boolean delete(long deviceId) {
         ActuatorDevice device = this.findById(deviceId);
         if (device == null) {
