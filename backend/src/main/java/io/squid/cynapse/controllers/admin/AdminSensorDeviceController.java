@@ -2,7 +2,7 @@ package io.squid.cynapse.controllers.admin;
 
 import io.squid.cynapse.dto.DeviceDTO;
 import io.squid.cynapse.entities.SensorDevice;
-import io.squid.cynapse.services.DeviceService;
+import io.squid.cynapse.services.SensorDeviceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -16,17 +16,17 @@ import java.util.List;
 public class AdminSensorDeviceController {
 
     @Autowired
-    private DeviceService deviceService;
+    private SensorDeviceService sensorDeviceService;
 
     @GetMapping("/list")
     public ResponseEntity<List<SensorDevice>> geSensors(@RequestParam(value = "roomId", required = false) Long roomId) {
-        List<SensorDevice> devices = this.deviceService.findByRoomId(roomId);
+        List<SensorDevice> devices = this.sensorDeviceService.findByRoomId(roomId);
         return ResponseEntity.ok(devices);
     }
 
     @GetMapping("/get")
     public ResponseEntity<?> getSensor(@RequestParam("id") long deviceId) {
-        SensorDevice device = this.deviceService.findById(deviceId);
+        SensorDevice device = this.sensorDeviceService.findById(deviceId);
         if (device == null) {
             return ResponseEntity.badRequest().body("Device not found");
         }
@@ -36,7 +36,7 @@ public class AdminSensorDeviceController {
 
     @PostMapping("/create")
     public ResponseEntity<?> createSensor(@RequestBody DeviceDTO.DevicePayload payload) {
-        SensorDevice device = this.deviceService.create(payload);
+        SensorDevice device = this.sensorDeviceService.create(payload);
         if (device == null) {
             return ResponseEntity.badRequest().body("Room not found");
         }
@@ -46,7 +46,7 @@ public class AdminSensorDeviceController {
 
     @PostMapping("/update")
     public ResponseEntity<?> updateSensor(@RequestBody DeviceDTO.DevicePayload payload) {
-        SensorDevice device = this.deviceService.update(payload);
+        SensorDevice device = this.sensorDeviceService.update(payload);
         if (device == null) {
             return ResponseEntity.badRequest().body("Device or room not found");
         }
@@ -56,7 +56,7 @@ public class AdminSensorDeviceController {
 
     @DeleteMapping("/delete")
     public ResponseEntity<?> deleteSensor(@RequestParam("id") long deviceId) {
-        if (!this.deviceService.delete(deviceId)) {
+        if (!this.sensorDeviceService.delete(deviceId)) {
             return ResponseEntity.badRequest().body("Device not found");
         }
 

@@ -2,7 +2,7 @@ package io.squid.cynapse.controllers;
 
 import io.squid.cynapse.entities.SensorDevice;
 import io.squid.cynapse.entities.SensorReading;
-import io.squid.cynapse.services.DeviceService;
+import io.squid.cynapse.services.SensorDeviceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -22,7 +22,7 @@ import java.util.List;
 public class SensorController {
 
     @Autowired
-    private DeviceService deviceService;
+    private SensorDeviceService sensorDeviceService;
 
 
 
@@ -34,7 +34,7 @@ public class SensorController {
      */
     @GetMapping("/list")
     public ResponseEntity<List<SensorDevice>> getSensors(@RequestParam(value = "roomId", required = false) Long roomId) {
-        List<SensorDevice> devices = this.deviceService.findByRoomId(roomId);
+        List<SensorDevice> devices = this.sensorDeviceService.findByRoomId(roomId);
         return ResponseEntity.ok(devices);
     }
 
@@ -46,7 +46,7 @@ public class SensorController {
      */
     @GetMapping("/get")
     public ResponseEntity<?> getSensor(@RequestParam("id") long sensorId) {
-        SensorDevice device = this.deviceService.findById(sensorId);
+        SensorDevice device = this.sensorDeviceService.findById(sensorId);
         if (device == null) {
             return ResponseEntity.badRequest().body("Sensor not found");
         }
@@ -62,11 +62,11 @@ public class SensorController {
     @GetMapping("/readings")
     @PreAuthorize("@authService.hasRequiredRole('ADVANCED')")
     public ResponseEntity<?> getSensorReadings(@RequestParam("id") long sensorId) {
-        SensorDevice device = this.deviceService.findById(sensorId);
+        SensorDevice device = this.sensorDeviceService.findById(sensorId);
         if (device == null) {
             return ResponseEntity.badRequest().body("Sensor not found");
         }
-        List<SensorReading> readings = this.deviceService.getLastReadings(sensorId);
+        List<SensorReading> readings = this.sensorDeviceService.getLastReadings(sensorId);
         return ResponseEntity.ok(readings);
     }
 }

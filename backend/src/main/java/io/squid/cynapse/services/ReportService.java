@@ -28,25 +28,25 @@ public class ReportService {
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     private final RoomService roomService;
-    private final DeviceService deviceService;
+    private final SensorDeviceService sensorDeviceService;
     private final ActuatorDeviceService actuatorDeviceService;
 
     public ReportService(RoomService roomService,
-                         DeviceService deviceService,
+                         SensorDeviceService sensorDeviceService,
                          ActuatorDeviceService actuatorDeviceService) {
         this.roomService = roomService;
-        this.deviceService = deviceService;
+        this.sensorDeviceService = sensorDeviceService;
         this.actuatorDeviceService = actuatorDeviceService;
     }
 
     @Transactional(readOnly = true)
     public String buildSensorReport(Long sensorId) {
-        SensorDevice sensor = this.deviceService.findById(sensorId);
+        SensorDevice sensor = this.sensorDeviceService.findById(sensorId);
         if (sensor == null) {
             return null;
         }
 
-        List<SensorReading> readings = this.deviceService.getLastReadings(sensorId);
+        List<SensorReading> readings = this.sensorDeviceService.getLastReadings(sensorId);
         StringBuilder report = new StringBuilder();
 
         report.append("SENSOR REPORT\n");
@@ -239,7 +239,7 @@ public class ReportService {
             return null;
         }
 
-        List<SensorDevice> sensors = this.deviceService.findByRoomId(roomId);
+        List<SensorDevice> sensors = this.sensorDeviceService.findByRoomId(roomId);
         List<ActuatorDevice> actuators = this.actuatorDeviceService.findByRoomId(roomId);
         List<SensorDevice> populationSensors = sensors.stream()
                 .filter(sensor -> sensor.getType() == DeviceType.PEOPLE_COUNTER)
@@ -247,7 +247,7 @@ public class ReportService {
 
         List<SensorReading> populationReadings = new ArrayList<>();
         for (SensorDevice sensor : populationSensors) {
-            populationReadings.addAll(this.deviceService.getLastReadings(sensor.getId()));
+            populationReadings.addAll(this.sensorDeviceService.getLastReadings(sensor.getId()));
         }
         populationReadings.sort(Comparator.comparing(SensorReading::getCapturedAt));
 

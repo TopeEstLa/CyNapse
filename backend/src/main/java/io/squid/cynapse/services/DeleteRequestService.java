@@ -22,7 +22,7 @@ public class DeleteRequestService {
     private UserService userService;
 
     @Autowired
-    private DeviceService deviceService;
+    private SensorDeviceService sensorDeviceService;
 
     @Autowired
     private ActuatorDeviceService actuatorDeviceService;
@@ -98,14 +98,14 @@ public class DeleteRequestService {
 
     private boolean deviceExists(DeleteRequestDeviceType deviceType, Long deviceId) {
         return switch (deviceType) {
-            case SENSOR -> this.deviceService.findById(deviceId) != null;
+            case SENSOR -> this.sensorDeviceService.findById(deviceId) != null;
             case ACTUATOR -> this.actuatorDeviceService.findById(deviceId) != null;
         };
     }
 
     private boolean deleteDevice(DeleteRequest request) {
         return switch (request.getDeviceType()) {
-            case SENSOR -> this.deviceService.delete(request.getDeviceId());
+            case SENSOR -> this.sensorDeviceService.delete(request.getDeviceId());
             case ACTUATOR -> this.actuatorDeviceService.delete(request.getDeviceId());
         };
     }
