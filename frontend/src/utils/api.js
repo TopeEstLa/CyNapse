@@ -116,7 +116,7 @@ export const newsApi = {
 export const adminApi = {
     users: () => api.get('/api/admin/user/list'),
     updateUser: (data) => api.post('/api/admin/user/update', data),
-    deleteUser: (id) => api.delete(`/api/admin/user/delete?id=${id}`),
+    deleteUser: (id) => api.delete(`/api/admin/user/delete?userId=${id}`),
     createRoom: (data) => api.post('/api/admin/room/create', data),
     updateRoom: (data) => api.post('/api/admin/room/update', data),
     deleteRoom: (id) => api.delete(`/api/admin/room/delete?id=${id}`),
