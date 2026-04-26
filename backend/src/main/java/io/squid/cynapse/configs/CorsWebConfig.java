@@ -10,7 +10,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * @author TopeEstLa
  */
 @Configuration
-@EnableWebMvc
+//@EnableWebMvc
 public class CorsWebConfig implements WebMvcConfigurer {
 
     @Value("${cynapse.cors.allowed-origins}")
@@ -18,7 +18,11 @@ public class CorsWebConfig implements WebMvcConfigurer {
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**").allowedMethods("GET", "HEAD", "POST", "PUT", "PATCH", "DELETE", "OPTIONS").allowedOrigins(this.allowedOrigins).allowCredentials(true);
+        registry.addMapping("/**")
+                .allowedMethods("GET", "HEAD", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
+                .allowedOrigins(this.allowedOrigins)
+                .allowedHeaders("*")
+                .allowCredentials(true);
     }
 
 }
