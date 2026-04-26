@@ -400,8 +400,40 @@ const AdminActuatorEdit = () => {
                               }}
                               className="w-full p-1 border rounded text-xs bg-white"
                             >
-                              {Object.values(DeviceType).map(t => <option key={t} value={t}>{t}</option>)}
+                              {Object.values(DeviceType).map(t => <option key={t} value={t}>{t.replace('_', ' ')}</option>)}
                             </select>
+                          </div>
+                          <div>
+                            <label className="block text-[10px] uppercase font-bold text-gray-400">Operator</label>
+                            <select
+                              value={cond.comparisonOperator}
+                              onChange={(e) => {
+                                const nc = [...ruleFormData.conditions];
+                                nc[index].comparisonOperator = e.target.value;
+                                setRuleFormData({...ruleFormData, conditions: nc});
+                              }}
+                              className="w-full p-1 border rounded text-xs bg-white"
+                            >
+                              <option value="GT">Greater than (&gt;)</option>
+                              <option value="GTE">Greater or equal (&gt;=)</option>
+                              <option value="LT">Less than (&lt;)</option>
+                              <option value="LTE">Less or equal (&lt;=)</option>
+                              <option value="EQ">Equal (=)</option>
+                            </select>
+                          </div>
+                          <div>
+                            <label className="block text-[10px] uppercase font-bold text-gray-400">Threshold Value</label>
+                            <input
+                              type="number"
+                              step="0.1"
+                              value={cond.thresholdValue}
+                              onChange={(e) => {
+                                const nc = [...ruleFormData.conditions];
+                                nc[index].thresholdValue = parseFloat(e.target.value);
+                                setRuleFormData({...ruleFormData, conditions: nc});
+                              }}
+                              className="w-full p-1 border rounded text-xs"
+                            />
                           </div>
                         </>
                       ) : (
