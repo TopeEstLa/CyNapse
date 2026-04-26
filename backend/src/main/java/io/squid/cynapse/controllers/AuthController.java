@@ -59,7 +59,7 @@ public class AuthController {
         }
 
         if (!user.isEnable()) {
-            return ResponseEntity.status(403).body("Account not enabled. Please check your email for the validation link.");
+            return ResponseEntity.status(403).body("Account not enabled. Please wait an administrator to enable your account.");
         }
 
         if (!this.authService.getPasswordEncoder().matches(signinDTO.getPassword(), user.getPassword())) {
