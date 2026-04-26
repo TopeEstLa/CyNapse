@@ -184,7 +184,7 @@ const DeviceDetail = () => {
          time: new Date(isSensor ? h.capturedAt : h.createdAt) 
       }))
       .filter(h => !isNaN(h.value))
-      .slice(-20)
+      .slice(0, 20)
       .reverse();
 
     if (numericData.length < 2) return (
