@@ -1,4 +1,4 @@
-const BASE_URL = 'https://flacapi.antoninp.dev';
+const BASE_URL = import.meta.env.VITE_API_URL || '';
 
 const handleResponse = async (response) => {
     const contentType = response.headers.get('content-type');
@@ -16,7 +16,6 @@ const handleResponse = async (response) => {
                 if (textError) errorMessage = textError;
             }
         } catch (e) {
-            // Fallback
         }
         throw new Error(errorMessage);
     }
@@ -25,8 +24,6 @@ const handleResponse = async (response) => {
         return response.json().catch(() => ({}));
     }
     
-    // If not JSON but OK, return empty object to avoid string .map() crashes
-    // but log a warning if it's clearly HTML
     const text = await response.text();
     if (text.trim().startsWith('<!DOCTYPE') || text.trim().startsWith('<html')) {
         console.warn('API returned HTML instead of JSON. Check backend URL or proxy.');

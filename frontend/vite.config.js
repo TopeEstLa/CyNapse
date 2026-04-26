@@ -7,7 +7,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'https://flacapi.antoninp.dev',
+        target: 'http://localhost:8080',
         changeOrigin: true,
       }
     }
