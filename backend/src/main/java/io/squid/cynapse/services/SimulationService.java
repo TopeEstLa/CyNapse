@@ -11,6 +11,7 @@ import io.squid.cynapse.repositories.AlertRepository;
 import io.squid.cynapse.repositories.RoomRepository;
 import io.squid.cynapse.repositories.SensorDeviceRepository;
 import io.squid.cynapse.repositories.SensorReadingRepository;
+import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +31,6 @@ public class SimulationService {
     private final Random random = new Random();
     private final Logger logger = LoggerFactory.getLogger(SimulationService.class);
 
-    @Value("${cynapse.simulation.enabled:true}")
-    private boolean enabled;
 
     @Autowired
     private RoomRepository roomRepository;
@@ -75,10 +74,9 @@ public class SimulationService {
     }
 
     @Scheduled(initialDelay = 30, fixedRate = 30, timeUnit = TimeUnit.SECONDS)
+    @Transactional
     public void cleanUpOldReadings() {
-        if (!this.enabled) {
-            return;
-        }
+        this.logger.info("Starting cleanup of old sensor readings...");
 
         List<SensorDevice> devices = this.sensorDeviceRepository.findAll();
 
