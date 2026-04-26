@@ -5,6 +5,7 @@ import io.squid.cynapse.entities.UserValidationToken;
 import io.squid.cynapse.enums.Role;
 import io.squid.cynapse.repositories.UserValidationTokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -36,6 +37,9 @@ public class AuthService {
 
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
+    @Value("{cynapse.public-url:http://localhost:8080}")
+    public String publicUrl;
+
     @Autowired
     private UserValidationTokenRepository userValidationTokenRepository;
 
@@ -59,7 +63,7 @@ public class AuthService {
         UUID token = UUID.randomUUID();
 
         UserValidationToken validToken = new UserValidationToken(token.toString(), user);
-        String validationLink = "http://localhost:8080/api/auth/enable?token=" + token;
+        String validationLink = this.publicUrl + "/api/auth/enable?token=" + token;
 
         try {
             this.mailService.sendPlainText(user.getEmail(), "Cynapse Account Validation", "Please click the following link to validate your account: " + validationLink);
