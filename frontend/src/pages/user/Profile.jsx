@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {useAuth} from '../../context/AuthContext';
 import {AlertCircle, Calendar, Edit2, Lock, Mail, Save, Shield, Tag, TrendingUp, User} from 'lucide-react';
 import {authApi, userApi} from '../../utils/api';
@@ -6,7 +6,7 @@ import ExpProgressBar from '../../components/ExpProgressBar';
 import {MemberType} from '../../utils/constants';
 
 const Profile = () => {
-    const {user, setUser} = useAuth();
+    const {user, setUser, checkAuth} = useAuth();
     const [isEditing, setIsEditing] = useState(false);
     const [isChangingPassword, setIsChangingPassword] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -14,13 +14,30 @@ const Profile = () => {
     const [success, setSuccess] = useState(null);
 
     const [formData, setFormData] = useState({
-        firstName: user?.firstName || '',
-        lastName: user?.lastName || '',
-        gender: user?.gender || '',
-        birthDate: user?.birthDate || '',
-        memberType: user?.memberType || MemberType.STUDENT,
-        image: user?.image || ''
+        firstName: '',
+        lastName: '',
+        gender: '',
+        birthDate: '',
+        memberType: MemberType.STUDENT,
+        image: ''
     });
+
+    useEffect(() => {
+        checkAuth();
+    }, []);
+
+    useEffect(() => {
+        if (user) {
+            setFormData({
+                firstName: user.firstName || '',
+                lastName: user.lastName || '',
+                gender: user.gender || '',
+                birthDate: user.birthDate || '',
+                memberType: user.memberType || MemberType.STUDENT,
+                image: user.image || ''
+            });
+        }
+    }, [user]);
 
     const [passwordData, setPasswordData] = useState({
         currentPassword: '',
