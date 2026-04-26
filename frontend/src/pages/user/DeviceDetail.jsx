@@ -22,11 +22,13 @@ import {
   FileText,
   MapPin
 } from 'lucide-react';
-import { DeviceType } from '../../utils/constants';
+import { useAuth } from '../../context/AuthContext';
+import { DeviceType, Role } from '../../utils/constants';
 
 const DeviceDetail = () => {
   const { deviceId } = useParams();
   const navigate = useNavigate();
+  const { user } = useAuth();
   
   // Robust ID parsing
   const isSensor = deviceId?.startsWith('sensor-');
@@ -42,6 +44,10 @@ const DeviceDetail = () => {
   const [manualValue, setManualValue] = useState('');
   const [downloading, setDownloading] = useState(false);
   const [error, setError] = useState(null);
+
+  const canDownloadReport = user && [Role.ADVANCED, Role.EXPERT, Role.ADMIN].includes(user.role);
+  const canControl = user && [Role.EXPERT, Role.ADMIN].includes(user.role);
+  const canViewHistory = user && [Role.ADVANCED, Role.EXPERT, Role.ADMIN].includes(user.role);
 
   useEffect(() => {
     if (!deviceId || (!isSensor && !isActuator) || !trueId) {
@@ -314,21 +320,23 @@ const DeviceDetail = () => {
               <RefreshCcw className={`w-4 h-4 ${refreshing ? 'animate-spin' : ''}`} />
               Sync
             </button>
-            <button 
-              onClick={handleDownloadReport} 
-              disabled={downloading}
-              className="flex-1 xs:flex-none flex items-center justify-center gap-2 px-4 py-2 bg-gray-900 text-white rounded-lg shadow-sm text-xs font-bold hover:bg-black transition-colors disabled:opacity-50 uppercase tracking-wider"
-            >
-              {downloading ? <Loader2 className={`w-4 h-4 animate-spin`} /> : <FileText className={`w-4 h-4 text-blue-400`} />}
-              Report
-            </button>
+            {canDownloadReport && (
+              <button 
+                onClick={handleDownloadReport} 
+                disabled={downloading}
+                className="flex-1 xs:flex-none flex items-center justify-center gap-2 px-4 py-2 bg-gray-900 text-white rounded-lg shadow-sm text-xs font-bold hover:bg-black transition-colors disabled:opacity-50 uppercase tracking-wider"
+              >
+                {downloading ? <Loader2 className={`w-4 h-4 animate-spin`} /> : <FileText className={`w-4 h-4 text-blue-400`} />}
+                Report
+              </button>
+            )}
           </div>
         </div>
       </header>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <section className="lg:col-span-2 space-y-8">
-          {!isSensor && (
+          {!isSensor && canControl && (
              <div className="bg-white p-6 md:p-8 rounded-xl border-l-4 border-l-blue-600 shadow-sm border-t border-r border-b border-gray-200">
                 <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
                    <div className="flex items-center gap-4">
@@ -378,7 +386,7 @@ const DeviceDetail = () => {
                </div>
             </div>
 
-            {!isActuator && (
+            {!isActuator && canViewHistory && (
               <div className="border border-gray-100 rounded-lg overflow-hidden">
                  {renderSimpleChart()}
               </div>
@@ -402,50 +410,52 @@ const DeviceDetail = () => {
             </div>
           </div>
 
-          <div className="bg-white p-6 md:p-8 rounded-xl border border-gray-200 shadow-sm">
-            <header className="flex items-center justify-between mb-8 border-b pb-4">
-              <h3 className="text-xl font-bold text-gray-900 flex items-center gap-3 uppercase tracking-tight">
-                <HistoryIcon className="w-5 h-5 text-blue-600" />
-                Historical Logs
-              </h3>
-              <BarChart3 className="w-4 h-4 text-gray-300" />
-            </header>
-            
-            <div className="overflow-x-auto">
-              <table className="w-full text-left border-collapse min-w-[500px]">
-                <thead>
-                  <tr className="border-b border-gray-200">
-                    <th className="px-4 py-3 text-xs font-bold text-gray-500 uppercase tracking-wider">Timestamp</th>
-                    <th className="px-4 py-3 text-xs font-bold text-gray-500 uppercase tracking-wider">Value</th>
-                    <th className="px-4 py-3 text-xs font-bold text-gray-500 uppercase tracking-wider text-right">Label</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-100">
-                  {history.length === 0 ? (
-                    <tr>
-                      <td colSpan="3" className="py-20 text-center text-gray-400 font-semibold uppercase text-xs tracking-widest">No historical data found</td>
+          {canViewHistory && (
+            <div className="bg-white p-6 md:p-8 rounded-xl border border-gray-200 shadow-sm">
+              <header className="flex items-center justify-between mb-8 border-b pb-4">
+                <h3 className="text-xl font-bold text-gray-900 flex items-center gap-3 uppercase tracking-tight">
+                  <HistoryIcon className="w-5 h-5 text-blue-600" />
+                  Historical Logs
+                </h3>
+                <BarChart3 className="w-4 h-4 text-gray-300" />
+              </header>
+              
+              <div className="overflow-x-auto">
+                <table className="w-full text-left border-collapse min-w-[500px]">
+                  <thead>
+                    <tr className="border-b border-gray-200">
+                      <th className="px-4 py-3 text-xs font-bold text-gray-500 uppercase tracking-wider">Timestamp</th>
+                      <th className="px-4 py-3 text-xs font-bold text-gray-500 uppercase tracking-wider">Value</th>
+                      <th className="px-4 py-3 text-xs font-bold text-gray-500 uppercase tracking-wider text-right">Label</th>
                     </tr>
-                  ) : (
-                    history.slice(0, 50).map((h, i) => (
-                      <tr key={i} className="hover:bg-gray-50 transition-colors">
-                        <td className="px-4 py-4 text-xs font-medium text-gray-600">
-                          {new Date(isSensor ? h.capturedAt : h.createdAt).toLocaleString()}
-                        </td>
-                        <td className="px-4 py-4 font-bold text-gray-900">
-                          {formatValue(h.value, device.type)} {getDeviceUnit(device.type)}
-                        </td>
-                        <td className="px-4 py-4 text-right">
-                          <span className="px-2 py-0.5 bg-gray-100 rounded text-[10px] font-bold uppercase text-gray-500 border border-gray-200">
-                             {i === 0 ? 'Current' : 'Log'}
-                          </span>
-                        </td>
+                  </thead>
+                  <tbody className="divide-y divide-gray-100">
+                    {history.length === 0 ? (
+                      <tr>
+                        <td colSpan="3" className="py-20 text-center text-gray-400 font-semibold uppercase text-xs tracking-widest">No historical data found</td>
                       </tr>
-                    ))
-                  )}
-                </tbody>
-              </table>
+                    ) : (
+                      history.slice(0, 50).map((h, i) => (
+                        <tr key={i} className="hover:bg-gray-50 transition-colors">
+                          <td className="px-4 py-4 text-xs font-medium text-gray-600">
+                            {new Date(isSensor ? h.capturedAt : h.createdAt).toLocaleString()}
+                          </td>
+                          <td className="px-4 py-4 font-bold text-gray-900">
+                            {formatValue(h.value, device.type)} {getDeviceUnit(device.type)}
+                          </td>
+                          <td className="px-4 py-4 text-right">
+                            <span className="px-2 py-0.5 bg-gray-100 rounded text-[10px] font-bold uppercase text-gray-500 border border-gray-200">
+                               {i === 0 ? 'Current' : 'Log'}
+                            </span>
+                          </td>
+                        </tr>
+                      ))
+                    )}
+                  </tbody>
+                </table>
+              </div>
             </div>
-          </div>
+          )}
         </section>
 
         <aside className="space-y-6">

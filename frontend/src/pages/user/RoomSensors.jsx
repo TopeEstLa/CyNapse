@@ -47,7 +47,8 @@ const RoomSensors = () => {
     deviceName: ''
   });
 
-  const canRequestDelete = user && [Role.ADVANCED, Role.EXPERT, Role.ADMIN].includes(user.role);
+  const canRequestDelete = user && [Role.EXPERT, Role.ADMIN].includes(user.role);
+  const canDownloadReport = user && [Role.ADVANCED, Role.EXPERT, Role.ADMIN].includes(user.role);
 
   useEffect(() => {
     fetchData();
@@ -159,14 +160,16 @@ const RoomSensors = () => {
           Back to Monitoring
         </Link>
         <div className="flex gap-2">
-           <button 
-             onClick={handleDownloadReport}
-             disabled={downloading}
-             className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg text-xs font-semibold text-gray-700 hover:bg-gray-50 transition-all shadow-sm disabled:opacity-50"
-           >
-             {downloading ? <Loader2 className="w-4 h-4 animate-spin" /> : <FileText className="w-4 h-4" />}
-             Download Report
-           </button>
+           {canDownloadReport && (
+             <button 
+               onClick={handleDownloadReport}
+               disabled={downloading}
+               className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg text-xs font-semibold text-gray-700 hover:bg-gray-50 transition-all shadow-sm disabled:opacity-50"
+             >
+               {downloading ? <Loader2 className="w-4 h-4 animate-spin" /> : <FileText className="w-4 h-4" />}
+               Download Report
+             </button>
+           )}
            <div className="flex items-center gap-3">
              <span className="text-[10px] text-gray-400 font-bold uppercase whitespace-nowrap">
                Updated: {lastRefresh.toLocaleTimeString()}
@@ -333,7 +336,7 @@ const RoomSensors = () => {
                     <div className="pt-4 border-t border-gray-100 flex items-center justify-between text-[10px] font-bold text-gray-400 uppercase">
                        <div className="flex items-center gap-2">
                           <Activity className="w-3.5 h-3.5" />
-                          <span>Control Actuator</span>
+                          <span>{user && [Role.EXPERT, Role.ADMIN].includes(user.role) ? 'Control Actuator' : 'View Details'}</span>
                        </div>
                        <ArrowRight className="w-4 h-4 text-gray-200 group-hover:text-blue-600 group-hover:translate-x-1 transition-all" />
                     </div>

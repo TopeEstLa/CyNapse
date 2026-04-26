@@ -29,6 +29,7 @@ const Navbar = () => {
     { to: "/all-devices", label: "All Devices" },
     { to: "/find-room", label: "Find Room" },
     { to: "/users", label: "Users" },
+    ...(user.role === Role.EXPERT || user.role === Role.ADMIN ? [{ to: "/my-requests", label: "My Requests" }] : []),
   ] : [];
 
   const allLinks = [...navLinks, ...protectedLinks];

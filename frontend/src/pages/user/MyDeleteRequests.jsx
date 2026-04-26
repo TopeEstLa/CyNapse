@@ -1,15 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { api } from '../../utils/api';
 import { Loader2, Trash2, Clock, CheckCircle2, XCircle, ArrowLeft } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
+import { Role } from '../../utils/constants';
 
 const MyDeleteRequests = () => {
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { user } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
+    if (user && ![Role.EXPERT, Role.ADMIN].includes(user.role)) {
+      navigate('/');
+      return;
+    }
     fetchRequests();
-  }, []);
+  }, [user, navigate]);
 
   const fetchRequests = async () => {
     try {
