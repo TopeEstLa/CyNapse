@@ -65,17 +65,25 @@ public class ActuatorDeviceService {
             return null;
         }
 
-        Room room = this.roomService.findById(payload.roomId());
-        if (room == null) {
-            return null;
-        }
-
         device.setName(payload.name());
         device.setType(payload.type());
         device.setStatus(payload.status() == null ? DeviceStatus.ONLINE : payload.status());
         device.setCurrentState(payload.currentState());
-        device.setRoom(room);
         return this.actuatorDeviceRepository.save(device);
+    }
+
+    public boolean updateState(long deviceId, String newState) {
+        ActuatorDevice device = this.findById(deviceId);
+        if (device == null) {
+            return false;
+        }
+
+        device.setCurrentState(newState);
+        this.actuatorDeviceRepository.save(device);
+
+        ActuatorHistory history = new ActuatorHistory(device, newState);
+        this.actuatorHistoryRepository.save(history);
+        return true;
     }
 
     public boolean delete(long deviceId) {

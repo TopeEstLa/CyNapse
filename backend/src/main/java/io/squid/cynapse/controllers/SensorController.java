@@ -5,6 +5,7 @@ import io.squid.cynapse.entities.SensorReading;
 import io.squid.cynapse.services.DeviceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -59,6 +60,7 @@ public class SensorController {
      * @return List of last 200 sensor readings ordered by most recent first
      */
     @GetMapping("/readings")
+    @PreAuthorize("@authService.hasRequiredRole('ADVANCED')")
     public ResponseEntity<?> getSensorReadings(@RequestParam("id") long sensorId) {
         SensorDevice device = this.deviceService.findById(sensorId);
         if (device == null) {

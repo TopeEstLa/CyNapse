@@ -11,6 +11,9 @@ import io.squid.cynapse.repositories.AlertRepository;
 import io.squid.cynapse.repositories.RoomRepository;
 import io.squid.cynapse.repositories.SensorDeviceRepository;
 import io.squid.cynapse.repositories.SensorReadingRepository;
+import jakarta.transaction.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -20,14 +23,14 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class SimulationService {
 
     private final Random random = new Random();
+    private final Logger logger = LoggerFactory.getLogger(SimulationService.class);
 
-    @Value("${cynapse.simulation.enabled:true}")
-    private boolean enabled;
 
     @Autowired
     private RoomRepository roomRepository;
@@ -67,6 +70,35 @@ public class SimulationService {
             }
 
             this.updateRoomStatus(room);
+        }
+    }
+
+    @Scheduled(initialDelay = 30, fixedRate = 30, timeUnit = TimeUnit.SECONDS)
+    @Transactional
+    public void cleanUpOldReadings() {
+        this.logger.info("Starting cleanup of old sensor readings...");
+
+        List<SensorDevice> devices = this.sensorDeviceRepository.findAll();
+
+        for (SensorDevice device : devices) {
+            List<SensorReading> topReadings = this.sensorReadingRepository.findTop200ByDeviceIdOrderByCapturedAtDesc(device.getId());
+
+            if (topReadings.size() >= 200) {
+                SensorReading oldestKeptReading = topReadings.get(topReadings.size() - 1);
+                LocalDateTime threshold = oldestKeptReading.getCapturedAt();
+
+                List<SensorReading> oldReadings = this.sensorReadingRepository.findByCapturedAtBefore(threshold).stream()
+                        .filter(reading -> reading.getDevice().getId().equals(device.getId()))
+                        .toList();
+
+                if (!oldReadings.isEmpty()) {
+                    List<Long> idsToDelete = oldReadings.stream()
+                            .map(SensorReading::getId)
+                            .toList();
+                    this.logger.info("Deleting {} old readings for device {}", idsToDelete.size(), device.getId());
+                    this.sensorReadingRepository.deleteByIdIn(idsToDelete);
+                }
+            }
         }
     }
 
@@ -113,13 +145,13 @@ public class SimulationService {
             return 0;
         }
 
-        if (lastValue >= 0) {
+        if (lastValue > 0) {
             double change = this.randomRange(0, 100);
             if (change <= 10) return lastValue;
             return 0;
         } else {
             double change = this.randomRange(0, 100);
-            if (change <= 10) return lastValue;
+            if (change <= 25) return lastValue;
             return 30;
         }
     }

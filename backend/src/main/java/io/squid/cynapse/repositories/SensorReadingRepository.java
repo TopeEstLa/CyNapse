@@ -21,5 +21,7 @@ public interface SensorReadingRepository extends CrudRepository<SensorReading, L
     List<SensorReading> findTop200ByDeviceIdOrderByCapturedAtDesc(Long deviceId);
 
     List<SensorReading> findByCapturedAtBefore(LocalDateTime threshold);
+
+    void deleteByIdIn(List<Long> ids);
 }
 

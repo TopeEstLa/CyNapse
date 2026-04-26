@@ -5,10 +5,8 @@ import io.squid.cynapse.entities.ActuatorHistory;
 import io.squid.cynapse.services.ActuatorDeviceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -34,6 +32,21 @@ public class ActuatorController {
         return ResponseEntity.ok(this.actuatorDeviceService.findByRoomId(roomId));
     }
 
+    @PostMapping("/update-state")
+    @PreAuthorize("@authService.hasRequiredRole('EXPERT')")
+    public ResponseEntity<?> updateActuatorState(@RequestParam("id") long actuatorId, @RequestParam("state") String newState) {
+        ActuatorDevice device = this.actuatorDeviceService.findById(actuatorId);
+        if (device == null) {
+            return ResponseEntity.badRequest().body("Actuator not found");
+        }
+        boolean success = this.actuatorDeviceService.updateState(actuatorId, newState);
+        if (!success) {
+            return ResponseEntity.badRequest().body("Failed to update actuator state");
+        }
+
+        return ResponseEntity.ok("Actuator state updated successfully");
+    }
+
     /**
      * Get a specific actuator with its details and state
      *
@@ -56,6 +69,7 @@ public class ActuatorController {
      * @return List of last 200 actuator history entries ordered by most recent first
      */
     @GetMapping("/history")
+    @PreAuthorize("@authService.hasRequiredRole('ADVANCED')")
     public ResponseEntity<?> getActuatorHistory(@RequestParam("id") long actuatorId) {
         ActuatorDevice device = this.actuatorDeviceService.findById(actuatorId);
         if (device == null) {
