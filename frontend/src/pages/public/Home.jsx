@@ -55,22 +55,38 @@ const Home = () => {
   };
 
   return (
-    <div className="space-y-12 pb-20 animate-fade-in pt-12">
+    <div className="space-y-12 pb-20 animate-fade-in pt-4">
       {/* Hero Section */}
-      <div className="max-w-7xl mx-auto px-4 text-center space-y-2">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-blue-600 text-[8px] font-black uppercase tracking-[0.2em] mb-1">
-          <span className="relative flex h-1.5 w-1.5">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-blue-600"></span>
-          </span>
-          System Online
+      <div className="relative max-w-7xl mx-auto px-4 py-8 md:py-12 text-center overflow-hidden rounded-[2rem] flex items-center justify-center">
+        {/* Background Image */}
+        <div 
+          className="absolute inset-0 z-0 bg-cover bg-center"
+          style={{ 
+            backgroundImage: 'url("https://cytech.cyu.fr/medias/photo/20210910-142739-1-_1658393597514-jpg?ID_FICHE=111566")',
+          }}
+        >
+          {/* Subtle Dimmer */}
+          <div className="absolute inset-0 bg-black/10"></div>
         </div>
-        <h1 className="text-2xl md:text-4xl lg:text-5xl font-black text-gray-900 tracking-tighter uppercase leading-none">
-          Welcome to <span className="text-blue-600">CyNapse</span>
-        </h1>
-        <p className="max-w-lg mx-auto text-gray-500 font-medium text-xs md:text-sm">
-          The central nervous system for your smart ecosystem.
-        </p>
+
+        {/* Content Card for Visibility */}
+        <div className="relative z-10 space-y-3 bg-white/75 backdrop-blur-md p-6 md:p-8 rounded-[2rem] border border-white/20 shadow-2xl max-w-2xl mx-auto">
+          <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-blue-600 text-white text-[7px] md:text-[8px] font-black uppercase tracking-[0.2em] mb-0.5 shadow-lg shadow-blue-500/20">
+            <span className="relative flex h-1.5 w-1.5">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-white"></span>
+            </span>
+            System Online
+          </div>
+
+          <h1 className="text-2xl md:text-4xl lg:text-5xl font-black text-gray-900 tracking-tighter uppercase leading-none whitespace-nowrap">
+            Welcome to <span className="text-blue-600">CyNapse</span>
+          </h1>
+          
+          <p className="mx-auto text-gray-600 font-bold text-[10px] md:text-xs uppercase tracking-[0.15em] leading-relaxed whitespace-nowrap">
+            The central nervous system for <span className="text-blue-600">CY Tech Cauchy</span>.
+          </p>
+        </div>
       </div>
 
       {/* Main Grid Content */}

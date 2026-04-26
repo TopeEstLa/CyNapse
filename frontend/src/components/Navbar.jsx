@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Building2, LogOut, Menu, X } from 'lucide-react';
+import { Building2, LogOut, Menu, X, User as UserIcon } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { Role } from '../utils/constants';
 
@@ -60,10 +60,14 @@ const Navbar = () => {
       {/* Desktop Right Side */}
       <div className="hidden lg:flex items-center space-x-6">
         {user ? (
-          <div className="flex items-center space-x-4">
-            <Link to="/profile" className="flex items-center space-x-2 group">
-              <div className="h-8 w-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-black text-xs border border-blue-200">
-                {user.username[0].toUpperCase()}
+          <div className="flex items-center space-x-6">
+            <Link to="/profile" className="flex items-center space-x-3 group pr-6 border-r border-gray-100">
+              <div className="h-9 w-9 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 font-black text-xs border border-blue-200 overflow-hidden shadow-sm group-hover:border-blue-400 transition-all">
+                {user.image ? (
+                  <img src={user.image} alt="" className="w-full h-full object-cover" />
+                ) : (
+                  <UserIcon size={18} />
+                )}
               </div>
               <span className="text-sm font-bold text-gray-700 group-hover:text-blue-600 transition-colors">{user.username}</span>
             </Link>
@@ -91,11 +95,20 @@ const Navbar = () => {
         )}
       </div>
 
-      {/* Mobile Menu Button */}
-      <div className="lg:hidden flex items-center">
+      {/* Mobile Menu Button & Profile */}
+      <div className="lg:hidden flex items-center space-x-3">
+        {user && (
+          <Link to="/profile" className="h-8 w-8 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 border border-blue-200 overflow-hidden shadow-sm">
+            {user.image ? (
+              <img src={user.image} alt="" className="w-full h-full object-cover" />
+            ) : (
+              <UserIcon size={14} />
+            )}
+          </Link>
+        )}
         <button 
           onClick={toggleMenu}
-          className="p-2 text-gray-600 hover:text-blue-600 focus:outline-none"
+          className="p-2 text-gray-600 hover:text-blue-600 focus:outline-none bg-gray-50 rounded-lg"
         >
           {isOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
@@ -123,8 +136,12 @@ const Navbar = () => {
                   className="px-4 py-3 rounded-xl text-base font-bold text-gray-700 flex items-center space-x-3"
                   onClick={() => setIsOpen(false)}
                 >
-                  <div className="h-8 w-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-black text-xs border border-blue-200">
-                    {user.username[0].toUpperCase()}
+                  <div className="h-10 w-10 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 font-black text-xs border border-blue-200 overflow-hidden">
+                    {user.image ? (
+                      <img src={user.image} alt="" className="w-full h-full object-cover" />
+                    ) : (
+                      <UserIcon size={20} />
+                    )}
                   </div>
                   <span>{user.username}</span>
                 </Link>
