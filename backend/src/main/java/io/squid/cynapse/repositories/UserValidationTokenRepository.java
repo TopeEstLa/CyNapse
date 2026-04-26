@@ -9,4 +9,5 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface UserValidationTokenRepository extends CrudRepository<UserValidationToken, String> {
+	long deleteByUserId(Long userId);
 }

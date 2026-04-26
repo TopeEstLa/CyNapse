@@ -3,11 +3,14 @@ package io.squid.cynapse.services;
 import io.squid.cynapse.dto.UserDTO;
 import io.squid.cynapse.entities.User;
 import io.squid.cynapse.enums.Role;
+import io.squid.cynapse.repositories.DeleteRequestRepository;
 import io.squid.cynapse.repositories.UserRepository;
+import io.squid.cynapse.repositories.UserValidationTokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +24,12 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private UserValidationTokenRepository userValidationTokenRepository;
+
+    @Autowired
+    private DeleteRequestRepository deleteRequestRepository;
 
     private final Map<Integer, Role> expToRoleMap = Map.of(150, Role.ADVANCED, 300, Role.EXPERT, 500, Role.ADMIN);
 
@@ -66,12 +75,17 @@ public class UserService {
         return this.userRepository.save(user);
     }
 
+    @Transactional
     public boolean delete(Long userId) {
         User user = this.findById(userId);
 
         if (user == null) {
             return false;
         }
+
+        this.userValidationTokenRepository.deleteByUserId(userId);
+        this.deleteRequestRepository.clearReviewedByForUser(userId);
+        this.deleteRequestRepository.deleteByRequesterId(userId);
         this.userRepository.delete(user);
         return true;
     }
