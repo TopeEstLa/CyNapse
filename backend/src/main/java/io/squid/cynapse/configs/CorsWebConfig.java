@@ -1,5 +1,6 @@
 package io.squid.cynapse.configs;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -12,9 +13,12 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @EnableWebMvc
 public class CorsWebConfig implements WebMvcConfigurer {
 
+    @Value("${cynapse.cors.allowed-origins}")
+    private String[] allowedOrigins;
+
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**").allowedMethods("*").allowedOrigins("*").allowCredentials(true);
+        registry.addMapping("/**").allowedMethods("*").allowedOrigins(this.allowedOrigins).allowCredentials(true);
     }
 
 }
