@@ -342,7 +342,7 @@ const AdminActuatorEdit = () => {
             </div>
 
             {isRuleModalOpen && (
-                <div className="fixed inset-0 z-[1000] flex items-center justify-center bg-black/10 p-4">
+                <div className="fixed inset-0 z-[1000] flex items-center justify-center p-4">
                     <div className="bg-white rounded shadow-lg w-full max-w-xl">
                         <div className="px-6 py-4 border-b flex items-center justify-between">
                             <h2 className="text-lg font-bold">{currentRule ? 'Edit Rule' : 'Add Rule'}</h2>
