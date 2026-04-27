@@ -17,18 +17,20 @@ public class UserDTO {
         private MemberType memberType;
         private LocalDate birthDate;
         private String image;
+        private String gender;
         private Role role;
         private double exp;
 
         public UserProfile() {
         }
 
-        public UserProfile(long id, String username, MemberType memberType, LocalDate birthDate, String image, Role role, double exp) {
+        public UserProfile(long id, String username, MemberType memberType, LocalDate birthDate, String image, String gender, Role role, double exp) {
             this.id = id;
             this.username = username;
             this.memberType = memberType;
             this.birthDate = birthDate;
             this.image = image;
+            this.gender = gender;
             this.role = role;
             this.exp = exp;
         }
@@ -52,6 +54,8 @@ public class UserDTO {
         public String getImage() {
             return image;
         }
+
+        public String getGender() { return gender; }
 
         public double getExp() {
             return exp;

@@ -170,7 +170,7 @@ public class UserService {
     }
 
     public UserDTO.UserProfile toUserProfile(User user) {
-        return new UserDTO.UserProfile(user.getId(), user.getUsername(), user.getMemberType(), user.getBirthDate(), user.getImage(), user.getRole(), user.getExp());
+        return new UserDTO.UserProfile(user.getId(), user.getUsername(), user.getMemberType(), user.getBirthDate(), user.getImage(), user.getGender(), user.getRole(), user.getExp());
     }
 }
 
