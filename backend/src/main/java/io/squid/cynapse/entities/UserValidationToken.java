@@ -11,7 +11,7 @@ public class UserValidationToken {
     @Id
     private String token;
 
-    @OneToOne(targetEntity = User.class, fetch = FetchType.EAGER, orphanRemoval = true)
+    @OneToOne(targetEntity = User.class, fetch = FetchType.EAGER)
     @JoinColumn(nullable = false, name = "user_id")
     private User user;
 
