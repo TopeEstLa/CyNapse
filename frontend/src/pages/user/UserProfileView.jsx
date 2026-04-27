@@ -4,11 +4,31 @@ import {userApi} from '../../utils/api';
 import {ArrowLeft, Calendar, Loader2, Shield, Tag, User} from 'lucide-react';
 import ExpProgressBar from '../../components/ExpProgressBar';
 
+const calculateAge = (birthDate) => {
+    if (!birthDate) return null;
+
+    const date = new Date(birthDate);
+    if (Number.isNaN(date.getTime())) return null;
+
+    const today = new Date();
+    if (date > today) return null;
+
+    let age = today.getFullYear() - date.getFullYear();
+    const monthDiff = today.getMonth() - date.getMonth();
+
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < date.getDate())) {
+        age -= 1;
+    }
+
+    return age >= 0 ? age : null;
+};
+
 const UserProfileView = () => {
     const {id} = useParams();
     const [userProfile, setUserProfile] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const age = userProfile ? calculateAge(userProfile.birthDate) : null;
 
     useEffect(() => {
         const fetchProfile = async () => {
@@ -77,6 +97,16 @@ const UserProfileView = () => {
                                 <p className="text-xs text-gray-500 font-semibold uppercase tracking-wider">Birth
                                     Date</p>
                                 <p className="text-gray-900 font-medium">{userProfile.birthDate || 'Not specified'}</p>
+                            </div>
+                        </div>
+
+                        <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg border border-gray-100">
+                            <User className="w-5 h-5 text-gray-400"/>
+                            <div>
+                                <p className="text-xs text-gray-500 font-semibold uppercase tracking-wider">Age</p>
+                                <p className="text-gray-900 font-medium">
+                                    {age !== null ? `${age} years old` : 'Not specified'}
+                                </p>
                             </div>
                         </div>
 
